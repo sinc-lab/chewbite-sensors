@@ -1,6 +1,16 @@
 <resources>
-    <string name="app_name">ChewBite Android Sensors</string>
+    <string name="app_name">ChewBite Sensors</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_settings">Configuración</string>
+    <string name="title_predictions">Predicciones</string>
+    <string name="title_app">ChewBite Sensors</string>
+    <string name="text_welcome">Bienvenido a ChewBite Sensors la app para realizar estudios de ganadería de precisión. \n\n    Utiliza tu teléfono, para grabar los sonidos, movimientos y ubicación de tus animales rumiantes.</string>
+    <string name="text_informative_message">Recuerda desactivar el gps, audio y poner en modo avion</string>
+    <string name="text_see_more">Ver más</string>
+    <string name="text_title_configuation">Elija que desea grabar</string>
+    <string name="text_sound_configuration">SONIDO</string>
+    <string name="text_movement_configuration">MOVIMIENTO</string>
+    <string name="text_gps_configuration">GPS</string>
 </resources>

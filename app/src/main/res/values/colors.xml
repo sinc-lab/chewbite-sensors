@@ -6,5 +6,29 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!--<color name="white">#FFFFFFFF</color>-->
+    <!-- NEW -->
+    <color name="white">#FFFFFFFF</color> <!--Fondo APP-->
+    <!-- BLACK -->
+    <color name="black_50">#f6f6f6</color> <!--Fondo Configuración Básica-->
+    <color name="black_100">#e7e7e7</color> <!--Fondo Configuración Básica-->
+    <color name="black_500">#6D6D6D</color> <!--Botón y barra inferior de navegación-->
+    <color name="black_800">#454545</color> <!--informacion-->
+    <color name="black_900">#3D3D3D</color> <!--Texto-->
+    <color name="black_text">#29292A</color> <!--texto de bienvenida-->
+    <color name="black_950">#212121</color> <!--Título--> <!--color neutro base-->
+    <!-- GREEN -->
+    <color name="green_50">#F5FCED</color> <!--Éxito -->
+    <color name="green_600">#454545</color> <!--Éxito --> <!--Color de Acento secundario -->
+    <color name="green_700">#28652B
+    </color> <!--Botón y barra inferior de navegación--> <!--Color de Acento primario-->
+    <!-- BLUE -->
+    <color name="blue_50">#eff3fd</color> <!--informacion-->
+    <color name="blue_600">#577cd1</color> <!--informacion-->
+    <!-- ORANGE -->
+    <color name="orange_50">#fceded</color> <!--Error - cancelar - cerrar-->
+    <color name="orange_600">#cb4747</color> <!--Error - cancelar - cerrar-->
+    <!-- YELLOW -->
+    <color name="yellow_50">#fdfae7</color> <!--Advertencia-->
+    <color name="yellow_500">#eccf13</color>
 </resources>

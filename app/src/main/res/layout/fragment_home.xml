@@ -7,16 +7,144 @@
     tools:context=".ui.home.HomeFragment">
 
     <TextView
-        android:id="@+id/text_home"
-        android:layout_width="match_parent"
+        android:id="@+id/tv_Name_App"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:fontFamily="@font/open_sans_bold"
+        android:gravity="center"
+        android:text="@string/title_app"
+        android:textAppearance="@style/Theme.TextNameAPP"
+        android:textColor="@color/black_950"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/tv_welcome"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/hind_madurai_medium"
+        android:gravity="center"
+        android:text="@string/text_welcome"
+        android:textColor="@color/black_900"
+        android:textSize="14sp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_Name_App" />
+
+    <RelativeLayout
+        android:id="@+id/informative_message_box"
+        android:layout_width="304dp"
+        android:layout_height="66dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/background_color"
+        android:gravity="center"
+        android:paddingLeft="0dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_welcome"
+        tools:ignore="MissingConstraints"> <!-- Aquí usamos el fondo creado -->
+
+        <TextView
+            android:id="@+id/tv_informative_message"
+            android:layout_width="200dp"
+            android:layout_height="38dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="22dp"
+            android:fontFamily="@font/hind_madurai_medium"
+            android:gravity="center"
+            android:text="@string/text_informative_message"
+            android:textColor="@color/black_900"
+            android:textSize="14sp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/basic_configuration"
+        android:gravity="center"
+        android:layout_width="312dp"
+        android:layout_height="229dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/background_color_black"
+        android:paddingLeft="12dp"
+        android:paddingTop="16dp"
+        android:paddingRight="12dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/informative_message_box"
+        tools:ignore="MissingConstraints">
+
+        <Button
+            android:id="@+id/btn_see_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:width="256dp"
+            android:background="@drawable/button_style"
+            android:text="@string/text_see_more"
+            android:textColor="@color/black_800"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/txt_title_configuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/black_950"
+            android:text="@string/text_title_configuation" />
+
+        <TextView
+            android:id="@+id/txt_sound_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_title_configuration"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/text_sound_configuration"
+            android:textColor="@color/black_950" />
+
+        <TextView
+            android:id="@+id/txt_movement_configuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_title_configuration"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/txt_sound_setting"
+            android:text="@string/text_movement_configuration"
+            android:textColor="@color/black_950" />
+
+        <TextView
+            android:id="@+id/txt_gps_configuration"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_title_configuration"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="31dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="42dp"
+            android:layout_toEndOf="@+id/txt_movement_configuration"
+            android:text="@string/text_gps_configuration"
+            android:textColor="@color/black_950" />
+
+    </RelativeLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

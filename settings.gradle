@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ChewBite Android Sensors"
+rootProject.name = "ChewBite Sensors"
 include ':app'
