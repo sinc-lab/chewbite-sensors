@@ -13,4 +13,12 @@
     <string name="text_sound_configuration">SONIDO</string>
     <string name="text_movement_configuration">MOVIMIENTO</string>
     <string name="text_gps_configuration">GPS</string>
+    <string name="txt_start">Iniciar</string>
+    <string name="text_frequency">Frecuencia de muestreo</string>
+
+    <string-array name="text_frequency_options">
+        <item>8000</item>
+        <item>10000</item>
+        <item>12000</item>
+    </string-array>
 </resources>

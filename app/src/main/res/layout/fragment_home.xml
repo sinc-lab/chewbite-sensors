@@ -39,9 +39,9 @@
     <RelativeLayout
         android:id="@+id/informative_message_box"
         android:layout_width="304dp"
-        android:layout_height="66dp"
+        android:layout_height="82dp"
         android:layout_marginTop="28dp"
-        android:background="@drawable/background_color"
+        android:background="@drawable/background_color_blue_50"
         android:gravity="center"
         android:paddingLeft="0dp"
         android:paddingTop="0dp"
@@ -52,12 +52,40 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_welcome"
         tools:ignore="MissingConstraints"> <!-- Aquí usamos el fondo creado -->
 
+        <RelativeLayout
+            android:id="@+id/system_stat"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_toStartOf="@+id/tv_informative_message">
+
+            <View
+                android:id="@+id/System_Status"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/warning_blue" />
+        </RelativeLayout>
+
         <TextView
             android:id="@+id/tv_informative_message"
             android:layout_width="200dp"
             android:layout_height="38dp"
+            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="22dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="14dp"
             android:fontFamily="@font/hind_madurai_medium"
             android:gravity="center"
             android:text="@string/text_informative_message"
@@ -71,80 +99,316 @@
 
     <RelativeLayout
         android:id="@+id/basic_configuration"
-        android:gravity="center"
         android:layout_width="312dp"
         android:layout_height="229dp"
-        android:layout_marginTop="28dp"
-        android:background="@drawable/background_color_black"
-        android:paddingLeft="12dp"
-        android:paddingTop="16dp"
-        android:paddingRight="12dp"
-        android:paddingBottom="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/background_color_black_100"
+        android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/informative_message_box"
         tools:ignore="MissingConstraints">
 
+        <RelativeLayout
+            android:id="@+id/tittle_basic_configuration"
+            android:layout_width="296dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp">
+
+            <TextView
+                android:id="@+id/txt_title_configuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/open_sans_semi_bold"
+                android:gravity="top"
+                android:lineSpacingExtra="-6sp"
+                android:text="@string/text_title_configuation"
+                android:textAppearance="@style/title_configuration" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/selectores"
+            android:layout_width="296dp"
+            android:layout_height="56dp"
+            android:layout_below="@+id/tittle_basic_configuration"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            tools:ignore="ExtraText">
+
+            <RelativeLayout
+                android:id="@+id/sound"
+                android:layout_width="93.33dp"
+                android:layout_height="56dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginEnd="0dp">
+
+                <TextView
+                    android:id="@+id/txt_sound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center|center_vertical"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/text_sound_configuration"
+                    android:textAppearance="@style/sound_configuration" />
+
+                <Switch
+                    android:id="@+id/switch_sound_configuration"
+                    android:layout_width="50dp"
+                    android:layout_height="60dp"
+                    android:layout_below="@+id/txt_sound"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="0dp"
+                    android:checked="true"
+                    android:gravity="center"
+                    app:thumbTint="@color/yellow_500"
+                    app:trackTint="@color/blue_600"
+                    app:useMaterialThemeColors="false"
+                    tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/movement"
+                android:layout_width="93.33dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toStartOf="@+id/gps"
+                android:layout_toEndOf="@+id/sound" >
+                <TextView
+                    android:id="@+id/txt_movement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center|center_vertical"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/text_movement_configuration"
+                    android:textAppearance="@style/sound_configuration" />
+
+                <Switch
+                    android:id="@+id/switch_movement_configuration"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_below="@+id/txt_movement"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:checked="true"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="0dp"
+                    android:gravity="center"
+                    app:thumbTint="@color/blue_600"
+                    app:trackTint="@color/blue_600"
+                    app:useMaterialThemeColors="false"
+                    tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/gps"
+                android:layout_width="93.33dp"
+                android:layout_height="56dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="0dp" >
+
+                <TextView
+                    android:id="@+id/txt_gps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center|center_vertical"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/text_gps_configuration"
+                    android:textAppearance="@style/sound_configuration" />
+
+                <Switch
+                    android:id="@+id/switch_gps_configuration"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_below="@+id/txt_gps"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="0dp"
+                    android:gravity="center"
+                    app:thumbTint="@color/blue_600"
+                    app:trackTint="@color/blue_600"
+                    app:useMaterialThemeColors="false"
+                    tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/frequency"
+            android:layout_width="296dp"
+            android:layout_height="36dp"
+            android:layout_below="@+id/selectores"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp">
+
+            <TextView
+                android:id="@+id/txt_frequency"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/open_sans_semi_bold"
+                android:gravity="center"
+                android:lineSpacingExtra="3sp"
+                android:text="@string/text_frequency"
+                android:textAppearance="@style/frequency"
+                android:translationY="-1.47sp" />
+
+            <!--<Spinner
+                android:id="@+id/spinner_frequency"
+                android:fontFamily="@font/fira_sans_condensed_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="12dp"
+                android:layout_toEndOf="@+id/txt_frequency" />-->
+
+            <RelativeLayout
+                android:id="@+id/opciones"
+                android:layout_width="97dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="12dp"
+                android:layout_toEndOf="@+id/txt_frequency"
+                android:background="@drawable/frequency_options">
+
+                <TextView
+                    android:id="@+id/some_id"
+                    android:layout_width="61dp"
+                    android:layout_height="22dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="8dp"
+
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_toStartOf="@+id/arrows_outl"
+                    android:gravity="center_horizontal|top"
+                    android:lineSpacingExtra="3sp"
+                    android:text="8000"
+                    android:textColor="@color/black_800"
+                    android:translationY="-1.47sp" />
+
+                <RelativeLayout
+                    android:id="@+id/arrows_outl"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="0dp">
+
+                    <View
+                        android:id="@+id/shape"
+                        android:layout_width="18dp"
+                        android:layout_height="11dp"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="9dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="9dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/arrow" />
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
         <Button
-            android:id="@+id/btn_see_more"
+            android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/frequency"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginBottom="0dp"
-            android:width="256dp"
-            android:background="@drawable/button_style"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/text_see_more"
-            android:textColor="@color/black_800"
-            tools:ignore="MissingConstraints" />
+            android:textAppearance="@style/boton_secun"
 
-        <TextView
-            android:id="@+id/txt_title_configuration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="0dp"
-            android:textColor="@color/black_950"
-            android:text="@string/text_title_configuation" />
+            />
 
-        <TextView
-            android:id="@+id/txt_sound_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/txt_title_configuration"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/text_sound_configuration"
-            android:textColor="@color/black_950" />
-
-        <TextView
-            android:id="@+id/txt_movement_configuration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/txt_title_configuration"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@+id/txt_sound_setting"
-            android:text="@string/text_movement_configuration"
-            android:textColor="@color/black_950" />
-
-        <TextView
-            android:id="@+id/txt_gps_configuration"
-            android:layout_width="75dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/txt_title_configuration"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="31dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="42dp"
-            android:layout_toEndOf="@+id/txt_movement_configuration"
-            android:text="@string/text_gps_configuration"
-            android:textColor="@color/black_950" />
 
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="312dp"
+        android:fontFamily="@font/open_sans_semi_bold"
+        android:text="@string/txt_start"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/basic_configuration" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="97dp"
+        android:layout_height="36dp"
+        tools:layout_editor_absoluteX="221dp"
+        tools:layout_editor_absoluteY="557dp"
+        android:textSize="14sp"
+        android:prompt="@string/text_frequency_options"
+        android:fontFamily="@font/fira_sans_condensed_regular"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
