@@ -43,7 +43,6 @@
         android:layout_marginTop="28dp"
         android:background="@drawable/background_color_blue_50"
         android:gravity="center"
-        android:paddingLeft="0dp"
         android:paddingTop="0dp"
         android:paddingBottom="0dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,19 +60,20 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="12dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="16dp"
-            android:layout_toStartOf="@+id/tv_informative_message">
+            android:layout_marginBottom="16dp">
 
-            <View
-                android:id="@+id/System_Status"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:background="@drawable/warning_blue" />
+            <RelativeLayout
+                android:id="@+id/warning_rectangle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+
+                <View
+                    android:id="@+id/System_Status"
+                    android:layout_width="43dp"
+                    android:layout_height="42dp"
+                    android:background="@drawable/warning_blue" />
+            </RelativeLayout>
         </RelativeLayout>
 
         <TextView
@@ -83,9 +83,11 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="14dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginBottom="14dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="16dp"
+            android:layout_toEndOf="@+id/system_stat"
             android:fontFamily="@font/hind_madurai_medium"
             android:gravity="center"
             android:text="@string/text_informative_message"
@@ -399,16 +401,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/basic_configuration" />
-
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="97dp"
-        android:layout_height="36dp"
-        tools:layout_editor_absoluteX="221dp"
-        tools:layout_editor_absoluteY="557dp"
-        android:textSize="14sp"
-        android:prompt="@string/text_frequency_options"
-        android:fontFamily="@font/fira_sans_condensed_regular"
-        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
