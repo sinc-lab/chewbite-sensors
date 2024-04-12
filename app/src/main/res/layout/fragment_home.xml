@@ -370,21 +370,23 @@
         </RelativeLayout>
 
         <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/btn_see_more"
+            style="@style/Theme.Secondary_Button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_below="@+id/frequency"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="12dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="5dp"
+            android:backgroundTint="@color/black_50"
             android:text="@string/text_see_more"
-            android:textAppearance="@style/boton_secun"
-
-            />
+            android:textAppearance="@style/TextAppearance.App.Button"
+            android:textColor="@color/black_800"
+            android:textSize="16sp" />
 
 
     </RelativeLayout>
@@ -396,7 +398,8 @@
         android:width="312dp"
         android:fontFamily="@font/open_sans_semi_bold"
         android:text="@string/txt_start"
-        android:textColor="@color/white"
+        android:textAppearance="@style/TextAppearance.App.Button"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
