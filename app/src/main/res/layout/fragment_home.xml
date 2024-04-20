@@ -40,11 +40,11 @@
         android:id="@+id/informative_message_box"
         android:layout_width="304dp"
         android:layout_height="82dp"
-        android:layout_marginTop="28dp"
         android:background="@drawable/background_color_blue_50"
         android:gravity="center"
         android:paddingTop="0dp"
         android:paddingBottom="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/basic_configuration"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
@@ -105,9 +105,9 @@
         android:layout_height="229dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
         android:background="@drawable/background_color_black_100"
         android:elevation="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_start"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/informative_message_box"
@@ -197,7 +197,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_toStartOf="@+id/gps"
-                android:layout_toEndOf="@+id/sound" >
+                android:layout_toEndOf="@+id/sound">
+
                 <TextView
                     android:id="@+id/txt_movement"
                     android:layout_width="wrap_content"
@@ -219,9 +220,9 @@
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
-                    android:checked="true"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="0dp"
+                    android:checked="true"
                     android:gravity="center"
                     app:thumbTint="@color/blue_600"
                     app:trackTint="@color/blue_600"
@@ -235,7 +236,7 @@
                 android:layout_width="93.33dp"
                 android:layout_height="56dp"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="0dp" >
+                android:layout_marginEnd="0dp">
 
                 <TextView
                     android:id="@+id/txt_gps"
@@ -285,7 +286,7 @@
             <TextView
                 android:id="@+id/txt_frequency"
                 android:layout_width="wrap_content"
-                android:layout_height="22dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentBottom="true"
@@ -397,6 +398,9 @@
         android:layout_height="wrap_content"
         android:width="312dp"
         android:fontFamily="@font/open_sans_semi_bold"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:onClick="onClick_btn_start"
         android:text="@string/txt_start"
         android:textAppearance="@style/TextAppearance.App.Button"
         android:textSize="16sp"

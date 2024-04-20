@@ -1,6 +1,10 @@
 package com.android.chewbiteSensors;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -16,6 +20,9 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private  String tag = "MainActivity";
+
+    private Button button_start;
+    private ToggleButton buttonStart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +46,21 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
 
 
+        /*Button miBoton = findViewById(R.id.btn_start);
+        miBoton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Aquí es donde manejas el evento de clic del botón
+                // Por ejemplo, puedes agregar código para responder al clic
+                // como mostrar un mensaje o iniciar una nueva actividad
+                android.util.Log.d(tag, "click en el boton Iniciar");
+                Toast.makeText(getApplicationContext(), "Botón Iniciar", Toast.LENGTH_LONG).show();
+            }
+        });*/
+    }
+
+    public void onClick_btn_start(View v){
+        Toast.makeText(getApplicationContext(), "otro metodo", Toast.LENGTH_LONG).show();
     }
 
     @Override
