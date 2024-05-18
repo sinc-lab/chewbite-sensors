@@ -10,6 +10,7 @@
         android:id="@+id/tv_Name_App"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/open_sans_bold"
         android:gravity="center"
         android:text="@string/title_app"
@@ -32,6 +33,7 @@
         android:textColor="@color/black_900"
         android:textSize="14sp"
         android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/informative_message_box"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_Name_App" />
@@ -66,7 +68,8 @@
                 android:id="@+id/warning_rectangle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true">
+                android:layout_centerInParent="true"
+                tools:ignore="UselessParent">
 
                 <View
                     android:id="@+id/System_Status"
@@ -102,11 +105,10 @@
     <RelativeLayout
         android:id="@+id/basic_configuration"
         android:layout_width="312dp"
-        android:layout_height="229dp"
+        android:layout_height="240dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:background="@drawable/background_color_black_100"
-        android:elevation="4dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_start"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -142,7 +144,7 @@
         <RelativeLayout
             android:id="@+id/selectores"
             android:layout_width="296dp"
-            android:layout_height="56dp"
+            android:layout_height="62dp"
             android:layout_below="@+id/tittle_basic_configuration"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
@@ -154,7 +156,7 @@
             <RelativeLayout
                 android:id="@+id/sound"
                 android:layout_width="93.33dp"
-                android:layout_height="56dp"
+                android:layout_height="61dp"
                 android:layout_alignParentStart="true"
                 android:layout_marginEnd="0dp">
 
@@ -173,8 +175,8 @@
 
                 <Switch
                     android:id="@+id/switch_sound_configuration"
-                    android:layout_width="50dp"
-                    android:layout_height="60dp"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
                     android:layout_below="@+id/txt_sound"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
@@ -193,7 +195,7 @@
             <RelativeLayout
                 android:id="@+id/movement"
                 android:layout_width="93.33dp"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_toStartOf="@+id/gps"
@@ -215,12 +217,12 @@
                 <Switch
                     android:id="@+id/switch_movement_configuration"
                     android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
                     android:layout_below="@+id/txt_movement"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="0dp"
                     android:layout_marginEnd="0dp"
                     android:checked="true"
                     android:gravity="center"
@@ -234,7 +236,7 @@
             <RelativeLayout
                 android:id="@+id/gps"
                 android:layout_width="93.33dp"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="0dp">
 
@@ -254,14 +256,15 @@
                 <Switch
                     android:id="@+id/switch_gps_configuration"
                     android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
                     android:layout_below="@+id/txt_gps"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
-
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="0dp"
                     android:layout_marginEnd="0dp"
+                    android:filterTouchesWhenObscured="false"
+                    android:focusableInTouchMode="false"
                     android:gravity="center"
                     app:thumbTint="@color/blue_600"
                     app:trackTint="@color/blue_600"
@@ -272,141 +275,53 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/frequency"
-            android:layout_width="296dp"
-            android:layout_height="36dp"
-            android:layout_below="@+id/selectores"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp">
-
-            <TextView
-                android:id="@+id/txt_frequency"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/open_sans_semi_bold"
-                android:gravity="center"
-                android:lineSpacingExtra="3sp"
-                android:text="@string/text_frequency"
-                android:textAppearance="@style/frequency"
-                android:translationY="-1.47sp" />
-
-            <!--<Spinner
-                android:id="@+id/spinner_frequency"
-                android:fontFamily="@font/fira_sans_condensed_regular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="12dp"
-                android:layout_toEndOf="@+id/txt_frequency" />-->
-
-            <RelativeLayout
-                android:id="@+id/opciones"
-                android:layout_width="97dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="12dp"
-                android:layout_toEndOf="@+id/txt_frequency"
-                android:background="@drawable/frequency_options">
-
-                <TextView
-                    android:id="@+id/some_id"
-                    android:layout_width="61dp"
-                    android:layout_height="22dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginTop="8dp"
-
-                    android:layout_marginEnd="0dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_toStartOf="@+id/arrows_outl"
-                    android:gravity="center_horizontal|top"
-                    android:lineSpacingExtra="3sp"
-                    android:text="8000"
-                    android:textColor="@color/black_800"
-                    android:translationY="-1.47sp" />
-
-                <RelativeLayout
-                    android:id="@+id/arrows_outl"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="0dp">
-
-                    <View
-                        android:id="@+id/shape"
-                        android:layout_width="18dp"
-                        android:layout_height="11dp"
-
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginStart="9dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginEnd="9dp"
-                        android:layout_marginBottom="12dp"
-                        android:background="@drawable/arrow" />
-                </RelativeLayout>
-
-
-            </RelativeLayout>
-
-
-        </RelativeLayout>
 
         <Button
             android:id="@+id/btn_see_more"
             style="@style/Theme.Secondary_Button"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/frequency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="64dp"
+            android:width="256dp"
+            android:height="40dp"
             android:backgroundTint="@color/black_50"
             android:text="@string/text_see_more"
             android:textAppearance="@style/TextAppearance.App.Button"
             android:textColor="@color/black_800"
-            android:textSize="16sp" />
-
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="NotSibling" />
 
     </RelativeLayout>
 
-    <Button
+    <ToggleButton
         android:id="@+id/btn_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:width="312dp"
-        android:fontFamily="@font/open_sans_semi_bold"
+        android:height="48dp"
         android:foregroundGravity="center"
         android:gravity="center"
+        android:background="@drawable/my_btn_toggle"
         android:onClick="onClick_btn_start"
-        android:text="@string/txt_start"
         android:textAppearance="@style/TextAppearance.App.Button"
-        android:textSize="16sp"
+        android:textOff="@string/txt_start"
+        android:textOn="@string/txt_stop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/basic_configuration" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

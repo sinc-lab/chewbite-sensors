@@ -1,0 +1,24 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <layer-list>
+            <item>
+                <shape>
+                    <solid android:color="@color/black_50" />
+                    <stroke android:width="3dp"
+                        android:color="@color/black_50" />
+                    <padding android:bottom="1dp"
+                        android:left="1dp"
+                        android:right="1dp"
+                        android:top="1dp" />
+                    <corners android:radius="50dp" />
+                </shape>
+            </item>
+            <item>
+                <!-- Aquí es donde se añade la flecha. -->
+                <bitmap android:gravity="bottom|right"
+                    android:src="@drawable/arrow">
+                </bitmap>
+            </item>
+        </layer-list>
+    </item>
+</selector>
