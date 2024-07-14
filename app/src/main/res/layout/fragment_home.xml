@@ -105,7 +105,7 @@
     <RelativeLayout
         android:id="@+id/basic_configuration"
         android:layout_width="312dp"
-        android:layout_height="240dp"
+        android:layout_height="125dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:background="@drawable/background_color_black_100"
@@ -148,9 +148,11 @@
             android:layout_below="@+id/tittle_basic_configuration"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="9dp"
             tools:ignore="ExtraText">
 
             <RelativeLayout
@@ -275,32 +277,6 @@
 
         </RelativeLayout>
 
-
-        <Button
-            android:id="@+id/btn_see_more"
-            style="@style/Theme.Secondary_Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="64dp"
-            android:width="256dp"
-            android:height="40dp"
-            android:backgroundTint="@color/black_50"
-            android:text="@string/text_see_more"
-            android:textAppearance="@style/TextAppearance.App.Button"
-            android:textColor="@color/black_800"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="NotSibling" />
 
     </RelativeLayout>
 
