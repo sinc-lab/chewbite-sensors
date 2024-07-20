@@ -42,7 +42,7 @@ public class FileManager {
                     fileOutputStream.write(data.getBytes(StandardCharsets.UTF_8));
                     fileOutputStream.close();
                 } catch (IOException e) {
-                    Log.e("File Error", e.toString());
+                    Log.e("File Error DIR", e.toString());
                 }
             }
         }
@@ -68,7 +68,7 @@ public class FileManager {
                     }
                     fileOutputStream.close();
                 } catch (IOException e) {
-                    Log.e("File Error", e.toString());
+                    Log.e("File Error DIR", e.toString());
                 }
             }
         }
@@ -88,7 +88,25 @@ public class FileManager {
         } else {
             // Para Android 10 o superior (API 29+) → 3
             //testDirectory = new File(context.getExternalFilesDir(directoryName) + "");
-            testDirectory = context.getExternalFilesDir(directoryName);
+            //testDirectory = context.getExternalFilesDir(directoryName);
+            //testDirectory = context.getExternalFilesDir(null);
+
+            testDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+
+            /*try {
+                File documentsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                // Crear la nueva carpeta dentro de la carpeta de descargas
+                File newFolder = new File(documentsDir, directoryName);
+                if (!newFolder.exists()) {
+                    newFolder.mkdirs(); // Crea la carpeta y cualquier carpeta padre necesaria
+                }
+                testDirectory = new File(documentsDir, directoryName);
+            }
+            catch (Exception e) {
+                Log.e("File Error DIR", e.toString());
+            }*/
+
+            //testDirectory = FileManager.getTestPublicDirectory(directoryName);
         }
         return testDirectory.listFiles();
     }
@@ -136,7 +154,24 @@ public class FileManager {
         } else {
             //publicDirectory = new File(context.getFilesDir() + File.separator + directoryName);
             //publicDirectory = new File(context.getExternalFilesDir(directoryName) + "");
-            publicDirectory = context.getExternalFilesDir(directoryName);
+            //publicDirectory = context.getExternalFilesDir(directoryName);
+            //publicDirectory = context.getExternalFilesDir(null);
+
+            publicDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+
+            /*try {
+                File documentsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                // Crear la nueva carpeta dentro de la carpeta de documentos
+                publicDirectory = new File(documentsDir, directoryName);
+                if (!publicDirectory.exists()) {
+                    publicDirectory.mkdirs(); // Crea la carpeta y cualquier carpeta padre necesaria
+                }
+            }
+            catch (Exception e) {
+                Log.e("File Error DIR", e.toString());
+            }*/
+
+            //publicDirectory = FileManager.getTestPublicDirectory(directoryName);
         }
         if (!publicDirectory.exists() && !publicDirectory.mkdirs()) {
             Log.e("File Error", "Couldn't create folder");
