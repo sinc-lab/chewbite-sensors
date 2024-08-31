@@ -61,7 +61,13 @@
     <style name="Theme.Primary_Button" parent="@style/Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textAppearance">@style/TextAppearance.App.Button</item>
         <item name="android:background">@drawable/my_btn_toggle</item>
-
     </style>
 
+    <!-- styles del texto de ">Nombre del experimento<" -->
+    <style name="stl_experiment_name">
+        <item name="fontFamily">@font/open_sans_regular</item>
+        <item name="android:fontFamily">@font/open_sans_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black_experiment_name</item>
+    </style>
 </resources>

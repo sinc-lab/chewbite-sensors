@@ -6,6 +6,74 @@
     android:layout_height="match_parent"
     tools:context=".ui.settings.SettingsFragment">
 
+    <TextView
+        android:id="@+id/tv_Name_Settings"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/open_sans_bold"
+        android:gravity="center"
+        android:text="@string/title_settings"
+        android:textAppearance="@style/Theme.TextNameAPP"
+        android:textColor="@color/black_950"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <RelativeLayout
+        android:id="@+id/rl_name_experiment"
+        android:layout_width="354dp"
+        android:layout_height="48dp"
+        android:layout_below="@+id/tv_Name_Settings"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_Name_Settings"
+        tools:ignore="ExtraText">
+
+        <TextView
+            android:id="@+id/tv_name_experiment"
+            style="@style/stl_experiment_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:gravity="center"
+            android:text="@string/text_experiment_name"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/D4Eq1Vc2084"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_toEndOf="@+id/tv_name_experiment"
+            android:background="@drawable/frequency_options"
+            android:fontFamily="@font/open_sans_regular"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:padding="0dp"
+            android:text="D4Eq1Vc2084"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+
     <!--<RelativeLayout
         android:id="@+id/frequency"
         android:layout_width="296dp"

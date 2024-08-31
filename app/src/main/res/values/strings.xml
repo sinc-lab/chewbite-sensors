@@ -13,6 +13,7 @@
     <string name="text_sound_configuration">SONIDO</string>
     <string name="text_movement_configuration">MOVIMIENTO</string>
     <string name="text_gps_configuration">GPS</string>
+    <string name="text_experiment_name">Nombre del experimento</string>
     <string name="txt_start">Iniciar</string>
     <string name="txt_stop">Detener</string>
     <string name="text_frequency">Frecuencia de muestreo</string>

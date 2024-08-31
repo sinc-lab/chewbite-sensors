@@ -16,6 +16,7 @@
     <color name="black_800">#454545</color> <!--informacion-->
     <color name="black_900">#3D3D3D</color> <!--Texto-->
     <color name="black_text">#29292A</color> <!--texto de bienvenida-->
+    <color name="black_experiment_name">#292929</color> <!--texto de Nombre del experimeno-->
     <color name="black_950">#212121</color> <!--Título--> <!--color neutro base-->
     <!-- GREEN -->
     <color name="green_50">#F5FCED</color> <!--Éxito -->
