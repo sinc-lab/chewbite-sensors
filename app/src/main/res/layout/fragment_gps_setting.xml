@@ -1,9 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".ui.gps.GPSFragment">
 
+        <RelativeLayout
+            android:id="@+id/gps"
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="9dp">
 
-</FrameLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_toStartOf="@+id/switch_gps"
+                android:gravity="center_vertical"
+                android:text="@string/text_gps_configuration"
+                android:textAppearance="@style/frequency"
+                android:textSize="16sp" />
+
+            <Switch
+                android:id="@+id/switch_gps"
+                android:layout_width="49dp"
+                android:layout_height="49dp"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="12dp"
+                android:checked="true"
+                android:gravity="center"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/frequency"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp">
+
+            <TextView
+                android:id="@+id/txt_frequency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/open_sans_semi_bold"
+                android:gravity="center"
+                android:lineSpacingExtra="3sp"
+                android:text="@string/text_frequency"
+                android:textAppearance="@style/frequency"
+                android:translationY="-1.47sp" />
+
+            <RelativeLayout
+                android:id="@+id/opciones"
+                android:layout_width="103dp"
+                android:layout_height="37dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="84dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="6dp"
+                android:layout_toEndOf="@+id/txt_frequency"
+                android:background="@drawable/frequency_options">
+
+                <TextView
+                    android:id="@+id/some_id"
+                    android:layout_width="61dp"
+                    android:layout_height="22dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="8dp"
+
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_toStartOf="@+id/arrows_outl"
+                    android:gravity="center_horizontal|top"
+                    android:lineSpacingExtra="3sp"
+                    android:text="8000"
+                    android:textColor="@color/black_800"
+                    android:translationY="-1.47sp" />
+
+                <RelativeLayout
+                    android:id="@+id/arrows_outl"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="0dp">
+
+                    <View
+                        android:id="@+id/shape"
+                        android:layout_width="18dp"
+                        android:layout_height="11dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="9dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="9dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/arrow" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+</LinearLayout>

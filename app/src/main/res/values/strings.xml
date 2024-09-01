@@ -17,6 +17,11 @@
     <string name="txt_start">Iniciar</string>
     <string name="txt_stop">Detener</string>
     <string name="text_frequency">Frecuencia de muestreo</string>
+    <string name="text_bit_rate">Bit Rate</string>
+    <string name="text_type_of_file">Tipo de archivo</string>
+    <string name="text_accelerometer">Acelerómetro</string>
+    <string name="text_gyroscope">Giroscopio</string>
+    <string name="text_magnetometer">Magnetómetro</string>
     <string name="permission_rationale">Se necesitan permisos para poder continuar.</string>
     <string name="ok">OK</string>
     <string name="notification_title">ChewBite test is running</string>

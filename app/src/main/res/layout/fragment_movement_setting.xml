@@ -1,10 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".ui.movement.MovementFragment">
 
+        <RelativeLayout
+            android:id="@+id/accelerometer"
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="9dp">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_toStartOf="@+id/switch_accelerometer_configuration"
+                android:gravity="center_vertical"
+                android:text="@string/text_accelerometer"
+                android:textAppearance="@style/frequency"
+                android:textSize="16sp" />
 
-</FrameLayout>
+            <Switch
+                android:id="@+id/switch_accelerometer_configuration"
+                android:layout_width="49dp"
+                android:layout_height="49dp"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="12dp"
+                android:checked="true"
+                android:gravity="center"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/gyroscope"
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="9dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_toStartOf="@+id/switch_gyroscope_configuration"
+                android:gravity="center_vertical"
+                android:text="@string/text_gyroscope"
+                android:textAppearance="@style/frequency"
+                android:textSize="16sp" />
+
+            <Switch
+                android:id="@+id/switch_gyroscope_configuration"
+                android:layout_width="49dp"
+                android:layout_height="49dp"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="12dp"
+                android:checked="true"
+                android:gravity="center"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/magnetomete"
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="9dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_toStartOf="@+id/switch_magnetometer_configuration"
+                android:gravity="center_vertical"
+                android:text="@string/text_magnetometer"
+                android:textAppearance="@style/frequency"
+                android:textSize="16sp" />
+
+            <Switch
+                android:id="@+id/switch_magnetometer_configuration"
+                android:layout_width="49dp"
+                android:layout_height="49dp"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="12dp"
+                android:checked="true"
+                android:gravity="center"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+        </RelativeLayout>
+</LinearLayout>
