@@ -73,28 +73,44 @@
             android:textStyle="bold" />
     </RelativeLayout>
 
-    <!-- app:itemBackground="@drawable/bottom_nav_item_background" -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation_view"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container_setting"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginVertical="20dp"
-        app:itemHorizontalTranslationEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/rl_name_experiment"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/rl_name_experiment"
         app:layout_constraintTop_toBottomOf="@+id/rl_name_experiment"
-        app:menu="@menu/bottom_nav_settings" />
-    <fragment
-        android:id="@+id/nav_host_fragment_setting_main"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:defaultNavHost="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bottom_navigation_view"
-        app:layout_constraintVertical_bias="0.0"
-        app:navGraph="@navigation/setting_navigation" />
+        app:layout_constraintVertical_bias="0.0">
 
+        <!-- -->
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation_view"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:itemBackground="@drawable/bottom_nav_item_background"
+            app:itemHorizontalTranslationEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/bottom_nav_settings"
+            app:elevation="0dp" />
+
+        <fragment
+            android:id="@+id/nav_host_fragment_setting_main"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:defaultNavHost="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bottom_navigation_view"
+            app:layout_constraintVertical_bias="0.0"
+            app:navGraph="@navigation/setting_navigation" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
