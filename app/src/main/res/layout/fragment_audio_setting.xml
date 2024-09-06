@@ -26,8 +26,7 @@
                 android:layout_toStartOf="@+id/switch_sound_configuration"
                 android:gravity="center_vertical"
                 android:text="@string/text_sound_configuration"
-                android:textAppearance="@style/frequency"
-                android:textSize="16sp" />
+                android:textAppearance="@style/stl_text_setting_label"/>
 
             <Switch
                 android:id="@+id/switch_sound_configuration"
@@ -58,68 +57,27 @@
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:fontFamily="@font/open_sans_semi_bold"
                 android:gravity="center"
                 android:lineSpacingExtra="3sp"
                 android:text="@string/text_bit_rate"
-                android:textAppearance="@style/frequency"
+                android:textAppearance="@style/stl_text_setting_label"
                 android:translationY="-1.47sp" />
 
-            <RelativeLayout
-                android:id="@+id/rl_bit_rate"
-                android:layout_width="103dp"
-                android:layout_height="37dp"
+            <Spinner
+                android:id="@+id/spn_bit_rate"
+                style="@style/FrequencyOptionsList"
+                android:layout_width="101dp"
+                android:layout_height="match_parent"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="6dp"
-                android:layout_toEndOf="@+id/txt_frequency"
-                android:background="@drawable/frequency_options"
-                tools:ignore="NotSibling">
-
-                <TextView
-                    android:id="@+id/tv_bit_rate"
-                    android:layout_width="61dp"
-                    android:layout_height="22dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginTop="8dp"
-
-                    android:layout_marginEnd="0dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_toStartOf="@+id/arrows_outl"
-                    android:gravity="center_horizontal|top"
-                    android:lineSpacingExtra="3sp"
-                    android:text="8000"
-                    android:textColor="@color/black_800"
-                    android:translationY="-1.47sp" />
-
-                <RelativeLayout
-                    android:id="@+id/arrows_outl_bit_rate"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="0dp">
-
-                    <View
-                        android:id="@+id/shape_bit_rate"
-                        android:layout_width="18dp"
-                        android:layout_height="11dp"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginStart="9dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginEnd="9dp"
-                        android:layout_marginBottom="12dp"
-                        android:background="@drawable/arrow" />
-                </RelativeLayout>
-            </RelativeLayout>
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/spinner"
+                android:entries="@array/text_frequency_options"
+                android:overlapAnchor="false"
+                tools:visibility="visible" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -139,64 +97,27 @@
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:fontFamily="@font/open_sans_semi_bold"
                 android:gravity="center"
                 android:lineSpacingExtra="3sp"
                 android:text="@string/text_frequency"
-                android:textAppearance="@style/frequency"
+                android:textAppearance="@style/stl_text_setting_label"
                 android:translationY="-1.47sp" />
 
-            <RelativeLayout
-                android:id="@+id/rl_frequency"
-                android:layout_width="103dp"
-                android:layout_height="37dp"
+            <Spinner
+                android:id="@+id/spn_frequency_options"
+                style="@style/FrequencyOptionsList"
+                android:layout_width="101dp"
+                android:layout_height="match_parent"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="6dp"
-                android:background="@drawable/frequency_options">
-
-                <TextView
-                    android:id="@+id/tv_frequency"
-                    android:layout_width="61dp"
-                    android:layout_height="22dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="0dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_toStartOf="@+id/arrows_outl_frequency"
-                    android:gravity="center_horizontal|top"
-                    android:lineSpacingExtra="3sp"
-                    android:text="8000"
-                    android:textColor="@color/black_800"
-                    android:translationY="-1.47sp" />
-                <RelativeLayout
-                    android:id="@+id/arrows_outl_frequency"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="0dp">
-
-                    <View
-                        android:id="@+id/shape_frequency"
-                        android:layout_width="18dp"
-                        android:layout_height="11dp"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginStart="9dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginEnd="9dp"
-                        android:layout_marginBottom="12dp"
-                        android:background="@drawable/arrow" />
-                </RelativeLayout>
-            </RelativeLayout>
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/spinner"
+                android:entries="@array/text_frequency_options"
+                android:overlapAnchor="false"
+                tools:visibility="visible" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -216,104 +137,27 @@
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:fontFamily="@font/open_sans_semi_bold"
                 android:gravity="center"
                 android:lineSpacingExtra="3sp"
                 android:text="@string/text_type_of_file"
-                android:textAppearance="@style/frequency"
+                android:textAppearance="@style/stl_text_setting_label"
                 android:translationY="-1.47sp" />
 
-            <RelativeLayout
-                android:id="@+id/rl_type_of_file"
+            <Spinner
+                android:id="@+id/spn_file_type"
+                style="@style/FrequencyOptionsList"
                 android:layout_width="101dp"
-                android:layout_height="38dp"
+                android:layout_height="match_parent"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="6dp"
-                android:background="@drawable/frequency_options">
-
-                <TextView
-                    android:id="@+id/some_id"
-                    android:layout_width="61dp"
-                    android:layout_height="22dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginTop="8dp"
-
-                    android:layout_marginEnd="0dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_toStartOf="@+id/arrows_outl"
-                    android:gravity="center_horizontal|top"
-                    android:lineSpacingExtra="3sp"
-                    android:text="8000"
-                    android:textColor="@color/black_800"
-                    android:translationY="-1.47sp" />
-
-                <RelativeLayout
-                    android:id="@+id/arrows_outl"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="0dp">
-
-                    <View
-                        android:id="@+id/shape"
-                        android:layout_width="18dp"
-                        android:layout_height="11dp"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginStart="9dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginEnd="9dp"
-                        android:layout_marginBottom="12dp"
-                        android:background="@drawable/arrow" />
-                </RelativeLayout>
-            </RelativeLayout>
-        </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/type_of_file_3"
-        android:layout_width="match_parent"
-        android:layout_height="49dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp">
-
-            <TextView
-                android:id="@+id/txt_frequency_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/open_sans_semi_bold"
-                android:gravity="center"
-                android:text="@string/text_frequency"
-                android:textAppearance="@style/frequency" />
-
-        <Spinner
-            android:id="@+id/spn_frequency_options"
-            style="@style/FrequencyOptionsList"
-            android:layout_width="101dp"
-            android:layout_height="38dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="12dp"
-            android:background="@drawable/frequency_options"
-            android:drawableEnd="@drawable/arrow"
-            android:dropDownWidth="wrap_content"
-            android:entries="@array/text_frequency_options"
-            android:overlapAnchor="false"
-            tools:ignore="MissingConstraints"
-            tools:visibility="visible" />
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/spinner"
+                android:entries="@array/text_type_file_options"
+                android:overlapAnchor="false"
+                tools:visibility="visible" />
         </RelativeLayout>
 
 

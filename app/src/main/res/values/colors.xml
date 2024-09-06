@@ -10,6 +10,7 @@
     <!-- NEW -->
     <color name="white">#FFFFFFFF</color> <!--Fondo APP-->
     <!-- BLACK -->
+    <color name="black_background_fondo_spinner">#F2F2F2</color> <!--Fondo del drawable del spinner-->
     <color name="black_50">#f6f6f6</color> <!--Fondo Configuración Básica-->
     <color name="black_100">#e7e7e7</color> <!--Fondo Configuración Básica-->
     <color name="black_500">#6D6D6D</color> <!--Botón y barra inferior de navegación-->

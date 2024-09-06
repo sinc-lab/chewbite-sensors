@@ -70,4 +70,32 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/black_experiment_name</item>
     </style>
+
+    <!-- styles del texto de las distintas configuraciones que se puede editar en la app  -->
+    <style name="stl_text_setting_label">
+        <item name="fontFamily">@font/open_sans_semi_bold</item>
+        <item name="android:fontFamily">@font/open_sans_semi_bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black_experiment_name</item>
+    </style>
+
+    <!-- ↓ styles del texto del menú de navegación dentro de configuraciones ↓ -->
+    <style name="BottomNavigationTextActive" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">16sp</item> <!-- Tamaño del texto activo -->
+        <item name="fontFamily">@font/cabin_bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:drawablePadding">0dp</item>
+        <item name="android:padding">0dp</item>
+    </style>
+
+    <style name="BottomNavigationTextInactive" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">16sp</item> <!-- Tamaño del texto inactivo -->
+        <item name="fontFamily">@font/cabin_medium</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:drawablePadding">0dp</item>
+        <item name="android:padding">0dp</item>
+    </style>
+    <!-- ↑ styles del texto del menú de navegación dentro de configuraciones ↑ -->
 </resources>

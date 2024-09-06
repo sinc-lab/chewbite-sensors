@@ -10,8 +10,9 @@
     <string name="text_informative_message">Recuerda desactivar el gps, audio y poner en modo avion</string>
     <string name="text_see_more">Ver más</string>
     <string name="text_title_configuation">Elija que desea grabar</string>
-    <string name="text_sound_configuration">SONIDO</string>
-    <string name="text_movement_configuration">MOVIMIENTO</string>
+    <string name="text_sound_configuration">Sonido</string>
+    <string name="text_audio_configuration">Audio</string>
+    <string name="text_movement_configuration">Movimiento</string>
     <string name="text_gps_configuration">GPS</string>
     <string name="text_experiment_name">Nombre del experimento</string>
     <string name="txt_start">Iniciar</string>
@@ -34,5 +35,9 @@
         <item>16.000</item>
         <item>22.050</item>
         <item>44.100</item>
+    </string-array>
+
+    <string-array name="text_type_file_options">
+        <item>3gp</item>
     </string-array>
 </resources>
