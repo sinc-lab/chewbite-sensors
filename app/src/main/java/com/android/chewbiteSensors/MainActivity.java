@@ -207,10 +207,6 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         /*----------------------------------------------------------------------------------------*/
     }
 
-    public void onClick_btn_start(View v){
-        //Toast.makeText(getApplicationContext(), "otro metodo", Toast.LENGTH_LONG).show();
-    }
-
 
     /*----------------------------------------------------------------------------------------*/
     @Override

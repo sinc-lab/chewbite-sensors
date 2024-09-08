@@ -294,7 +294,6 @@
         android:foregroundGravity="center"
         android:gravity="center"
         android:background="@drawable/my_btn_toggle"
-        android:onClick="onClick_btn_start"
         android:textAppearance="@style/TextAppearance.App.Button"
         android:textOff="@string/txt_start"
         android:textOn="@string/txt_stop"
