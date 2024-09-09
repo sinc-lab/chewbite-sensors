@@ -14,10 +14,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
-import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -64,10 +62,6 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     private CBService mBoundService;
     private boolean mShouldUnbind;
     private static final String APP_MODE_STRING = "appMode";
-    private static final String PREFS_KEY = "appConfiguration";
-    private static final String STATUS_SWT_SOUND_CONFIG = "status_switch_sound_configuration";
-    private static final String STATUS_SWT_MOVEMENT_CONFIG = "status_switch_movement_configuration";
-    private static final String STATUS_SWT_GPS_CONFIG = "status_switch_gps_configuration";
     //private static final String STATUS_SPN_FREQUENCY_CONFIG = "status_spinner_frequency_configuration";
     private MyViewModel viewModel;
 
@@ -116,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         /*----------------------------------------------------------------------------------------*/
 
         // Inicializa el switch
-        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchSoundConfiguration = findViewById(R.id.switch_sound_configuration);
+        /*@SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchSoundConfiguration = findViewById(R.id.switch_sound_configuration);
         @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchMovementConfiguration = findViewById(R.id.switch_movement_configuration);
         @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchGpsConfiguration = findViewById(R.id.switch_gps_configuration);
 
@@ -151,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             SharedPreferences.Editor editor = prefsConfig.edit();
             editor.putBoolean(STATUS_SWT_GPS_CONFIG, isChecked);
             editor.apply();
-        });
+        });*/
 
         /*----------------------------------------------------------------------------------------*/
         // Esta sección  no va porque se cambio la frecuencia de muestreo a la otra panalla
@@ -524,7 +518,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         //android.util.Log.d(tag, "onPause"); // Prueba para ver cuando se activa el onPause
         super.onPause();
 
-            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchSoundConfiguration = findViewById(R.id.switch_sound_configuration);
+        /*    @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchSoundConfiguration = findViewById(R.id.switch_sound_configuration);
             @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchMovementConfiguration = findViewById(R.id.switch_movement_configuration);
             @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchGpsConfiguration = findViewById(R.id.switch_gps_configuration);
         // Obtener el estado del Switch
@@ -538,7 +532,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         editor.putBoolean(STATUS_SWT_SOUND_CONFIG, switchSoundConfigurationChecked);
         editor.putBoolean(STATUS_SWT_MOVEMENT_CONFIG, switchMovementConfigurationChecked);
         editor.putBoolean(STATUS_SWT_GPS_CONFIG, switchGpsConfigurationChecked);
-        editor.apply();
+        editor.apply();*/
     }
 
     @Override
