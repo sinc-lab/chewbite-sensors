@@ -66,7 +66,7 @@
             <Spinner
                 android:id="@+id/spn_bit_rate"
                 style="@style/FrequencyOptionsList"
-                android:layout_width="101dp"
+                android:layout_width="110dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
@@ -75,7 +75,7 @@
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/spinner"
-                android:entries="@array/text_frequency_options"
+                android:entries="@array/text_bit_rate_options"
                 android:overlapAnchor="false"
                 tools:visibility="visible" />
         </RelativeLayout>
@@ -106,7 +106,7 @@
             <Spinner
                 android:id="@+id/spn_frequency_options"
                 style="@style/FrequencyOptionsList"
-                android:layout_width="101dp"
+                android:layout_width="110dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
@@ -146,7 +146,7 @@
             <Spinner
                 android:id="@+id/spn_file_type"
                 style="@style/FrequencyOptionsList"
-                android:layout_width="101dp"
+                android:layout_width="110dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"

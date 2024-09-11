@@ -65,7 +65,7 @@
         <Spinner
             android:id="@+id/spn_frequency_options_gps"
             style="@style/FrequencyOptionsList"
-            android:layout_width="101dp"
+            android:layout_width="110dp"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
