@@ -23,13 +23,13 @@
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="0dp"
-                android:layout_toStartOf="@+id/switch_sound_configuration"
+                android:layout_toStartOf="@+id/switch_sound_configuration_audio"
                 android:gravity="center_vertical"
                 android:text="@string/text_sound_configuration"
                 android:textAppearance="@style/stl_text_setting_label"/>
 
             <Switch
-                android:id="@+id/switch_sound_configuration"
+                android:id="@+id/switch_sound_configuration_audio"
                 android:layout_width="49dp"
                 android:layout_height="49dp"
                 android:layout_alignParentEnd="true"

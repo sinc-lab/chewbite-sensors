@@ -14,11 +14,14 @@ import androidx.annotation.NonNull;
 public class ControlsStatusSettings {
         private static final String PREFS_KEY = "status_controls";
         private static SharedPreferences prefsConfig;
+        @SuppressLint("StaticFieldLeak")
+        private static Context context;
 
-        public static void inicializarSwitch(@NonNull Context context,
-                                             @SuppressLint("UseSwitchCompatOrMaterialCode") @NonNull Switch switchControl,
-                                             String key, boolean defaultValue) {
-            prefsConfig = context.getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
+        public static void inicializarSwitch(@SuppressLint("UseSwitchCompatOrMaterialCode") @NonNull Switch switchControl,
+                                      String key, boolean defaultValue) {
+            if (prefsConfig == null) {
+                prefsConfig = context.getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
+            }
             boolean status = prefsConfig.getBoolean(key, defaultValue);
             switchControl.setChecked(status);
             switchControl.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -28,8 +31,10 @@ public class ControlsStatusSettings {
             });
         }
 
-        public static void inicializarSpinner(@NonNull Context context, @NonNull Spinner spinnerControl, String[] opciones, String key, int defaultValue) {
-            prefsConfig = context.getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
+        public static void inicializarSpinner(@NonNull Spinner spinnerControl, String[] opciones, String key, int defaultValue) {
+            if (prefsConfig == null) {
+                prefsConfig = context.getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
+            }
             ArrayAdapter<String> adapter = new ArrayAdapter<>(spinnerControl.getContext(), android.R.layout.simple_spinner_item, opciones);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinnerControl.setAdapter(adapter);
@@ -50,13 +55,26 @@ public class ControlsStatusSettings {
             });
         }
 
-        public static boolean getSwitchEstado(Context context, String key) {
+        /**
+         * Establece el contexto para la clase.
+         * @param context El contexto para la clase.
+         */
+        public static void setContext(@NonNull Context context) {
+            ControlsStatusSettings.context = context;
             prefsConfig = context.getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
+        }
+
+        public static boolean getSwitchEstado(String key) {
+            if (prefsConfig == null) {
+                prefsConfig = context.getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
+            }
             return prefsConfig.getBoolean(key, false);
         }
 
         public static int getSpinnerSeleccionado(Context context, String key) {
-            prefsConfig = context.getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
+            if (prefsConfig == null) {
+                prefsConfig = context.getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
+            }
             return prefsConfig.getInt(key, 0);
         }
     }

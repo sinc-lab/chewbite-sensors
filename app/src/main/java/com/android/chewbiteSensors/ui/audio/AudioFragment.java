@@ -33,15 +33,15 @@ public class AudioFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        /*----------------------------------------------------------------------------------------*/
-        // Inicializa el switch
-        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchSoundConfiguration = view.findViewById(R.id.switch_sound_configuration);
 
-        //ControlsStatusSettings.inicializarSwitch(requireContext(), switchSoundConfiguration, STATUS_SWT_SOUND_CONFIG, true);
-        // Restaurar el estado del Switch
-        boolean isSwitchSoundChecked = ControlsStatusSettings.getSwitchEstado(requireContext(), STATUS_SWT_SOUND_CONFIG);
+        // Inicializa el switch para la configuración de sonido
+        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchSoundConfiguration = view.findViewById(R.id.switch_sound_configuration_audio);
+
+        // Recuperar el estado del switch desde las preferencias compartidas
+        boolean isSwitchSoundChecked = ControlsStatusSettings.getSwitchEstado(STATUS_SWT_SOUND_CONFIG);
+
+        // Establecer el estado del switch
         switchSoundConfiguration.setChecked(isSwitchSoundChecked);
-        /*----------------------------------------------------------------------------------------*/
     }
 
 

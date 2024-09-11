@@ -34,14 +34,17 @@ public class HomeFragment extends Fragment {
         //final TextView textView = binding.textHome;
         //homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         /*----------------------------------------------------------------------------------------*/
+        // Inicializa el Context
+        ControlsStatusSettings.setContext(requireContext());
+        /*----------------------------------------------------------------------------------------*/
         // Inicializa el switch
         @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchSoundConfiguration = root.findViewById(R.id.switch_sound_configuration);
         @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchMovementConfiguration = root.findViewById(R.id.switch_movement_configuration);
         @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchGpsConfiguration = root.findViewById(R.id.switch_gps_configuration);
 
-        ControlsStatusSettings.inicializarSwitch(requireContext(), switchSoundConfiguration, STATUS_SWT_SOUND_CONFIG, true);
-        ControlsStatusSettings.inicializarSwitch(requireContext(), switchMovementConfiguration, STATUS_SWT_MOVEMENT_CONFIG, false);
-        ControlsStatusSettings.inicializarSwitch(requireContext(), switchGpsConfiguration, STATUS_SWT_GPS_CONFIG, false);
+        ControlsStatusSettings.inicializarSwitch(switchSoundConfiguration, STATUS_SWT_SOUND_CONFIG, true);
+        ControlsStatusSettings.inicializarSwitch(switchMovementConfiguration, STATUS_SWT_MOVEMENT_CONFIG, false);
+        ControlsStatusSettings.inicializarSwitch(switchGpsConfiguration, STATUS_SWT_GPS_CONFIG, false);
         /*----------------------------------------------------------------------------------------*/
 
         return root;
