@@ -44,26 +44,21 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener,
-        ActivityCompat.OnRequestPermissionsResultCallback{
+public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback{
     private final String tag = "MainActivity";
     public static String TEST_DATA_STRING = "testData";
     private static final int APPLICATION_PERMISSION_CODE = 1;
-    private ToggleButton buttonStartStop;
 
     private DeviceStatus currentStatus;
     private AppMode mode;
     private Intent batteryStatus;
     private ExperimentData data;
     private static final String INFO_FILE_NAME = "info.txt";
-    private SharedPreferences prefsConfig;
     private TestSensorsEventListener testSensorsEventListener;
     private static final String DATE_FORMAT = "dd/MM/yyyy-HH:mm:ss.S";
     private CBService mBoundService;
     private boolean mShouldUnbind;
     private static final String APP_MODE_STRING = "appMode";
-    //private static final String STATUS_SPN_FREQUENCY_CONFIG = "status_spinner_frequency_configuration";
-    private MyViewModel viewModel;
 
 
     @Override
@@ -91,8 +86,8 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
         /*----------------------------------------------------------------------------------------*/
         // Inicializa el boton
-        buttonStartStop = findViewById(R.id.btn_start);
-        buttonStartStop.setOnCheckedChangeListener(this);
+        //buttonStartStop = findViewById(R.id.btn_start);
+        //buttonStartStop.setOnCheckedChangeListener(this);
 
         // Crear el ViewModel
         //viewModel = new ViewModelProvider(this).get(MyViewModel.class);
@@ -203,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
 
     /*----------------------------------------------------------------------------------------*/
-    @Override
+    /*@Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         // En caso de no tener permisos los vuelve a solicitar
         this.askForPermissions();
@@ -225,9 +220,9 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         } else {
             this.stopTest();
         }
-    }
+    }*/
     /*----------------------------------------------------------------------------------------*/
-    private void askForPermissions() {
+    public void askForPermissions() {
         if (!this.hasPermissions()) {
             /*
             * la función shouldShowRequestPermissionRationale() devuelve:
@@ -266,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         }
     }
 
-    private boolean hasPermissions() {
+    public boolean hasPermissions() {
         //int locationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         /* Código viejo para comprobar si tiene los permisos
         int writeStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -297,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
     /*----------------------------------------------------------------------------------------*/
 
-    private Boolean checkStatusBeforeStart() {
+    public Boolean checkStatusBeforeStart() {
         android.util.Log.d(tag, "checkStatusBeforeStart");
         DeviceStatus requiredStatus = DeviceStatusService.getRequiredStatus();
         this.currentStatus = DeviceStatusService.getDeviceStatus(this);
@@ -307,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
     /*----------------------------------------------------------------------------------------*/
 
-    private void openDialog() {
+    public void openDialog() {
         android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
         alertDialogBuilder.setTitle("WARNING");
 
@@ -336,7 +331,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     /**
      * Inicia el test.
      */
-    private void startTest() {
+    public void startTest() {
         //
         if (this.mode != AppMode.RUNNING) {
             this.data = new ExperimentData();
@@ -354,7 +349,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         this.doBindService();
     }
 
-    private void stopTest() {
+    public void stopTest() {
         this.mode = AppMode.STOPPED;
         //this.sendButton.show();
         mBoundService.stopTest();
@@ -510,7 +505,6 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     protected void onResume() {
         //android.util.Log.d(tag, "onResume");
         super.onResume();
-        buttonStartStop.setChecked(false);
     }
 
     @Override
