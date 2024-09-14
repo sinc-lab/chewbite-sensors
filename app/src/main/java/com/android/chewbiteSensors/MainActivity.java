@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.BatteryManager;
 import android.os.Build;
@@ -15,10 +14,9 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,6 +37,8 @@ import com.android.chewbiteSensors.data_sensors.TestSensorsEventListener;
 import com.android.chewbiteSensors.databinding.ActivityMainBinding;
 import com.android.chewbiteSensors.deviceStatus.DeviceStatus;
 import com.android.chewbiteSensors.deviceStatus.DeviceStatusService;
+import com.android.chewbiteSensors.ui.home.HomeFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -436,15 +436,49 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     /*----------------------------------------------------------------------------------------*/
 
     private final ServiceConnection mConnection = new ServiceConnection() {
+        @SuppressLint("RestrictedApi")
         public void onServiceConnected(ComponentName className, IBinder service) {
             mBoundService = ((CBService.CBBinder)service).getService();
             mBoundService.startTest(MainActivity.this);
+
+            // Deshabilitar BottomNavigationView
+            BottomNavigationView navView = findViewById(R.id.nav_view);
+            for (int i = 0; i < navView.getMenu().size(); i++) {
+                navView.getMenu().getItem(i).setEnabled(false);
+            }
+
+            // Deshabilitar switch
+            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_sound = findViewById(R.id.switch_sound_configuration);
+            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_movement = findViewById(R.id.switch_movement_configuration);
+            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_gps = findViewById(R.id.switch_gps_configuration);
+
+            switch_sound.setEnabled(false);
+            switch_movement.setEnabled(false);
+            switch_gps.setEnabled(false);
+
             Toast.makeText(MainActivity.this, "Service connected",
                     Toast.LENGTH_SHORT).show();
         }
 
+        @SuppressLint("RestrictedApi")
         public void onServiceDisconnected(ComponentName className) {
             mBoundService = null;
+
+            // Habilitar BottomNavigationView
+            BottomNavigationView navView = findViewById(R.id.nav_view);
+            for (int i = 0; i < navView.getMenu().size(); i++) {
+                navView.getMenu().getItem(i).setEnabled(true);
+            }
+
+            // Habilitar switch
+            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_sound = findViewById(R.id.switch_sound_configuration);
+            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_movement = findViewById(R.id.switch_movement_configuration);
+            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_gps = findViewById(R.id.switch_gps_configuration);
+
+            switch_sound.setEnabled(true);
+            switch_movement.setEnabled(true);
+            switch_gps.setEnabled(true);
+
             Toast.makeText(MainActivity.this, "Service disconnected",
                     Toast.LENGTH_SHORT).show();
         }
