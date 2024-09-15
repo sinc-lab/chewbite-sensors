@@ -26,6 +26,7 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
     private static final String STATUS_SWT_SOUND_CONFIG = "status_switch_sound_configuration";
     private static final String STATUS_SWT_MOVEMENT_CONFIG = "status_switch_movement_configuration";
     private static final String STATUS_SWT_GPS_CONFIG = "status_switch_gps_configuration";
+    private boolean it_is_the_first_notification = true;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -81,7 +82,8 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
         //
         if (isChecked) {
             // Verifica el estado antes de comenzar la grabación
-            if (!main.checkStatusBeforeStart()) {
+            if (!main.checkStatusBeforeStart() && it_is_the_first_notification) {
+                it_is_the_first_notification = false;
                 android.util.Log.d(tag, "if (!this.checkStatusBeforeStart())");
                 main.openDialog();
                 this.buttonStartStop.setChecked(false);
