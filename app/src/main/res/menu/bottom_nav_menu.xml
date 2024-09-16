@@ -21,8 +21,13 @@
         android:icon="@drawable/ic_settings_24dp"
         android:title="@string/title_settings" />
 
+    <!--  <item
+         android:id="@+id/navigation_predictions"
+         android:icon="@drawable/ic_search_24dp"
+         android:title="@string/title_predictions" />-->
+
     <item
-        android:id="@+id/navigation_predictions"
+        android:id="@+id/navigation_sensors_chart"
         android:icon="@drawable/ic_search_24dp"
-        android:title="@string/title_predictions" />
+        android:title="@string/title_sensors" />
 </menu>
