@@ -37,7 +37,6 @@ import com.android.chewbiteSensors.data_sensors.TestSensorsEventListener;
 import com.android.chewbiteSensors.databinding.ActivityMainBinding;
 import com.android.chewbiteSensors.deviceStatus.DeviceStatus;
 import com.android.chewbiteSensors.deviceStatus.DeviceStatusService;
-import com.android.chewbiteSensors.ui.home.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
@@ -448,9 +447,9 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
             }
 
             // Deshabilitar switch
-            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_sound = findViewById(R.id.switch_sound_configuration);
-            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_movement = findViewById(R.id.switch_movement_configuration);
-            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_gps = findViewById(R.id.switch_gps_configuration);
+            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_sound = findViewById(R.id.switch_sound_home);
+            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_movement = findViewById(R.id.switch_movement_home);
+            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_gps = findViewById(R.id.switch_gps_home);
 
             switch_sound.setEnabled(false);
             switch_movement.setEnabled(false);
@@ -471,9 +470,9 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
             }
 
             // Habilitar switch
-            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_sound = findViewById(R.id.switch_sound_configuration);
-            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_movement = findViewById(R.id.switch_movement_configuration);
-            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_gps = findViewById(R.id.switch_gps_configuration);
+            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_sound = findViewById(R.id.switch_sound_home);
+            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_movement = findViewById(R.id.switch_movement_home);
+            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_gps = findViewById(R.id.switch_gps_home);
 
             switch_sound.setEnabled(true);
             switch_movement.setEnabled(true);
@@ -545,22 +544,6 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     protected void onPause() {
         //android.util.Log.d(tag, "onPause"); // Prueba para ver cuando se activa el onPause
         super.onPause();
-
-        /*    @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchSoundConfiguration = findViewById(R.id.switch_sound_configuration);
-            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchMovementConfiguration = findViewById(R.id.switch_movement_configuration);
-            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchGpsConfiguration = findViewById(R.id.switch_gps_configuration);
-        // Obtener el estado del Switch
-        boolean switchSoundConfigurationChecked = switchSoundConfiguration.isChecked();
-        boolean switchMovementConfigurationChecked = switchMovementConfiguration.isChecked();
-        boolean switchGpsConfigurationChecked = switchGpsConfiguration.isChecked();
-        
-        // Se Utiliza SharedPreferences para almacenar pequeñas cantidades de datos clave-valor.
-        prefsConfig = getSharedPreferences(PREFS_KEY, MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefsConfig.edit();
-        editor.putBoolean(STATUS_SWT_SOUND_CONFIG, switchSoundConfigurationChecked);
-        editor.putBoolean(STATUS_SWT_MOVEMENT_CONFIG, switchMovementConfigurationChecked);
-        editor.putBoolean(STATUS_SWT_GPS_CONFIG, switchGpsConfigurationChecked);
-        editor.apply();*/
     }
 
     @Override

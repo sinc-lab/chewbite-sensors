@@ -43,6 +43,8 @@
     </string-array>
 
     <string-array name="text_bit_rate_options">
+        <item>64.000</item>
+        <item>96.000</item>
         <item>128.000</item>
     </string-array>
 </resources>

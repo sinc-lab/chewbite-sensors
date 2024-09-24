@@ -187,7 +187,7 @@
                             android:textAppearance="@style/sound_configuration" />
 
                         <Switch
-                            android:id="@+id/switch_sound_configuration"
+                            android:id="@+id/switch_sound_home"
                             android:layout_width="48dp"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/txt_sound"
@@ -228,7 +228,7 @@
                             android:textAppearance="@style/sound_configuration" />
 
                         <Switch
-                            android:id="@+id/switch_movement_configuration"
+                            android:id="@+id/switch_movement_home"
                             android:layout_width="48dp"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/txt_movement"
@@ -267,7 +267,7 @@
                             android:textAppearance="@style/sound_configuration" />
 
                         <Switch
-                            android:id="@+id/switch_gps_configuration"
+                            android:id="@+id/switch_gps_home"
                             android:layout_width="48dp"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/txt_gps"
