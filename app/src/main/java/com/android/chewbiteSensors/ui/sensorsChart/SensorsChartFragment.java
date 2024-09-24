@@ -1,19 +1,14 @@
 package com.android.chewbiteSensors.ui.sensorsChart;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.android.chewbiteSensors.R;
 import com.android.chewbiteSensors.databinding.FragmentSensorsChartBinding;
@@ -51,8 +46,8 @@ public class SensorsChartFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sensors_chart, container, false);
 
-        BottomNavigationView bottomNavigationView = view.findViewById(R.id.bottom_navigation_view);
-        NavHostFragment navHostFragment = (NavHostFragment) getChildFragmentManager().findFragmentById(R.id.nav_host_fragment_setting_main);
+        BottomNavigationView bottomNavigationView = view.findViewById(R.id.bottom_navigation_view_sensors_chart);
+        NavHostFragment navHostFragment = (NavHostFragment) getChildFragmentManager().findFragmentById(R.id.nav_host_fragment_sensors_chart_main);
         if (navHostFragment != null) {
             NavController navController = navHostFragment.getNavController();
             NavigationUI.setupWithNavController(bottomNavigationView, navController);
@@ -61,11 +56,11 @@ public class SensorsChartFragment extends Fragment {
         return view;
     }
 
-    @Override
+    /*@Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(SensorsChartViewModel.class);
         // TODO: Use the ViewModel
-    }
+    }*/
 
 }

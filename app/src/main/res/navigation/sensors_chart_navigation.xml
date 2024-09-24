@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sensors_chart_navigation"
+    app:startDestination="@+id/navigation_chart_audio">
+
+    <fragment
+        android:id="@+id/navigation_chart_audio"
+        android:name="com.android.chewbiteSensors.ui.audio.ChartAudioFragment"
+        android:label="Gráfico de Audio"
+        tools:layout="@layout/fragment_chart_audio" />
+
+    <fragment
+        android:id="@+id/navigation_chart_movement"
+        android:name="com.android.chewbiteSensors.ui.movement.ChartMovementFragment"
+        android:label="Gráfico de movimiento"
+        tools:layout="@layout/fragment_chart_movement" />
+
+    <fragment
+        android:id="@+id/navigation_chart_gps"
+        android:name="com.android.chewbiteSensors.ui.gps.ChartGPSFragment"
+        android:label="Gráfico de GPS"
+        tools:layout="@layout/fragment_chart_gps" />
+
+</navigation>
