@@ -33,7 +33,7 @@ public class TestSensorsEventListener implements SensorEventListener {
 
     long currentIndex = 0;
 
-    TestSensorsEventListener(Context context, LineChart chart) {
+    public TestSensorsEventListener(Context context, LineChart chart, Integer sensor_Type, String sensor_label, int sensor_color) {
         this.chart = chart;
         this.lineData = new LineData();
         this.chart.setData(this.lineData);
@@ -41,9 +41,9 @@ public class TestSensorsEventListener implements SensorEventListener {
 
         Legend legend = this.chart.getLegend();
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
-        legend.setDrawInside(true);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        legend.setDrawInside(false);
         legend.setTextSize(12);
 
         this.sensorDataSet = new HashMap<>();
@@ -51,9 +51,10 @@ public class TestSensorsEventListener implements SensorEventListener {
 
         this.sensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
 
-        this.addSensor(Sensor.TYPE_ACCELEROMETER, CBBuffer.STRING_ACCELEROMETER,  Color.RED);
-        this.addSensor(Sensor.TYPE_GYROSCOPE, CBBuffer.STRING_GYROSCOPE, Color.GREEN);
-        this.addSensor(Sensor.TYPE_MAGNETIC_FIELD, CBBuffer.STRING_MAGNETIC_FIELD, Color.BLUE);
+        //this.addSensor(Sensor.TYPE_ACCELEROMETER, CBBuffer.STRING_ACCELEROMETER,  Color.RED);
+        //this.addSensor(Sensor.TYPE_GYROSCOPE, CBBuffer.STRING_GYROSCOPE, Color.GREEN);
+        //this.addSensor(Sensor.TYPE_MAGNETIC_FIELD, CBBuffer.STRING_MAGNETIC_FIELD, Color.BLUE);
+        this.addSensor(sensor_Type, sensor_label,  sensor_color);
     }
 
     @Override
