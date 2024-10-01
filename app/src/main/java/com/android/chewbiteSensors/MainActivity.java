@@ -440,20 +440,8 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
             mBoundService = ((CBService.CBBinder)service).getService();
             mBoundService.startTest(MainActivity.this);
 
-            // Deshabilitar BottomNavigationView
-            BottomNavigationView navView = findViewById(R.id.nav_view);
-            for (int i = 0; i < navView.getMenu().size(); i++) {
-                navView.getMenu().getItem(i).setEnabled(false);
-            }
-
-            // Deshabilitar switch
-            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_sound = findViewById(R.id.switch_sound_home);
-            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_movement = findViewById(R.id.switch_movement_home);
-            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_gps = findViewById(R.id.switch_gps_home);
-
-            switch_sound.setEnabled(false);
-            switch_movement.setEnabled(false);
-            switch_gps.setEnabled(false);
+            // Deshabilita los controles
+            EnablingAndDisablingControls(false);
 
             Toast.makeText(MainActivity.this, "Service connected",
                     Toast.LENGTH_SHORT).show();
@@ -463,21 +451,6 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         public void onServiceDisconnected(ComponentName className) {
             mBoundService = null;
 
-            // Habilitar BottomNavigationView
-            BottomNavigationView navView = findViewById(R.id.nav_view);
-            for (int i = 0; i < navView.getMenu().size(); i++) {
-                navView.getMenu().getItem(i).setEnabled(true);
-            }
-
-            // Habilitar switch
-            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_sound = findViewById(R.id.switch_sound_home);
-            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_movement = findViewById(R.id.switch_movement_home);
-            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_gps = findViewById(R.id.switch_gps_home);
-
-            switch_sound.setEnabled(true);
-            switch_movement.setEnabled(true);
-            switch_gps.setEnabled(true);
-
             Toast.makeText(MainActivity.this, "Service disconnected",
                     Toast.LENGTH_SHORT).show();
         }
@@ -485,6 +458,29 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
     /*----------------------------------------------------------------------------------------*/
 
+    /**
+     * Método que habilita o deshabilita los controles (switch y menú de navegación)
+     * cuando se inicia o se finaliza la grabación.
+     * @param enable (true o false)
+     */
+    private void EnablingAndDisablingControls(boolean enable) {
+        // Habilitar BottomNavigationView
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+        for (int i = 0; i < navView.getMenu().size(); i++) {
+            navView.getMenu().getItem(i).setEnabled(enable);
+        }
+
+        // Habilitar switch
+        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_sound = findViewById(R.id.switch_sound_home);
+        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_movement = findViewById(R.id.switch_movement_home);
+        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_gps = findViewById(R.id.switch_gps_home);
+
+        switch_sound.setEnabled(enable);
+        switch_movement.setEnabled(enable);
+        switch_gps.setEnabled(enable);
+    }
+
+    /*----------------------------------------------------------------------------------------*/
     private void showGeneratedFiles(File[] files) {
         //TableLayout filesTableLayout = findViewById(R.id.filesTableLayout);
         //filesTableLayout.removeAllViews();
@@ -503,6 +499,8 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
     void doUnbindService() {
         if (mShouldUnbind) {
+            // Habilita los controles
+            EnablingAndDisablingControls(true);
             // Release information about the service's state.
             unbindService(mConnection);
             mShouldUnbind = false;
