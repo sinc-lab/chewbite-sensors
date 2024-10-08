@@ -3,7 +3,6 @@ package com.android.chewbiteSensors.data_sensors;
 import static android.content.Context.SENSOR_SERVICE;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -62,8 +61,23 @@ public class TestSensorsEventListener implements SensorEventListener {
         float mod = (float) Math.sqrt(event.values[0] * event.values[0]
                 + event.values[1] * event.values[1]
                 + event.values[2] * event.values[2]);
-        this.addDataSetEntry(new Entry(currentIndex, mod), event.sensor.getType());
-        this.currentIndex++;
+
+        // Verificar si el DataSet está vacío
+        LineDataSet dataSet = this.sensorDataSet.get(event.sensor.getType());
+        if (dataSet != null){
+            if (dataSet.getEntryCount() > 0) {
+                // Si el conjunto de datos ya tiene entradas, agrega una nueva entrada
+                this.addDataSetEntry(new Entry(this.currentIndex, mod), event.sensor.getType());
+            } else {
+                // Si el conjunto de datos está vacío, agrega la primera entrada
+                dataSet.addEntry(new Entry(0, mod));
+            }
+            this.currentIndex++;
+        }
+
+        //this.addDataSetEntry(new Entry(currentIndex, mod), event.sensor.getType());
+        //this.currentIndex++;
+
     }
 
     public void stop() {
@@ -73,17 +87,31 @@ public class TestSensorsEventListener implements SensorEventListener {
     }
 
     private void addDataSetEntry(Entry entry, Integer sensorType) {
-        LineDataSet dataSet = this.sensorDataSet.get(sensorType);
 
-        if (dataSet != null) {
-            if (this.getChartEntryCount() > 1000) {
+        LineDataSet dataSet = this.sensorDataSet.get(sensorType);
+        if (dataSet == null) {
+            // Verifica si el DataSet para este tipo de sensor ya existe
+            // Si no, créalo y agrégalo a sensorDataSet y lineData
+            dataSet = new LineDataSet(new ArrayList<>(), "Sensor " + sensorType);
+            this.sensorDataSet.put(sensorType, dataSet);
+            this.lineData.addDataSet(dataSet);
+        }
+
+        // Verifica si el conjunto de datos ya tiene una entrada con el mismo índice
+        if (dataSet.getEntryCount() > 0 && dataSet.getEntryForIndex(0).getX() == entry.getX()) {
+            // Si ya existe una entrada con el mismo índice, actualiza su valor
+            dataSet.getEntryForIndex(0).setY(entry.getY());
+        } else {
+            // Si no existe una entrada con el mismo índice, agrega la nueva entrada
+            if (this.getChartEntryCount() > 100) {
                 this.removeOldestEntry();
             }
             dataSet.addEntry(entry);
-            this.lineData.notifyDataChanged();
-            this.chart.notifyDataSetChanged();
-            this.chart.invalidate();
         }
+
+        this.lineData.notifyDataChanged();
+        this.chart.notifyDataSetChanged();
+        this.chart.invalidate();
     }
 
     private void addSensor(Integer sensorType, String label, int color) {
@@ -94,6 +122,9 @@ public class TestSensorsEventListener implements SensorEventListener {
             dataSet.setDrawCircles(false);
             dataSet.setColor(color);
 
+            // Agrega una entrada al conjunto de datos
+            dataSet.addEntry(new Entry(0, 0));
+
             this.sensorDataSet.put(sensorType, dataSet);
             this.lineData.addDataSet(dataSet);
 
@@ -103,21 +134,31 @@ public class TestSensorsEventListener implements SensorEventListener {
 
     private void removeOldestEntry() {
         Iterator<Map.Entry<Integer, LineDataSet>> it = this.sensorDataSet.entrySet().iterator();
-        Map.Entry<Integer, LineDataSet> first = it.next();
-        LineDataSet oldestDataSet = first.getValue();
-        Entry oldestEntry = oldestDataSet.getEntryForIndex(0);
-
-        while (it.hasNext()) {
-            Map.Entry<Integer, LineDataSet> pair = it.next();
-            LineDataSet dataSet = pair.getValue();
-            Entry entry = dataSet.getEntryForIndex(0);
-            if (entry.getX() < oldestEntry.getX()) {
-                oldestDataSet = dataSet;
-                oldestEntry = entry;
-            }
+        // Verificar si hay algún DataSet antes de continuar
+        if (!it.hasNext()) {
+            return; // Si no hay DataSets, salir del método
         }
 
-        oldestDataSet.removeFirst();
+        Map.Entry<Integer, LineDataSet> first = it.next();
+        LineDataSet oldestDataSet = first.getValue();
+
+        // Verificar si el primer DataSet tiene entradas
+        if (oldestDataSet.getEntryCount() > 0) {
+            Entry oldestEntry = oldestDataSet.getEntryForIndex(0);
+
+            while (it.hasNext()) {
+                Map.Entry<Integer, LineDataSet> pair = it.next();
+                LineDataSet dataSet = pair.getValue();
+                Entry entry = dataSet.getEntryForIndex(0);
+                if (entry.getX() < oldestEntry.getX()) {
+                    oldestDataSet = dataSet;
+                    oldestEntry = entry;
+                }
+            }
+
+            oldestDataSet.removeFirst();
+        }
+
     }
 
     private int getChartEntryCount() {

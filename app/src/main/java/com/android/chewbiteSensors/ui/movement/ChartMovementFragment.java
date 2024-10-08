@@ -35,7 +35,9 @@ public class ChartMovementFragment extends Fragment {
     private List<CheckBox> filesCheckBoxList;
     public static String TEST_DATA_STRING = "testData";
     private ExperimentData data;
-    private TestSensorsEventListener testSensorsEventListener;
+    private TestSensorsEventListener testSensorsEventListenerAccelerometer ;
+    private TestSensorsEventListener testSensorsEventListenerGyroscope;
+    private TestSensorsEventListener testSensorsEventListenerMagnetometer;
     private AppMode mode;
 
     public static ChartMovementFragment newInstance() {
@@ -110,9 +112,9 @@ public class ChartMovementFragment extends Fragment {
         filesTableLayoutMagnetometer.addView(chart_Magnetometer);
 
         // Crea una nueva instancia de un TestSensorsEventListener. Este listener se encargue de recibir datos de los sensores y actualizar el gráfico de líneas con esos datos.
-        this.testSensorsEventListener = new TestSensorsEventListener(requireContext(), chart_Accelerometer, Sensor.TYPE_ACCELEROMETER, CBBuffer.STRING_ACCELEROMETER,  Color.RED);
-        this.testSensorsEventListener = new TestSensorsEventListener(requireContext(), chart_Gyroscope, Sensor.TYPE_GYROSCOPE, CBBuffer.STRING_GYROSCOPE, Color.GREEN);
-        this.testSensorsEventListener = new TestSensorsEventListener(requireContext(), chart_Magnetometer, Sensor.TYPE_MAGNETIC_FIELD, CBBuffer.STRING_MAGNETIC_FIELD, Color.BLUE);
+        this.testSensorsEventListenerAccelerometer = new TestSensorsEventListener(requireContext(), chart_Accelerometer, Sensor.TYPE_ACCELEROMETER, CBBuffer.STRING_ACCELEROMETER,  Color.RED);
+        this.testSensorsEventListenerGyroscope = new TestSensorsEventListener(requireContext(), chart_Gyroscope, Sensor.TYPE_GYROSCOPE, CBBuffer.STRING_GYROSCOPE, Color.GREEN);
+        this.testSensorsEventListenerMagnetometer = new TestSensorsEventListener(requireContext(), chart_Magnetometer, Sensor.TYPE_MAGNETIC_FIELD, CBBuffer.STRING_MAGNETIC_FIELD, Color.BLUE);
     }
     /*----------------------------------------------------------------------------------------*/
 
@@ -122,9 +124,17 @@ public class ChartMovementFragment extends Fragment {
     public void onPause() {
         super.onPause();
         // Limpia los recursos asociados al gráfico de líneas
-        if (this.testSensorsEventListener != null) {
-            this.testSensorsEventListener.stop();
-            this.testSensorsEventListener = null;
+        if (this.testSensorsEventListenerAccelerometer != null) {
+            this.testSensorsEventListenerAccelerometer.stop();
+            this.testSensorsEventListenerAccelerometer = null;
+        }
+        if (this.testSensorsEventListenerGyroscope != null) {
+            this.testSensorsEventListenerGyroscope.stop();
+            this.testSensorsEventListenerGyroscope = null;
+        }
+        if (this.testSensorsEventListenerMagnetometer != null) {
+            this.testSensorsEventListenerMagnetometer.stop();
+            this.testSensorsEventListenerMagnetometer = null;
         }
         // Limpia los recursos asociados al binding
         binding = null;
