@@ -103,7 +103,7 @@ public class TestSensorsEventListener implements SensorEventListener {
             dataSet.getEntryForIndex(0).setY(entry.getY());
         } else {
             // Si no existe una entrada con el mismo índice, agrega la nueva entrada
-            if (this.getChartEntryCount() > 100) {
+            if (this.getChartEntryCount() > 400) {
                 this.removeOldestEntry();
             }
             dataSet.addEntry(entry);
