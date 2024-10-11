@@ -20,6 +20,7 @@ public abstract class CBBuffer {
     public static final String STRING_GYROSCOPE = "gyroscope";
     public static final String STRING_MAGNETIC_FIELD = "magnetometer";
     public static final String STRING_GPS = "gps";
+    public static final String STRING_SOUND = "audio";
 
     private static final int BUFFER_SIZE = 4096;  // Must be power of 2 since it uses bit operations
     private static final String FILE_EXTENSION = ".txt";
