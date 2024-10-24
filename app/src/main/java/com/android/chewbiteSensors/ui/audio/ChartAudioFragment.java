@@ -17,6 +17,7 @@ import com.android.chewbiteSensors.data_sensors.AppMode;
 import com.android.chewbiteSensors.data_sensors.CBBuffer;
 import com.android.chewbiteSensors.data_sensors.CBSensorEventListener;
 import com.android.chewbiteSensors.data_sensors.ExperimentData;
+import com.android.chewbiteSensors.data_sensors.TestSensorsEventListenerAudio;
 import com.android.chewbiteSensors.data_sensors.TestSensorsEventListenerSound;
 import com.android.chewbiteSensors.databinding.FragmentChartAudioBinding;
 import com.github.mikephil.charting.charts.LineChart;
@@ -34,6 +35,7 @@ public class ChartAudioFragment extends Fragment {
     public static String TEST_DATA_STRING = "testData";
     private ExperimentData data;
     private TestSensorsEventListenerSound testSensorsEventListenerSound ;
+    private TestSensorsEventListenerAudio testSensorsEventListenerAudio;
     private AppMode mode;
 
 
@@ -63,6 +65,7 @@ public class ChartAudioFragment extends Fragment {
             }
         } else {
             this.showTestChart();
+            this.showTestChart_1();
         }
         /*----------------------------------------------------------------------------------------*/
 
@@ -101,7 +104,28 @@ public class ChartAudioFragment extends Fragment {
     }
     /*----------------------------------------------------------------------------------------*/
 
+    private void showTestChart_1() {
+        // Busca un elemento TableLayout en tu layout XML con el ID filesTableLayoutSound
+        TableLayout filesTableLayoutAudio = root.findViewById(R.id.filesTableLayoutAudio);
 
+        // Crea una nueva instancia de un objeto LineChart para mostrar la onda de audio
+        LineChart chart_Audio = new LineChart(requireContext());
+
+        // Configura los parámetros de diseño para el gráfico de líneas
+        chart_Audio.setLayoutParams(new TableLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        );
+
+        // Agrega el gráfico de líneas a la tabla
+        filesTableLayoutAudio.addView(chart_Audio);
+
+        // Invoca el AudioWaveformListener para empezar a registrar los datos de audio y graficar la onda
+        this.testSensorsEventListenerAudio = new TestSensorsEventListenerAudio(requireContext(), chart_Audio, "Waveform Audio", Color.BLUE);
+
+        // Inicia la grabación de audio para que comience a graficar
+        this.testSensorsEventListenerAudio.startRecording();
+    }
+    /*----------------------------------------------------------------------------------------*/
 
     @Override
     public void onPause() {
@@ -110,6 +134,12 @@ public class ChartAudioFragment extends Fragment {
         if (testSensorsEventListenerSound != null) {
             testSensorsEventListenerSound.stopRecording();
         }
+        /*---------------------------------------------------------*/
+        // Detiene la grabación cuando el fragmento se pausa
+        if (testSensorsEventListenerAudio != null) {
+            testSensorsEventListenerAudio.stopRecording();
+        }
+        /*---------------------------------------------------------*/
         // Limpia los recursos asociados al binding
         binding = null;
 
@@ -121,11 +151,23 @@ public class ChartAudioFragment extends Fragment {
         if (testSensorsEventListenerSound != null) {
             testSensorsEventListenerSound.startRecording();
         }
+        /*---------------------------------------------------------*/
+        // Reinicia la grabación cuando el fragmento se reanuda
+        if (testSensorsEventListenerAudio != null) {
+            testSensorsEventListenerAudio.startRecording();
+        }
+        /*---------------------------------------------------------*/
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        /*---------------------------------------------------------*/
+        // Limpia los recursos
+        if (testSensorsEventListenerAudio != null) {
+            testSensorsEventListenerAudio.stopRecording();
+        }
+        /*---------------------------------------------------------*/
         binding = null;
     }
 
