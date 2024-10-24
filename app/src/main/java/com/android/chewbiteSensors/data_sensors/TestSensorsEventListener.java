@@ -121,6 +121,7 @@ public class TestSensorsEventListener implements SensorEventListener {
             LineDataSet dataSet = new LineDataSet(new ArrayList<>(), label);
             dataSet.setDrawCircles(false);
             dataSet.setColor(color);
+            dataSet.setDrawValues(false); // Disable data point labels
 
             // Agrega una entrada al conjunto de datos
             dataSet.addEntry(new Entry(0, 0));
