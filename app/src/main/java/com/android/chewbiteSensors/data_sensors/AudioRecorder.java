@@ -1,10 +1,12 @@
 package com.android.chewbiteSensors.data_sensors;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.MediaRecorder;
 import android.os.Build;
-import android.os.Environment;
 import android.util.Log;
+
+import com.android.chewbiteSensors.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,16 +22,28 @@ public enum AudioRecorder {
     private MediaRecorder recorder = null;
     private ExperimentData data;
     // Formato del archivo de salida del audio
-    private static final String outputFormat = "3gp";
+    //private static final String outputFormat = "3gp";
     // establece la frecuencia de muestreo del audio
-    private static final int samplingRate = 44100;
+    //private static final int samplingRate = 44100;
     // define la tasa de bits de audio
-    private static final int bitRate = 128000;
+    //private static final int bitRate = 128000;
 
     /**
      * Método para iniciar la grabación del audio.
      */
     public void start(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("status_controls", Context.MODE_PRIVATE);
+
+        // Obtener el tipo de archivo, tasa de bits y frecuencia desde SharedPreferences
+        int selectedFileTypePosition = sharedPreferences.getInt("status_switch_file_type_configuration", 0);
+        int selectedBitRatePosition = sharedPreferences.getInt("status_switch_bit_rate_configuration", 0);
+        int selectedFrequencyPosition = sharedPreferences.getInt("status_switch_frequency_sound_configuration", 0);
+
+        // Convertir posiciones a valores reales
+        String outputFormat = obtenerFormatoArchivo(context, selectedFileTypePosition);
+        int bitRate = obtenerTasaBitRate(context, selectedBitRatePosition);
+        int samplingRate = obtenerFrecuenciaMuestreo(context, selectedFrequencyPosition);
+
         // Comprobar si Android es inferior a Android 10
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
             // Genera un nombre de archivo único para el audio
@@ -98,4 +112,38 @@ public enum AudioRecorder {
     public void setExperimentData(ExperimentData data) {
         this.data = data;
     }
+
+    /*--------------------------------------------------------------------------------------------*/
+    // Método para obtener el formato de archivo según la posición seleccionada
+    private String obtenerFormatoArchivo(Context context, int position) {
+        String[] opcionesFormatoArchivo = context.getResources().getStringArray(R.array.text_type_file_options);
+        if (position >= 0 && position < opcionesFormatoArchivo.length) {
+            return opcionesFormatoArchivo[position];
+        } else {
+            return "3gp"; // Valor por defecto en caso de que la posición esté fuera de rango
+        }
+    }
+
+    // Método para obtener la tasa de bit rate según la posición seleccionada
+    private int obtenerTasaBitRate(Context context, int position) {
+        String[] opcionesBitRate = context.getResources().getStringArray(R.array.text_bit_rate_options);
+        if (position >= 0 && position < opcionesBitRate.length) {
+            // Convertimos el valor de String a entero
+            return Integer.parseInt(opcionesBitRate[position].replace(".", ""));
+        } else {
+            return 128000; // Valor por defecto en caso de que la posición esté fuera de rango
+        }
+    }
+
+    // Método para obtener la frecuencia de muestreo según la posición seleccionada
+    private int obtenerFrecuenciaMuestreo(Context context, int position) {
+        String[] opcionesFrecuencia = context.getResources().getStringArray(R.array.text_frequency_options);
+        if (position >= 0 && position < opcionesFrecuencia.length) {
+            // Convertimos el valor de String a entero
+            return Integer.parseInt(opcionesFrecuencia[position].replace(".", ""));
+        } else {
+            return 44100; // Valor por defecto en caso de que la posición esté fuera de rango
+        }
+    }
+    /*--------------------------------------------------------------------------------------------*/
 }
