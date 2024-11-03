@@ -93,7 +93,7 @@ public class ChartGPSFragment extends Fragment {
 
         GeoPoint currentLocation = new GeoPoint(latitude, longitude);
         mapView.getController().setCenter(currentLocation);  // Centrar el mapa en la ubicación actual
-        mapView.getController().setZoom(15.0);  // Usar método de zoom con valor double
+        mapView.getController().setZoom(8.0);  // Usar método de zoom con valor double
 
         // Agregar un marcador en la ubicación actual
         Marker marker = new Marker(mapView);
