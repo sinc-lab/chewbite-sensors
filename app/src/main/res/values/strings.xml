@@ -24,6 +24,11 @@
     <string name="text_accelerometer">Acelerómetro</string>
     <string name="text_gyroscope">Giroscopio</string>
     <string name="text_magnetometer">Magnetómetro</string>
+    <string name="text_accelerometer_uncalibrated">Acelerómetro sin calibrar</string>
+    <string name="text_gyroscope_uncalibrated">Giroscopio sin calibrar</string>
+    <string name="text_magnetometer_uncalibrated">Magnetómetro sin calibrar</string>
+    <string name="text_gravity">Gravedad</string>
+    <string name="text_number_of_steps">Cantidad de pasos</string>
     <string name="permission_rationale">Se necesitan permisos para poder continuar.</string>
     <string name="ok">OK</string>
     <string name="notification_title">ChewBite test is running</string>

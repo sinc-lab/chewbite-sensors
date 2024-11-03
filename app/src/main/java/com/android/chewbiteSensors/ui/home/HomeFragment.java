@@ -34,12 +34,25 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
     private boolean soundStatus;
     private boolean movementStatus;
     private boolean gpsStatus;
+    private boolean accelerometerStatus;
+    private boolean gyroscopeStatus;
+    private boolean magnetometerStatus;
+    private boolean accelerometerUncalibratedStatus;
+    private boolean gyroscopeUncalibratedStatus;
+    private boolean magnetometerUncalibratedStatus;
+    private boolean gravityStatus;
+    private boolean numberOfStepsStatus;
     private static final String STATUS_SWT_SOUND_CONFIG = "status_switch_sound_configuration";
     private static final String STATUS_SWT_MOVEMENT_CONFIG = "status_switch_movement_configuration";
     private static final String STATUS_SWT_GPS_CONFIG = "status_switch_gps_configuration";
     private static final String STATUS_SWT_ACCELEROMETER_CONFIG = "status_switch_accelerometer_configuration";
     private static final String STATUS_SWT_GYROSCOPE_CONFIG = "status_switch_gyroscope_configuration";
     private static final String STATUS_SWT_MAGNETOMETER_CONFIG = "status_switch_magnetometer_configuration";
+    private static final String STATUS_SWT_UNCALIBRATED_ACCELEROMETER_CONFIG = "status_switch_uncalibrated_accelerometer_configuration";
+    private static final String STATUS_SWT_UNCALIBRATED_GYROSCOPE_CONFIG = "status_switch_uncalibrated_gyroscope_configuration";
+    private static final String STATUS_SWT_UNCALIBRATED_MAGNETOMETER_CONFIG = "status_switch_uncalibrated_magnetometer_configuration";
+    private static final String STATUS_SWT_GRAVITY_CONFIG = "status_switch_gravity_configuration";
+    private static final String STATUS_SWT_NUMBER_OF_STEPS_CONFIG = "status_switch_number_of_steps_configuration";
     private boolean it_is_the_first_notification = true;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -68,12 +81,19 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
 
         soundStatus = sharedPreferences.getBoolean(STATUS_SWT_SOUND_CONFIG, true);
         /*----------------------------*/
-        boolean accelerometerStatus = sharedPreferences.getBoolean(STATUS_SWT_ACCELEROMETER_CONFIG, false);
-        boolean gyroscopeStatus = sharedPreferences.getBoolean(STATUS_SWT_GYROSCOPE_CONFIG, false);
-        boolean magnetometerStatus = sharedPreferences.getBoolean(STATUS_SWT_MAGNETOMETER_CONFIG, false);
+        accelerometerStatus = sharedPreferences.getBoolean(STATUS_SWT_ACCELEROMETER_CONFIG, false);
+        gyroscopeStatus = sharedPreferences.getBoolean(STATUS_SWT_GYROSCOPE_CONFIG, false);
+        magnetometerStatus = sharedPreferences.getBoolean(STATUS_SWT_MAGNETOMETER_CONFIG, false);
+        accelerometerUncalibratedStatus = sharedPreferences.getBoolean(STATUS_SWT_UNCALIBRATED_ACCELEROMETER_CONFIG, false);
+        gyroscopeUncalibratedStatus = sharedPreferences.getBoolean(STATUS_SWT_UNCALIBRATED_GYROSCOPE_CONFIG, false);
+        magnetometerUncalibratedStatus = sharedPreferences.getBoolean(STATUS_SWT_UNCALIBRATED_MAGNETOMETER_CONFIG, false);
+        gravityStatus = sharedPreferences.getBoolean(STATUS_SWT_GRAVITY_CONFIG, false);
+        numberOfStepsStatus = sharedPreferences.getBoolean(STATUS_SWT_NUMBER_OF_STEPS_CONFIG, false);
 
         movementStatus = sharedPreferences.getBoolean(STATUS_SWT_MOVEMENT_CONFIG, false);
-        movementStatus = (accelerometerStatus || gyroscopeStatus || magnetometerStatus) && movementStatus;
+        movementStatus = (accelerometerStatus || gyroscopeStatus || magnetometerStatus ||
+                accelerometerUncalibratedStatus || gyroscopeUncalibratedStatus ||
+                magnetometerUncalibratedStatus || gravityStatus || numberOfStepsStatus) && movementStatus;
         /*----------------------------*/
         gpsStatus = sharedPreferences.getBoolean(STATUS_SWT_GPS_CONFIG, false);
 
@@ -93,13 +113,15 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean(STATUS_SWT_MOVEMENT_CONFIG, isChecked);
                 // Busca el estado de los switch
-                boolean accelerometerStatus = sharedPreferences.getBoolean(STATUS_SWT_ACCELEROMETER_CONFIG, false);
-                boolean gyroscopeStatus = sharedPreferences.getBoolean(STATUS_SWT_GYROSCOPE_CONFIG, false);
-                boolean magnetometerStatus = sharedPreferences.getBoolean(STATUS_SWT_MAGNETOMETER_CONFIG, false);
+                //boolean accelerometerStatus = sharedPreferences.getBoolean(STATUS_SWT_ACCELEROMETER_CONFIG, false);
+                //boolean gyroscopeStatus = sharedPreferences.getBoolean(STATUS_SWT_GYROSCOPE_CONFIG, false);
+                //boolean magnetometerStatus = sharedPreferences.getBoolean(STATUS_SWT_MAGNETOMETER_CONFIG, false);
                 // En el caso que el Switch de "Movimiento" sea TRUE
                 // y todos los demás sean FALSE
                 // Los pasa a positivos
-                if (isChecked && !accelerometerStatus && !gyroscopeStatus && !magnetometerStatus){
+                if (isChecked && !accelerometerStatus && !gyroscopeStatus && !magnetometerStatus &&
+                        !accelerometerUncalibratedStatus && !gyroscopeUncalibratedStatus &&
+                        !magnetometerUncalibratedStatus && !gravityStatus && !numberOfStepsStatus){
                     editor.putBoolean(STATUS_SWT_ACCELEROMETER_CONFIG, true);
                     editor.putBoolean(STATUS_SWT_GYROSCOPE_CONFIG, true);
                     editor.putBoolean(STATUS_SWT_MAGNETOMETER_CONFIG, true);
