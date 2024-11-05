@@ -4,6 +4,7 @@ import static android.content.Context.POWER_SERVICE;
 import static android.content.Context.SENSOR_SERVICE;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -38,6 +39,16 @@ public enum CBSensorEventListener implements SensorEventListener {
     private HandlerThread mSensorThread;
 
     PowerManager.WakeLock wakeLock;
+    private static final String PREFS_KEY = "status_controls";
+    private static final String STATUS_SWT_MOVEMENT_CONFIG = "status_switch_movement_configuration";
+    private static final String STATUS_SWT_ACCELEROMETER_CONFIG = "status_switch_accelerometer_configuration";
+    private static final String STATUS_SWT_GYROSCOPE_CONFIG = "status_switch_gyroscope_configuration";
+    private static final String STATUS_SWT_MAGNETOMETER_CONFIG = "status_switch_magnetometer_configuration";
+    private static final String STATUS_SWT_UNCALIBRATED_ACCELEROMETER_CONFIG = "status_switch_uncalibrated_accelerometer_configuration";
+    private static final String STATUS_SWT_UNCALIBRATED_GYROSCOPE_CONFIG = "status_switch_uncalibrated_gyroscope_configuration";
+    private static final String STATUS_SWT_UNCALIBRATED_MAGNETOMETER_CONFIG = "status_switch_uncalibrated_magnetometer_configuration";
+    private static final String STATUS_SWT_GRAVITY_CONFIG = "status_switch_gravity_configuration";
+    private static final String STATUS_SWT_NUMBER_OF_STEPS_CONFIG = "status_switch_number_of_steps_configuration";
 
     /**
      * Establece los datos del experimento.
@@ -80,9 +91,30 @@ public enum CBSensorEventListener implements SensorEventListener {
         /**
          * Acá es donde se debe modificar para que se agreguen o saquen los sensores
          */
-        this.addSensor(CBBuffer.STRING_ACCELEROMETER, Sensor.TYPE_ACCELEROMETER);
-        this.addSensor(CBBuffer.STRING_GYROSCOPE, Sensor.TYPE_GYROSCOPE);
-        this.addSensor(CBBuffer.STRING_MAGNETIC_FIELD, Sensor.TYPE_MAGNETIC_FIELD);
+        // Recupera el estado guardado
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
+        boolean movementStatus = sharedPreferences.getBoolean(STATUS_SWT_MOVEMENT_CONFIG, false);
+        boolean accelerometerStatus = sharedPreferences.getBoolean(STATUS_SWT_ACCELEROMETER_CONFIG, false);
+        boolean gyroscopeStatus = sharedPreferences.getBoolean(STATUS_SWT_GYROSCOPE_CONFIG, false);
+        boolean magnetometerStatus = sharedPreferences.getBoolean(STATUS_SWT_MAGNETOMETER_CONFIG, false);
+        boolean accelerometerUncalibratedStatus = sharedPreferences.getBoolean(STATUS_SWT_UNCALIBRATED_ACCELEROMETER_CONFIG, false);
+        boolean gyroscopeUncalibratedStatus = sharedPreferences.getBoolean(STATUS_SWT_UNCALIBRATED_GYROSCOPE_CONFIG, false);
+        boolean magnetometerUncalibratedStatus = sharedPreferences.getBoolean(STATUS_SWT_UNCALIBRATED_MAGNETOMETER_CONFIG, false);
+        boolean gravityStatus = sharedPreferences.getBoolean(STATUS_SWT_GRAVITY_CONFIG, false);
+        boolean numberOfStepsStatus = sharedPreferences.getBoolean(STATUS_SWT_NUMBER_OF_STEPS_CONFIG, false);
+
+        if (movementStatus) {
+            if (accelerometerStatus) {this.addSensor(CBBuffer.STRING_ACCELEROMETER, Sensor.TYPE_ACCELEROMETER);}
+            if (gyroscopeStatus) {this.addSensor(CBBuffer.STRING_GYROSCOPE, Sensor.TYPE_GYROSCOPE);}
+            if (magnetometerStatus) {this.addSensor(CBBuffer.STRING_MAGNETIC_FIELD, Sensor.TYPE_MAGNETIC_FIELD);}
+            /*------------------------------------------------------------------------*/
+            if (accelerometerUncalibratedStatus) {this.addSensor(CBBuffer.STRING_ACCELEROMETER_UNCALIBRATED, Sensor.TYPE_ACCELEROMETER_UNCALIBRATED);}
+            if (gyroscopeUncalibratedStatus) {this.addSensor(CBBuffer.STRING_GYROSCOPE_UNCALIBRATED, Sensor.TYPE_GYROSCOPE_UNCALIBRATED);}
+            if (magnetometerUncalibratedStatus) {this.addSensor(CBBuffer.STRING_MAGNETIC_FIELD_UNCALIBRATED, Sensor.TYPE_MAGNETIC_FIELD_UNCALIBRATED);}
+            if (gravityStatus) {this.addSensor(CBBuffer.STRING_GRAVITY, Sensor.TYPE_GRAVITY);}
+            if (numberOfStepsStatus) {this.addSensor(CBBuffer.STRING_NUM_OF_STEPS, Sensor.TYPE_STEP_COUNTER);}
+            /*------------------------------------------------------------------------*/
+        }
         // Registra los sensores
         this.registerDeviceSensors();
         // Establece el archivo

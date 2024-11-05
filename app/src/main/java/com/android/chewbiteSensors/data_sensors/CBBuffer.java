@@ -16,9 +16,13 @@ import java.util.ArrayList;
  */
 public abstract class CBBuffer {
     public static final String STRING_ACCELEROMETER = "accelerometer";
-    public static final String STRING_LINEAR_ACCELEROMETER = "accelerometer_linear";
+    public static final String STRING_ACCELEROMETER_UNCALIBRATED = "accelerometer_uncalibrated";
     public static final String STRING_GYROSCOPE = "gyroscope";
+    public static final String STRING_GYROSCOPE_UNCALIBRATED = "gyroscope_uncalibrated";
     public static final String STRING_MAGNETIC_FIELD = "magnetometer";
+    public static final String STRING_MAGNETIC_FIELD_UNCALIBRATED = "magnetometer_uncalibrated";
+    public static final String STRING_GRAVITY = "gravity";
+    public static final String STRING_NUM_OF_STEPS = "num_of_steps";
     public static final String STRING_GPS = "gps";
     public static final String STRING_SOUND = "audio";
 
