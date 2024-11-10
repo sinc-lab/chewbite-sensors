@@ -37,8 +37,20 @@
         app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_Name_Sensors_Chart"
-        tools:ignore="ExtraText"/>
+        tools:ignore="ExtraText">
 
+        <TextView
+            android:id="@+id/tv_welcome"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/hind_madurai_medium"
+            android:gravity="center"
+            android:text="@string/text_sensors_chart"
+            android:textColor="@color/black_900"
+            android:textSize="14sp"
+            android:visibility="visible" />
+
+    </RelativeLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container_setting"
         android:layout_width="0dp"
