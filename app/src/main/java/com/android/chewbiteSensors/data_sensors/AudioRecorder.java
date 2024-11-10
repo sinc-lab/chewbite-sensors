@@ -7,6 +7,7 @@ import android.os.Build;
 import android.util.Log;
 
 import com.android.chewbiteSensors.R;
+import com.android.chewbiteSensors.settings.GetSettings;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,9 +41,9 @@ public enum AudioRecorder {
         int selectedFrequencyPosition = sharedPreferences.getInt("status_switch_frequency_sound_configuration", 0);
 
         // Convertir posiciones a valores reales
-        String outputFormat = obtenerFormatoArchivo(context, selectedFileTypePosition);
-        int bitRate = obtenerTasaBitRate(context, selectedBitRatePosition);
-        int samplingRate = obtenerFrecuenciaMuestreo(context, selectedFrequencyPosition);
+        String outputFormat = GetSettings.obtenerFormatoArchivo(context, selectedFileTypePosition);
+        int bitRate = GetSettings.obtenerTasaBitRate(context, selectedBitRatePosition);
+        int samplingRate = GetSettings.obtenerFrecuenciaMuestreo(context, selectedFrequencyPosition);
 
         // Comprobar si Android es inferior a Android 10
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
@@ -56,6 +57,7 @@ public enum AudioRecorder {
             recorder.setOutputFile(audioFile.getAbsolutePath());
             recorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);
             recorder.setAudioEncodingBitRate(bitRate);
+            // Establece la frecuencia de muestreo de audio en muestras por segundo.
             recorder.setAudioSamplingRate(samplingRate);
 
             try {
@@ -77,6 +79,7 @@ public enum AudioRecorder {
             recorder.setOutputFile(audioFile.getAbsolutePath());
             recorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);
             recorder.setAudioEncodingBitRate(128000);
+            // Establece la frecuencia de muestreo de audio en muestras por segundo.
             recorder.setAudioSamplingRate(44100);
 
             try {
@@ -112,38 +115,4 @@ public enum AudioRecorder {
     public void setExperimentData(ExperimentData data) {
         this.data = data;
     }
-
-    /*--------------------------------------------------------------------------------------------*/
-    // Método para obtener el formato de archivo según la posición seleccionada
-    private String obtenerFormatoArchivo(Context context, int position) {
-        String[] opcionesFormatoArchivo = context.getResources().getStringArray(R.array.text_type_file_options);
-        if (position >= 0 && position < opcionesFormatoArchivo.length) {
-            return opcionesFormatoArchivo[position];
-        } else {
-            return "3gp"; // Valor por defecto en caso de que la posición esté fuera de rango
-        }
-    }
-
-    // Método para obtener la tasa de bit rate según la posición seleccionada
-    private int obtenerTasaBitRate(Context context, int position) {
-        String[] opcionesBitRate = context.getResources().getStringArray(R.array.text_bit_rate_options);
-        if (position >= 0 && position < opcionesBitRate.length) {
-            // Convertimos el valor de String a entero
-            return Integer.parseInt(opcionesBitRate[position].replace(".", ""));
-        } else {
-            return 128000; // Valor por defecto en caso de que la posición esté fuera de rango
-        }
-    }
-
-    // Método para obtener la frecuencia de muestreo según la posición seleccionada
-    private int obtenerFrecuenciaMuestreo(Context context, int position) {
-        String[] opcionesFrecuencia = context.getResources().getStringArray(R.array.text_frequency_options);
-        if (position >= 0 && position < opcionesFrecuencia.length) {
-            // Convertimos el valor de String a entero
-            return Integer.parseInt(opcionesFrecuencia[position].replace(".", ""));
-        } else {
-            return 44100; // Valor por defecto en caso de que la posición esté fuera de rango
-        }
-    }
-    /*--------------------------------------------------------------------------------------------*/
 }

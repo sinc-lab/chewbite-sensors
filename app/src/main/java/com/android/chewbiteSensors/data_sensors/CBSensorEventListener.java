@@ -3,6 +3,7 @@ package com.android.chewbiteSensors.data_sensors;
 import static android.content.Context.POWER_SERVICE;
 import static android.content.Context.SENSOR_SERVICE;
 
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
@@ -12,6 +13,8 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.PowerManager;
+
+import com.android.chewbiteSensors.settings.GetSettings;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -49,6 +52,8 @@ public enum CBSensorEventListener implements SensorEventListener {
     private static final String STATUS_SWT_UNCALIBRATED_MAGNETOMETER_CONFIG = "status_switch_uncalibrated_magnetometer_configuration";
     private static final String STATUS_SWT_GRAVITY_CONFIG = "status_switch_gravity_configuration";
     private static final String STATUS_SWT_NUMBER_OF_STEPS_CONFIG = "status_switch_number_of_steps_configuration";
+    private static final String STATUS_SPN_FREQUENCY_MOVEMENT_CONFIG = "status_switch_frequency_movement_configuration";
+    private int samplingRate;
 
     /**
      * Establece los datos del experimento.
@@ -102,6 +107,9 @@ public enum CBSensorEventListener implements SensorEventListener {
         boolean magnetometerUncalibratedStatus = sharedPreferences.getBoolean(STATUS_SWT_UNCALIBRATED_MAGNETOMETER_CONFIG, false);
         boolean gravityStatus = sharedPreferences.getBoolean(STATUS_SWT_GRAVITY_CONFIG, false);
         boolean numberOfStepsStatus = sharedPreferences.getBoolean(STATUS_SWT_NUMBER_OF_STEPS_CONFIG, false);
+        // Frecuencia de muestreo
+        int selectedFrequencyPosition = sharedPreferences.getInt(STATUS_SPN_FREQUENCY_MOVEMENT_CONFIG, 0);
+        this.samplingRate = GetSettings.obtenerFrecuenciaMuestreo(context, selectedFrequencyPosition);
 
         if (movementStatus) {
             if (accelerometerStatus) {this.addSensor(CBBuffer.STRING_ACCELEROMETER, Sensor.TYPE_ACCELEROMETER);}
@@ -204,7 +212,7 @@ public enum CBSensorEventListener implements SensorEventListener {
         Handler mSensorHandler = new Handler(mSensorThread.getLooper()); //Blocks until looper is prepared, which is fairly quick
 
         for (CBSensorBuffer sensor: sensors) {
-            this.sensorManager.registerListener(this, sensor.getSensor(), 10000, 1000000, mSensorHandler);
+            this.sensorManager.registerListener(this, sensor.getSensor(), 10000, this.samplingRate, mSensorHandler);
         }
     }
 
