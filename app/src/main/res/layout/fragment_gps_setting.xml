@@ -34,7 +34,6 @@
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="center"
                 android:layout_marginEnd="12dp"
-                android:checked="true"
                 android:gravity="center"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
         </RelativeLayout>

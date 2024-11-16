@@ -187,7 +187,7 @@
                             android:textAppearance="@style/sound_configuration" />
 
                         <Switch
-                            android:id="@+id/switch_sound_home"
+                            android:id="@+id/switch_sound_home_prediction"
                             android:layout_width="48dp"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/txt_sound"
@@ -196,7 +196,6 @@
                             android:layout_gravity="center"
                             android:layout_marginTop="0dp"
                             android:layout_marginEnd="0dp"
-                            android:checked="true"
                             android:gravity="center"
                             app:thumbTint="@color/yellow_500"
                             app:trackTint="@color/blue_600"
@@ -228,7 +227,7 @@
                             android:textAppearance="@style/sound_configuration" />
 
                         <Switch
-                            android:id="@+id/switch_movement_home"
+                            android:id="@+id/switch_movement_home_prediction"
                             android:layout_width="48dp"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/txt_movement"
@@ -237,7 +236,6 @@
                             android:layout_gravity="center"
                             android:layout_marginTop="0dp"
                             android:layout_marginEnd="0dp"
-                            android:checked="true"
                             android:gravity="center"
                             app:thumbTint="@color/blue_600"
                             app:trackTint="@color/blue_600"
@@ -267,7 +265,7 @@
                             android:textAppearance="@style/sound_configuration" />
 
                         <Switch
-                            android:id="@+id/switch_gps_home"
+                            android:id="@+id/switch_gps_home_prediction"
                             android:layout_width="48dp"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/txt_gps"
