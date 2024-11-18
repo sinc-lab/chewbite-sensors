@@ -78,9 +78,8 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
 
         // Recupera el estado guardado
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
-
-        soundStatus = sharedPreferences.getBoolean(STATUS_SWT_SOUND_CONFIG, true);
         /*----------------------------*/
+        soundStatus = sharedPreferences.getBoolean(STATUS_SWT_SOUND_CONFIG, true);
         accelerometerStatus = sharedPreferences.getBoolean(STATUS_SWT_ACCELEROMETER_CONFIG, false);
         gyroscopeStatus = sharedPreferences.getBoolean(STATUS_SWT_GYROSCOPE_CONFIG, false);
         magnetometerStatus = sharedPreferences.getBoolean(STATUS_SWT_MAGNETOMETER_CONFIG, false);
@@ -94,30 +93,48 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
         movementStatus = (accelerometerStatus || gyroscopeStatus || magnetometerStatus ||
                 accelerometerUncalibratedStatus || gyroscopeUncalibratedStatus ||
                 magnetometerUncalibratedStatus || gravityStatus || numberOfStepsStatus) && movementStatus;
-        /*----------------------------*/
-        gpsStatus = sharedPreferences.getBoolean(STATUS_SWT_GPS_CONFIG, false);
 
-        // Configura el listener
-        switchSoundConfiguration.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        gpsStatus = sharedPreferences.getBoolean(STATUS_SWT_GPS_CONFIG, false);
+        /*----------------------------*/
+
+        // 1. Deshabilitar el listener inmediatamente
+        switchSoundConfiguration.setOnCheckedChangeListener(null);
+        switchMovementConfiguration.setOnCheckedChangeListener(null);
+        switchGpsConfiguration.setOnCheckedChangeListener(null);
+
+        /*---------- Configura el listener de audio ------------*/
+        // 2. Publicar un ejecutable para establecer el estado y volver a habilitar el listener
+        switchSoundConfiguration.post(() -> {
+            // 3. Establecer el estado marcado
+            switchSoundConfiguration.setChecked(soundStatus);
+
+            // 4. Saltar al estado actual para evitar la animación
+            switchSoundConfiguration.jumpDrawablesToCurrentState();
+
+            // 5. Volver a habilitar el listener
+            switchSoundConfiguration.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean(STATUS_SWT_SOUND_CONFIG, isChecked);
                 editor.apply();
-            }
+            });
         });
-        // Configura el listener
-        switchMovementConfiguration.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        /*---------- Configura el listener de audio ------------*/
+
+        /*---------- Configura el listener de movimiento ------------*/
+        // 2. Publicar un ejecutable para establecer el estado y volver a habilitar el listener
+        switchMovementConfiguration.post(() -> {
+            // 3. Establecer el estado marcado
+            switchMovementConfiguration.setChecked(movementStatus);
+
+            // 4. Saltar al estado actual para evitar la animación
+            switchMovementConfiguration.jumpDrawablesToCurrentState();
+
+            // 5. Volver a habilitar el listener
+            switchMovementConfiguration.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean(STATUS_SWT_MOVEMENT_CONFIG, isChecked);
-                // Busca el estado de los switch
-                //boolean accelerometerStatus = sharedPreferences.getBoolean(STATUS_SWT_ACCELEROMETER_CONFIG, false);
-                //boolean gyroscopeStatus = sharedPreferences.getBoolean(STATUS_SWT_GYROSCOPE_CONFIG, false);
-                //boolean magnetometerStatus = sharedPreferences.getBoolean(STATUS_SWT_MAGNETOMETER_CONFIG, false);
                 // En el caso que el Switch de "Movimiento" sea TRUE
-                // y todos los demás sean FALSE
+                // y todos los demás sean FALSE (es decir: no tienen guardado un estado previamente)
                 // Los pasa a positivos
                 if (isChecked && !accelerometerStatus && !gyroscopeStatus && !magnetometerStatus &&
                         !accelerometerUncalibratedStatus && !gyroscopeUncalibratedStatus &&
@@ -127,18 +144,27 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
                     editor.putBoolean(STATUS_SWT_MAGNETOMETER_CONFIG, true);
                 }
                 editor.apply();
-            }
+            });
         });
-        // Configura el listener
-        switchGpsConfiguration.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        /*---------- Configura el listener de movimiento ------------*/
+
+        /*---------- Configura el listener de GPS ------------*/
+        // 2. Publicar un ejecutable para establecer el estado y volver a habilitar el listener
+        switchGpsConfiguration.post(() -> {
+            // 3. Establecer el estado marcado
+            switchGpsConfiguration.setChecked(gpsStatus);
+
+            // 4. Saltar al estado actual para evitar la animación
+            switchGpsConfiguration.jumpDrawablesToCurrentState();
+
+            // 5. Volver a habilitar el listener
+            switchGpsConfiguration.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean(STATUS_SWT_GPS_CONFIG, isChecked);
                 editor.apply();
-            }
+            });
         });
-
+        /*---------- Configura el listener de GPS ------------*/
         /*----------------------------------------------------------------------------------------*/
 
         return root;
@@ -184,10 +210,6 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
     public void onStart() {
         //android.util.Log.d(tag, "onStart HomeFragment.java");
         super.onStart();
-
-        switchSoundConfiguration.setChecked(soundStatus);
-        switchMovementConfiguration.setChecked(movementStatus);
-        switchGpsConfiguration.setChecked(gpsStatus);
     }
 
     @Override

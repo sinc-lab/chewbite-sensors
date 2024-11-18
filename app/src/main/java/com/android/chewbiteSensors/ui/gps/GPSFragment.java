@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 
@@ -25,7 +24,6 @@ public class GPSFragment extends Fragment {
     private static final String PREFS_KEY = "status_controls";
     private static final String STATUS_SWT_GPS_CONFIG = "status_switch_gps_configuration";
     private static final String STATUS_SPN_FREQUENCY_GPS_CONFIG = "status_switch_frequency_gps_configuration";
-    private static boolean switchGpsState;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch switchGpsSetting;
 
@@ -44,16 +42,25 @@ public class GPSFragment extends Fragment {
 
         // Recupera el estado guardado
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
-        switchGpsState = sharedPreferences.getBoolean(STATUS_SWT_GPS_CONFIG, true);
+        boolean switchGpsState = sharedPreferences.getBoolean(STATUS_SWT_GPS_CONFIG, true);
 
-        // Configura el listener
-        switchGpsSetting.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        // 1. Deshabilitar el listener inmediatamente
+        switchGpsSetting.setOnCheckedChangeListener(null);
+
+        // 2. Publicar un ejecutable para establecer el estado y volver a habilitar el listener
+        switchGpsSetting.post(() -> {
+            // 3. Establecer el estado marcado
+            switchGpsSetting.setChecked(switchGpsState);
+
+            // 4. Saltar al estado actual para evitar la animación
+            switchGpsSetting.jumpDrawablesToCurrentState();
+
+            // 5. Volver a habilitar el listener
+            switchGpsSetting.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean(STATUS_SWT_GPS_CONFIG, isChecked);
                 editor.apply();
-            }
+            });
         });
         /*----------------------------------------------------------------------------------------*/
         // Inicializa del Spinner
@@ -102,12 +109,5 @@ public class GPSFragment extends Fragment {
         mViewModel = new ViewModelProvider(this).get(GPSViewModel.class);
         // TODO: Use the ViewModel
     }*/
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // Setear el estado del switch
-        switchGpsSetting.setChecked(switchGpsState);
-    }
+    
 }

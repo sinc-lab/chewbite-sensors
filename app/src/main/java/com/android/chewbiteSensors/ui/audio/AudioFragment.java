@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 
@@ -28,7 +27,6 @@ public class AudioFragment extends Fragment {
     private static final String STATUS_SPN_BIT_RATE_CONFIG = "status_switch_bit_rate_configuration";
     private static final String STATUS_SPN_FREQUENCY_CONFIG = "status_switch_frequency_sound_configuration";
     private static final String STATUS_SPN_FILE_TYPE_CONFIG = "status_switch_file_type_configuration";
-    private static boolean switchSoundState;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch switchAudioSetting;
 
@@ -49,17 +47,27 @@ public class AudioFragment extends Fragment {
 
         // Recupera el estado guardado
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
-        switchSoundState = sharedPreferences.getBoolean(STATUS_SWT_SOUND_CONFIG, true);
+        boolean switchSoundState = sharedPreferences.getBoolean(STATUS_SWT_SOUND_CONFIG, true);
 
-        // Configura el listener
-        switchAudioSetting.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        // 1. Deshabilitar el listener inmediatamente
+        switchAudioSetting.setOnCheckedChangeListener(null);
+
+        // 2. Publicar un ejecutable para establecer el estado y volver a habilitar el listener
+        switchAudioSetting.post(() -> {
+            // 3. Establecer el estado marcado
+            switchAudioSetting.setChecked(switchSoundState);
+
+            // 4. Saltar al estado actual para evitar la animación
+            switchAudioSetting.jumpDrawablesToCurrentState();
+
+            // 5. Volver a habilitar el listener
+            switchAudioSetting.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean(STATUS_SWT_SOUND_CONFIG, isChecked);
                 editor.apply();
-            }
+            });
         });
+
         /*----------------------------------------------------------------------------------------*/
 
         // Inicializa del Spinner
@@ -148,13 +156,4 @@ public class AudioFragment extends Fragment {
         mViewModel = new ViewModelProvider(this).get(AudioViewModel.class);
         // TODO: Use the ViewModel
     }*/
-
-    @Override
-    public void onStart() {
-        android.util.Log.d(tag, "onStart AudioFragment.java");
-        super.onStart();
-
-        // Setear el estado del switch
-        switchAudioSetting.setChecked(switchSoundState);
-    }
 }
