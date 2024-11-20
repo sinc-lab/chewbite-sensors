@@ -52,7 +52,7 @@ public enum CBSensorEventListener implements SensorEventListener {
     private static final String STATUS_SWT_UNCALIBRATED_MAGNETOMETER_CONFIG = "status_switch_uncalibrated_magnetometer_configuration";
     private static final String STATUS_SWT_GRAVITY_CONFIG = "status_switch_gravity_configuration";
     private static final String STATUS_SWT_NUMBER_OF_STEPS_CONFIG = "status_switch_number_of_steps_configuration";
-    private static final String STATUS_SPN_FREQUENCY_MOVEMENT_CONFIG = "status_switch_frequency_movement_configuration";
+    private static final String STATUS_SPN_FREQUENCY_MOVEMENT_CONFIG = "status_spinner_frequency_movement_configuration";
     private int samplingRate;
 
     /**

@@ -59,6 +59,7 @@
             android:layout_marginTop="16dp">
 
             <TextView
+                android:id="@+id/txt_accelerometer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -91,6 +92,7 @@
             android:layout_marginTop="16dp">
 
             <TextView
+                android:id="@+id/txt_gyroscope"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -123,6 +125,7 @@
             android:layout_marginTop="16dp">
 
             <TextView
+                android:id="@+id/txt_magnetometer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -155,6 +158,7 @@
             android:layout_marginTop="16dp">
 
             <TextView
+                android:id="@+id/txt_accelerometer_uncalibrated"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -187,6 +191,7 @@
             android:layout_marginTop="16dp">
 
             <TextView
+                android:id="@+id/txt_gyroscope_uncalibrated"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -219,6 +224,7 @@
             android:layout_marginTop="16dp">
 
             <TextView
+                android:id="@+id/txt_magnetometer_uncalibrated"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -251,6 +257,7 @@
             android:layout_marginTop="16dp">
 
             <TextView
+                android:id="@+id/txt_gravity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -283,6 +290,7 @@
             android:layout_marginTop="16dp">
 
             <TextView
+                android:id="@+id/txt_number_of_steps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"

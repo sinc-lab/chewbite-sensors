@@ -3,6 +3,7 @@ package com.android.chewbiteSensors.ui.movement;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,31 +12,44 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.android.chewbiteSensors.R;
+import com.android.chewbiteSensors.data_sensors.SensorInfo;
+
+import kotlin.Pair;
 
 public class MovementFragment extends Fragment {
 
     private MovementViewModel mViewModel;
     private static final String PREFS_KEY = "status_controls";
+    TextView textViewAccelerometer;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch switchAccelerometerSetting;
+    TextView textViewGyroscope;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch switchGyroscopeSetting;
+    TextView textViewMagnetometer;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch switchMagnetometerSetting;
+    TextView textViewUncalibratedAccelerometer;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch switchUncalibratedAccelerometerSetting;
+    TextView textViewUncalibratedGyroscope;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch switchUncalibratedGyroscopeSetting;
+    TextView textViewUncalibratedMagnetometer;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch switchUncalibratedMagnetometerSetting;
+    TextView textViewGravity;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch switchGravitySetting;
+    TextView textViewNumberOfSteps;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch switchNumberOfStepsSetting;
     private boolean movementStatus;
@@ -48,7 +62,7 @@ public class MovementFragment extends Fragment {
     private boolean gravityStatus;
     private boolean numberOfStepsStatus;
 
-    private static final String STATUS_SPN_FREQUENCY_MOVEMENT_CONFIG = "status_switch_frequency_movement_configuration";
+    private static final String STATUS_SPN_FREQUENCY_MOVEMENT_CONFIG = "status_spinner_frequency_movement_configuration";
     private static final String STATUS_SWT_ACCELEROMETER_CONFIG = "status_switch_accelerometer_configuration";
     private static final String STATUS_SWT_GYROSCOPE_CONFIG = "status_switch_gyroscope_configuration";
     private static final String STATUS_SWT_MAGNETOMETER_CONFIG = "status_switch_magnetometer_configuration";
@@ -63,6 +77,7 @@ public class MovementFragment extends Fragment {
         return new MovementFragment();
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -111,13 +126,21 @@ public class MovementFragment extends Fragment {
         /*----------------------------------------------------------------------------------------*/
 
         // Inicializa el switch para la configuración
+        textViewAccelerometer = view.findViewById(R.id.txt_accelerometer);
         switchAccelerometerSetting = view.findViewById(R.id.switch_accelerometer_configuration);
+        textViewGyroscope = view.findViewById(R.id.txt_gyroscope);
         switchGyroscopeSetting = view.findViewById(R.id.switch_gyroscope_configuration);
+        textViewMagnetometer = view.findViewById(R.id.txt_magnetometer);
         switchMagnetometerSetting = view.findViewById(R.id.switch_magnetometer_configuration);
+        textViewUncalibratedAccelerometer = view.findViewById(R.id.txt_accelerometer_uncalibrated);
         switchUncalibratedAccelerometerSetting = view.findViewById(R.id.switch_accelerometer_uncalibrated_configuration);
+        textViewUncalibratedGyroscope = view.findViewById(R.id.txt_gyroscope_uncalibrated);
         switchUncalibratedGyroscopeSetting = view.findViewById(R.id.switch_gyroscope_uncalibrated_configuration);
+        textViewUncalibratedMagnetometer = view.findViewById(R.id.txt_magnetometer_uncalibrated);
         switchUncalibratedMagnetometerSetting = view.findViewById(R.id.switch_magnetometer_uncalibrated_configuration);
+        textViewGravity = view.findViewById(R.id.txt_gravity);
         switchGravitySetting = view.findViewById(R.id.switch_gravity_configuration);
+        textViewNumberOfSteps = view.findViewById(R.id.txt_number_of_steps);
         switchNumberOfStepsSetting = view.findViewById(R.id.switch_number_of_steps_configuration);
 
         // Recupera el estado guardado
@@ -399,13 +422,79 @@ public class MovementFragment extends Fragment {
         });
         /*---------- Configura el listener de CONTADOR DE PASOS ------------*/
 
+        /*---------- Habilita y Deshabilita los switch ------------*/
+        MovementViewModel viewModel = new ViewModelProvider(this).get(MovementViewModel.class);
+
+        // Get an instance of SensorManager
+        SensorManager sensorManager = (SensorManager) requireActivity().getSystemService(Context.SENSOR_SERVICE);
+        viewModel.setSensorManager(sensorManager);
+
+        // Check sensor availability and update Switch
+        /*viewModel.checkSensorAvailability(Sensor.TYPE_ACCELEROMETER); // Replace with your desired sensor type
+
+        viewModel.isSwitchEnabled.observe(getViewLifecycleOwner(), isEnabled -> {
+            switchAccelerometerSetting.setEnabled(isEnabled);
+        });*/
+        //viewModel.checkSensorAvailability(Sensor.TYPE_ACCELEROMETER_UNCALIBRATED); // Replace with your desired sensor type
+
+        /*viewModel.isSwitchEnabled.observe(getViewLifecycleOwner(), isEnabled -> {
+            switchUncalibratedAccelerometerSetting.setEnabled(isEnabled);
+            //switchUncalibratedAccelerometerSetting.setClickable(isEnabled);
+            //switchUncalibratedAccelerometerSetting.setFocusable(isEnabled);
+        });*/
+        /*---------- Habilita y Deshabilita los switch ------------*/
+        // Iterate through all sensors in SensorInfo
+        for (SensorInfo sensorInfo : SensorInfo.values()) {
+            // Check sensor availability
+            viewModel.checkSensorAvailability(sensorInfo.getSensorType());
+
+            // Get sensor availability status
+            boolean isSensorAvailable = viewModel.isSensorAvailable(sensorInfo.getSensorType());
+
+            // Get the corresponding Switch and TextView for the sensor
+            @SuppressLint("UseSwitchCompatOrMaterialCode")
+            Switch sensorSwitch = getSensorTextViewAndSwitch(sensorInfo).component2();
+            TextView textView = getSensorTextViewAndSwitch(sensorInfo).component1();
+
+            if (!isSensorAvailable) {
+                sensorSwitch.setEnabled(isSensorAvailable);
+
+                // Disable TextView and reduce opacity only if sensor is not available
+                textView.setEnabled(isSensorAvailable);
+                textView.setAlpha(isSensorAvailable ? 1.0f : 0.5f);
+
+                // Save sensor status to SharedPreferences
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean(sensorInfo.getStatusKey(), isSensorAvailable);
+                editor.apply();
+            }
+        }
+        /*---------- Habilita y Deshabilita los switch ------------*/
         return view;
     }
 
-    /*@Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(MovementViewModel.class);
-        // TODO: Use the ViewModel
-    }*/
+    // Helper method to get the Switch view for a given sensor
+    private Pair<TextView, Switch> getSensorTextViewAndSwitch(SensorInfo sensorInfo) {
+
+        switch (sensorInfo) {
+            case ACCELEROMETER:
+                return new Pair<>(textViewAccelerometer, switchAccelerometerSetting);
+            case GYROSCOPE:
+                return new Pair<>(textViewGyroscope, switchGyroscopeSetting);
+            case MAGNETOMETER:
+                return new Pair<>(textViewMagnetometer, switchMagnetometerSetting);
+            case ACCELEROMETER_UNCALIBRATED:
+                return new Pair<>(textViewUncalibratedAccelerometer, switchUncalibratedAccelerometerSetting);
+            case GYROSCOPE_UNCALIBRATED:
+                return new Pair<>(textViewUncalibratedGyroscope, switchUncalibratedGyroscopeSetting);
+            case MAGNETOMETER_UNCALIBRATED:
+                return new Pair<>(textViewUncalibratedMagnetometer, switchUncalibratedMagnetometerSetting);
+            case GRAVITY:
+                return new Pair<>(textViewGravity, switchGravitySetting);
+            case STEP_COUNTER:
+                return new Pair<>(textViewNumberOfSteps, switchNumberOfStepsSetting);
+            default:
+                return null;
+        }
+    }
 }
