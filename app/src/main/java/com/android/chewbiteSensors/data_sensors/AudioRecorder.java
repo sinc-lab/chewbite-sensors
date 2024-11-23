@@ -43,7 +43,7 @@ public enum AudioRecorder {
         // Convertir posiciones a valores reales
         String outputFormat = GetSettings.obtenerFormatoArchivo(context, selectedFileTypePosition);
         int bitRate = GetSettings.obtenerTasaBitRate(context, selectedBitRatePosition);
-        int samplingRate = GetSettings.obtenerFrecuenciaMuestreo(context, selectedFrequencyPosition);
+        int samplingRate = GetSettings.obtenerFrecuenciaMuestreo(context, selectedFrequencyPosition, R.array.text_frequency_sound_options);
 
         // Comprobar si Android es inferior a Android 10
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {

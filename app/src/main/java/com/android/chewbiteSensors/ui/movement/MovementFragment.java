@@ -89,7 +89,7 @@ public class MovementFragment extends Fragment {
         Spinner spinnerFrequencyMovementConfiguration = view.findViewById(R.id.spn_frequency_options_movement);
 
         // Obtén el array de opciones desde los recursos
-        String[] optionsFrequencyArray = getResources().getStringArray(R.array.text_frequency_options);
+        String[] optionsFrequencyArray = getResources().getStringArray(R.array.text_frequency_movement_options);
 
         // Crea un ArrayAdapter usando el array de opciones y un diseño simple para el spinner
         ArrayAdapter<String> adapterFrequency = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_spinner_item, optionsFrequencyArray);

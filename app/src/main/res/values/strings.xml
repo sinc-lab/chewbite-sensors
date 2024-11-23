@@ -36,12 +36,27 @@
     <string name="notification_text">Saving device sensor data...</string>
     <string name="channel_name">Notificaciones de ChewBite</string>
 
-    <string-array name="text_frequency_options">
+    <string-array name="text_frequency_sound_options">
         <item>8.000</item>
         <item>11.025</item>
         <item>16.000</item>
         <item>22.050</item>
         <item>44.100</item>
+    </string-array>
+
+    <string-array name="text_frequency_movement_options">
+        <item>1</item>
+        <item>10</item>
+        <item>25</item>
+        <item>50</item>
+        <item>100</item>
+    </string-array>
+
+    <string-array name="text_frequency_gps_options">
+        <item>1</item>
+        <item>0,016</item>
+        <item>0,0055</item>
+        <item>0,0033</item>
     </string-array>
 
     <string-array name="text_type_file_options">

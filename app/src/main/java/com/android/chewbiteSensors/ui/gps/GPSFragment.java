@@ -67,7 +67,7 @@ public class GPSFragment extends Fragment {
         Spinner spinnerFrequencyGPSConfiguration = view.findViewById(R.id.spn_frequency_options_gps);
 
         // Obtén el array de opciones desde los recursos
-        String[] optionsFrequencyArray = getResources().getStringArray(R.array.text_frequency_options);
+        String[] optionsFrequencyArray = getResources().getStringArray(R.array.text_frequency_gps_options);
 
         // Crea un ArrayAdapter usando el array de opciones y un diseño simple para el spinner
         ArrayAdapter<String> adapterFrequency = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_spinner_item, optionsFrequencyArray);

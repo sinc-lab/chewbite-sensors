@@ -13,7 +13,9 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.PowerManager;
+import android.util.Log;
 
+import com.android.chewbiteSensors.R;
 import com.android.chewbiteSensors.settings.GetSettings;
 
 import java.io.File;
@@ -54,6 +56,7 @@ public enum CBSensorEventListener implements SensorEventListener {
     private static final String STATUS_SWT_NUMBER_OF_STEPS_CONFIG = "status_switch_number_of_steps_configuration";
     private static final String STATUS_SPN_FREQUENCY_MOVEMENT_CONFIG = "status_spinner_frequency_movement_configuration";
     private int samplingRate;
+    private int samplingPeriodUs;
 
     /**
      * Establece los datos del experimento.
@@ -109,7 +112,10 @@ public enum CBSensorEventListener implements SensorEventListener {
         boolean numberOfStepsStatus = sharedPreferences.getBoolean(STATUS_SWT_NUMBER_OF_STEPS_CONFIG, false);
         // Frecuencia de muestreo
         int selectedFrequencyPosition = sharedPreferences.getInt(STATUS_SPN_FREQUENCY_MOVEMENT_CONFIG, 0);
-        this.samplingRate = GetSettings.obtenerFrecuenciaMuestreo(context, selectedFrequencyPosition);
+        this.samplingRate = GetSettings.obtenerFrecuenciaMuestreo(context, selectedFrequencyPosition, R.array.text_frequency_movement_options);
+        // Convertir la frecuencia a microsegundos
+        this.samplingPeriodUs = (int) ((1.0 / samplingRate) * 1_000_000); // Convierte Hz a us
+        Log.d("CBSensorEventListener", "Frecuencia: " + samplingRate + " Hz, Período: " + samplingPeriodUs + " µs");
 
         if (movementStatus) {
             if (accelerometerStatus) {this.addSensor(CBBuffer.STRING_ACCELEROMETER, Sensor.TYPE_ACCELEROMETER);}
@@ -212,7 +218,7 @@ public enum CBSensorEventListener implements SensorEventListener {
         Handler mSensorHandler = new Handler(mSensorThread.getLooper()); //Blocks until looper is prepared, which is fairly quick
 
         for (CBSensorBuffer sensor: sensors) {
-            this.sensorManager.registerListener(this, sensor.getSensor(), 10000, this.samplingRate, mSensorHandler);
+            this.sensorManager.registerListener(this, sensor.getSensor(), this.samplingPeriodUs, 1000000, mSensorHandler);
         }
     }
 

@@ -73,7 +73,7 @@
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/spinner"
-            android:entries="@array/text_frequency_options"
+            android:entries="@array/text_frequency_gps_options"
             android:overlapAnchor="false"
             tools:visibility="visible" />
     </RelativeLayout>

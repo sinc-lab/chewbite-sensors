@@ -77,7 +77,7 @@ public class AudioFragment extends Fragment {
 
         // Obtén el array de opciones desde los recursos
         String[] optionsBitRateArray = getResources().getStringArray(R.array.text_bit_rate_options);
-        String[] optionsFrequencyArray = getResources().getStringArray(R.array.text_frequency_options);
+        String[] optionsFrequencyArray = getResources().getStringArray(R.array.text_frequency_sound_options);
         String[] optionsFileTypeArray = getResources().getStringArray(R.array.text_type_file_options);
 
         // Crea un ArrayAdapter usando el array de opciones y un diseño simple para el spinner

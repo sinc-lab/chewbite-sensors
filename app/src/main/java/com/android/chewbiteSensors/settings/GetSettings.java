@@ -29,8 +29,8 @@ public class GetSettings {
     }
 
     // Método para obtener la frecuencia de muestreo según la posición seleccionada
-    public static int obtenerFrecuenciaMuestreo(Context context, int position) {
-        String[] opcionesFrecuencia = context.getResources().getStringArray(R.array.text_frequency_options);
+    public static int obtenerFrecuenciaMuestreo(Context context, int position, int frequencyOptionsArray) {
+        String[] opcionesFrecuencia = context.getResources().getStringArray(frequencyOptionsArray);
         if (position >= 0 && position < opcionesFrecuencia.length) {
             // Convertimos el valor de String a entero
             return Integer.parseInt(opcionesFrecuencia[position].replace(".", ""));
