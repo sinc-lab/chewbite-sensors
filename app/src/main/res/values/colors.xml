@@ -22,8 +22,7 @@
     <!-- GREEN -->
     <color name="green_50">#F5FCED</color> <!--Éxito -->
     <color name="green_600">#454545</color> <!--Éxito --> <!--Color de Acento secundario -->
-    <color name="green_700">#28652B
-    </color> <!--Botón y barra inferior de navegación--> <!--Color de Acento primario-->
+    <color name="green_700">#28652B</color> <!--Botón y barra inferior de navegación--> <!--Color de Acento primario-->
     <!-- BLUE -->
     <color name="blue_50">#eff3fd</color> <!--informacion-->
     <color name="blue_600">#577cd1</color> <!--informacion-->
@@ -33,4 +32,13 @@
     <!-- YELLOW -->
     <color name="yellow_50">#fdfae7</color> <!--Advertencia-->
     <color name="yellow_500">#eccf13</color>
+
+    <color name="icon_enabled_checkedOn_color">@color/green_700</color> <!-- Green -->
+    <color name="icon_enabled_checkedOff_color">@color/black_500</color> <!-- Black -->
+    <color name="icon_disabled_checkedOn_color">#5028652B</color> <!-- Green with 50% opacity -->
+    <color name="icon_disabled_checkedOff_color">#506D6D6D</color> <!-- Black with 50% opacity -->
+
+    <color name="text_enabled_color">@color/black_900</color> <!-- Black -->
+    <color name="text_disabled_color">#503D3D3D</color> <!-- Black with 50% opacity -->
+
 </resources>

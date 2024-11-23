@@ -16,6 +16,7 @@ import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.Switch;
 import android.widget.TableLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -474,10 +475,16 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_sound = findViewById(R.id.switch_sound_home);
         @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_movement = findViewById(R.id.switch_movement_home);
         @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_gps = findViewById(R.id.switch_gps_home);
+        TextView textViews_sound = findViewById(R.id.txt_sound);
+        TextView textViews_movement = findViewById(R.id.txt_movement);
+        TextView textViews_gps = findViewById(R.id.txt_gps);
 
         switch_sound.setEnabled(enable);
         switch_movement.setEnabled(enable);
         switch_gps.setEnabled(enable);
+        textViews_sound.setAlpha(enable ? 1.0f : 0.5f);
+        textViews_movement.setAlpha(enable ? 1.0f : 0.5f);
+        textViews_gps.setAlpha(enable ? 1.0f : 0.5f);
     }
 
     /*----------------------------------------------------------------------------------------*/
