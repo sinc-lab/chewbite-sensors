@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
@@ -23,6 +24,9 @@ public class CBService extends Service {
     private final IBinder mBinder = new CBBinder();
 
     private final String CHANNEL_ID = "CB_NOTIFICATION_DEFAULT_CHANNEL";
+    private static final String PREFS_KEY = "status_controls";
+    private static final String STATUS_SWT_SOUND_CONFIG = "status_switch_sound_configuration";
+    private boolean soundSwitchStatus;
 
     public class CBBinder extends Binder {
         public CBService getService() {
@@ -35,14 +39,25 @@ public class CBService extends Service {
         CBSensorEventListener.INSTANCE.start(context);
         AlarmScheduler.INSTANCE.setContext(context);
         AlarmScheduler.INSTANCE.schedule();
-        AudioRecorder.INSTANCE.start(this);
+        // Recupera el estado guardado
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
+        soundSwitchStatus = sharedPreferences.getBoolean(STATUS_SWT_SOUND_CONFIG, false);
+        if (soundSwitchStatus) { // Verifique si el interruptor de sonido está marcado
+            AudioRecorder.INSTANCE.start(this);
+        } else {
+            // Manejar el caso en el que el interruptor está apagado (opcional)
+            // Es posible que desee registrar un mensaje, actualizar la interfaz de usuario u omitir acciones relacionadas con el audio
+            Log.d("CBService", "Audio recording is disabled");
+        }
     }
 
     public void stopTest() {
         CBSensorEventListener.INSTANCE.stop();
         this.stopForegroundService();
         AlarmScheduler.INSTANCE.cancel();
-        AudioRecorder.INSTANCE.stop();
+        if (soundSwitchStatus) { // Verifique si el interruptor de sonido está marcado
+            AudioRecorder.INSTANCE.stop();
+        }
     }
 
     @Override

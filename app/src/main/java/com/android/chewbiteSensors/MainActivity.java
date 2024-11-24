@@ -334,8 +334,10 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     public void startTest() {
         //
         if (this.mode != AppMode.RUNNING) {
+            // Inicializa los datos del experimento
             this.data = new ExperimentData();
             this.initExperimentData();
+            // Inicializa la instancia del experimento
             CBSensorEventListener.INSTANCE.setExperimentData(this.data);
             /*
             Acá es donde tengo que llamar a la clase setExperimentData(this.data) y pasarle los

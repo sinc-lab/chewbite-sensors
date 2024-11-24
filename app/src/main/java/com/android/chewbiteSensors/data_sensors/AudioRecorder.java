@@ -78,9 +78,9 @@ public enum AudioRecorder {
             recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
             recorder.setOutputFile(audioFile.getAbsolutePath());
             recorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);
-            recorder.setAudioEncodingBitRate(128000);
+            recorder.setAudioEncodingBitRate(bitRate);
             // Establece la frecuencia de muestreo de audio en muestras por segundo.
-            recorder.setAudioSamplingRate(44100);
+            recorder.setAudioSamplingRate(samplingRate);
 
             try {
                 recorder.prepare();
