@@ -26,9 +26,9 @@ public class FileManager {
 
     /**
      * Escribe un archivo de datos de texto en el almacenamiento externo.
-     * @param folderName
-     * @param fileName
-     * @param data
+     * @param folderName Nombre del directorio en el almacenamiento externo.
+     * @param fileName Nombre del archivo en el almacenamiento externo.
+     * @param data Datos a escribir en el archivo.
      */
     public static void writeToFile(String folderName, String fileName, String data) {
         if (FileManager.isExternalStorageWritable()) {

@@ -79,26 +79,25 @@ public enum CBSensorEventListener implements SensorEventListener {
     }
 
     /**
-     * Inicia el experimento.
-     * @param context
+     * El método start es el encargado de iniciar la recolección de datos de los sensores en el experimento. Se encarga de configurar los sensores que se van a utilizar, la frecuencia de muestreo y otros parámetros, para luego registrarlos y comenzar a guardar los datos.
+     * @param context El contexto de la aplicación.
      */
     public void start(Context context) throws SecurityException {
-        //
+        // Obtiene un WakeLock para evitar que el dispositivo entre en suspensión durante la
+        // recolección de datos, asegurando que el proceso continúe sin interrupciones.
         PowerManager powerManager = (PowerManager) context.getSystemService(POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                 "CB::MyWakelockTag");
         wakeLock.acquire(10*60*1000L /*10 minutes*/);
         // Establece el estado del sensor
         this.state = SensorEventListenerState.RUNNING;
-        // Establece el número de archivo del experimento
+        // Obtiene el servicio de sensores
         this.sensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
-        // Establece los sensores
+        // Crea una lista de sensores
         this.sensors = new ArrayList<>();
         // En estas lineas es donde se pueden agregar los sensores
         // Se agrega el acelerómetro, el giroscopio y el campo magnético
-        /**
-         * Acá es donde se debe modificar para que se agreguen o saquen los sensores
-         */
+
         // Recupera el estado guardado
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
         boolean movementStatus = sharedPreferences.getBoolean(STATUS_SWT_MOVEMENT_CONFIG, false);
@@ -129,9 +128,9 @@ public enum CBSensorEventListener implements SensorEventListener {
             if (numberOfStepsStatus) {this.addSensor(CBBuffer.STRING_NUM_OF_STEPS, Sensor.TYPE_STEP_COUNTER);}
             /*------------------------------------------------------------------------*/
         }
-        // Registra los sensores
+        // 5-) Registra los sensores
         this.registerDeviceSensors();
-        // Establece el archivo
+        // 6-) Guarda los datos
         this.scheduleWriteFile(data.getTimestamp());
     }
 
@@ -155,7 +154,8 @@ public enum CBSensorEventListener implements SensorEventListener {
     }
 
     /**
-     * Indica si el experimento está finalizado.
+     * Se llama cuando un sensor cambia de valor.
+     *
      * @param event the {@link android.hardware.SensorEvent SensorEvent}.
      */
     @Override
@@ -212,12 +212,17 @@ public enum CBSensorEventListener implements SensorEventListener {
         }
     }
 
+    /**
+     * Registra los sensores en el dispositivo.
+     */
     private void registerDeviceSensors() {
         mSensorThread = new HandlerThread("Sensor thread", Thread.MAX_PRIORITY);
         mSensorThread.start();
         Handler mSensorHandler = new Handler(mSensorThread.getLooper()); //Blocks until looper is prepared, which is fairly quick
 
         for (CBSensorBuffer sensor: sensors) {
+            String name = sensor.getSensorName();
+            int max = sensor.getSensor().getMaxDelay();
             this.sensorManager.registerListener(this, sensor.getSensor(), this.samplingPeriodUs, 1000000, mSensorHandler);
         }
     }

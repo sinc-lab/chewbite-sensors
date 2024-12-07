@@ -1,9 +1,12 @@
-    package com.android.chewbiteSensors.data_sensors;
+package com.android.chewbiteSensors.data_sensors;
+
+
+import android.hardware.Sensor;
 
 public class CBGpsBuffer extends CBBuffer {
 
-    CBGpsBuffer() {
-        super(CBBuffer.STRING_GPS);
+    CBGpsBuffer(String sensorName) {
+        super(sensorName);
     }
 
 }

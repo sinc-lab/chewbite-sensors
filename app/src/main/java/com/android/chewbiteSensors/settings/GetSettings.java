@@ -38,5 +38,18 @@ public class GetSettings {
             return 44100; // Valor por defecto en caso de que la posición esté fuera de rango
         }
     }
+
+    // Método para obtener la frecuencia de muestreo según la posición seleccionada
+    public static double obtenerFrecuenciaMuestreoGPS(Context context, int position, int frequencyOptionsArray) {
+        String[] opcionesFrecuencia = context.getResources().getStringArray(frequencyOptionsArray);
+        if (position >= 0 && position < opcionesFrecuencia.length) {
+            // Saca el punto que divide los miles
+            String sacarPuntoSeparadorDeMiles = opcionesFrecuencia[position].replace(".", "");
+            // Cambia la coma por el punto y lo convierte a double
+            return Double.parseDouble(sacarPuntoSeparadorDeMiles.replace(",", "."));
+        } else {
+            return 1; // Valor por defecto en caso de que la posición esté fuera de rango
+        }
+    }
     /*--------------------------------------------------------------------------------------------*/
 }

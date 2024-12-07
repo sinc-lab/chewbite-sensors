@@ -198,6 +198,7 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
                 main.openDialog();
                 this.buttonStartStop.setChecked(false);
             } else {
+                // 1-) Presina el boton de "Iniciar" y si no se cumplen las validaciones comienza la grabación
                 main.startTest();
             }
         } else {

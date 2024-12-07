@@ -30,11 +30,11 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.android.chewbiteSensors.data_sensors.AppMode;
 import com.android.chewbiteSensors.data_sensors.AudioRecorder;
+import com.android.chewbiteSensors.data_sensors.CBGPSListener;
 import com.android.chewbiteSensors.data_sensors.CBSensorEventListener;
 import com.android.chewbiteSensors.data_sensors.CBService;
 import com.android.chewbiteSensors.data_sensors.ExperimentData;
 import com.android.chewbiteSensors.data_sensors.FileManager;
-import com.android.chewbiteSensors.data_sensors.TestSensorsEventListener;
 import com.android.chewbiteSensors.databinding.ActivityMainBinding;
 import com.android.chewbiteSensors.deviceStatus.DeviceStatus;
 import com.android.chewbiteSensors.deviceStatus.DeviceStatusService;
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     private Intent batteryStatus;
     private ExperimentData data;
     private static final String INFO_FILE_NAME = "info.txt";
-    private TestSensorsEventListener testSensorsEventListener;
+    //private TestSensorsEventListener testSensorsEventListener;
     private static final String DATE_FORMAT = "dd/MM/yyyy-HH:mm:ss.S";
     private CBService mBoundService;
     private boolean mShouldUnbind;
@@ -85,103 +85,6 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         NavigationUI.setupWithNavController(binding.navView, navController);
 
         /*----------------------------------------------------------------------------------------*/
-        // Inicializa el boton
-        //buttonStartStop = findViewById(R.id.btn_start);
-        //buttonStartStop.setOnCheckedChangeListener(this);
-
-        // Crear el ViewModel
-        //viewModel = new ViewModelProvider(this).get(MyViewModel.class);
-
-        // Obtener el objeto CompoundButton
-        //CompoundButton compoundButton = findViewById(R.id.btn_start);
-        //buttonStartStop = findViewById(R.id.btn_start);
-
-        // Establecer el listener para el evento onCheckedChanged
-        //buttonStartStop.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            // Guardar el estado del objeto CompoundButton en el ViewModel
-         //   viewModel.setIsChecked(isChecked);
-        //});
-
-        /*----------------------------------------------------------------------------------------*/
-
-        // Inicializa el switch
-        /*@SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchSoundConfiguration = findViewById(R.id.switch_sound_configuration);
-        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchMovementConfiguration = findViewById(R.id.switch_movement_configuration);
-        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchGpsConfiguration = findViewById(R.id.switch_gps_configuration);
-
-        // Cargar las preferencias
-        prefsConfig = getSharedPreferences(PREFS_KEY, MODE_PRIVATE);
-
-        // Restaurar el estado del Switch
-        boolean isSwitchSoundChecked = prefsConfig.getBoolean(STATUS_SWT_SOUND_CONFIG, true);
-        boolean isSwitchMovementChecked = prefsConfig.getBoolean(STATUS_SWT_MOVEMENT_CONFIG, false);
-        boolean isSwitchGPSChecked = prefsConfig.getBoolean(STATUS_SWT_GPS_CONFIG, false);
-        switchSoundConfiguration.setChecked(isSwitchSoundChecked);
-        switchMovementConfiguration.setChecked(isSwitchMovementChecked);
-        switchGpsConfiguration.setChecked(isSwitchGPSChecked);
-
-        // si se cambia el estado del switch se guarda el estado del mismo
-        switchSoundConfiguration.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            // Guardar el estado del Switch
-            SharedPreferences.Editor editor = prefsConfig.edit();
-            editor.putBoolean(STATUS_SWT_SOUND_CONFIG, isChecked);
-            editor.apply();
-        });
-        // si se cambia el estado del switch se guarda el estado del mismo
-        switchMovementConfiguration.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            // Guardar el estado del Switch
-            SharedPreferences.Editor editor = prefsConfig.edit();
-            editor.putBoolean(STATUS_SWT_MOVEMENT_CONFIG, isChecked);
-            editor.apply();
-        });
-        // si se cambia el estado del switch se guarda el estado del mismo
-        switchGpsConfiguration.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            // Guardar el estado del Switch
-            SharedPreferences.Editor editor = prefsConfig.edit();
-            editor.putBoolean(STATUS_SWT_GPS_CONFIG, isChecked);
-            editor.apply();
-        });*/
-
-        /*----------------------------------------------------------------------------------------*/
-        // Esta sección  no va porque se cambio la frecuencia de muestreo a la otra panalla
-        // Inicializa del Spinner
-        //Spinner spinnerFrequencyConfiguration = findViewById(R.id.spn_frequency_options);
-
-        // Obtén el array de opciones desde los recursos
-        //String[] optionsArray = getResources().getStringArray(R.array.text_frequency_options);
-
-        // Crea un ArrayAdapter usando el array de opciones y un diseño simple para el spinner
-        //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, optionsArray);
-
-        // Especifica el diseño a utilizar cuando se despliega el spinner
-        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // Aplica el adapter al spinner
-        //spinnerFrequencyConfiguration.setAdapter(adapter);
-
-        // Recuperar la última selección guardada en SharedPreferences
-        //int selectedPosition = prefsConfig.getInt(STATUS_SPN_FREQUENCY_CONFIG, 0); // 0 es el valor por defecto (primera opción)
-        // Seleccionar la opción guardada
-        //spinnerFrequencyConfiguration.setSelection(selectedPosition);
-
-        // Guardar la selección del Spinner
-        /*spinnerFrequencyConfiguration.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                SharedPreferences.Editor editor = prefsConfig.edit();
-                // Guardar la posición seleccionada en SharedPreferences
-                editor.putInt(STATUS_SPN_FREQUENCY_CONFIG, position);
-                editor.apply();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // No se necesita implementar, pero es necesario sobrescribir el método
-            }
-
-        });*/
-
-        /*----------------------------------------------------------------------------------------*/
         // Restore AppMode
         if (savedInstanceState != null && savedInstanceState.containsKey(APP_MODE_STRING)) {
             this.mode = (AppMode) savedInstanceState.getSerializable(APP_MODE_STRING);
@@ -196,31 +99,6 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         /*----------------------------------------------------------------------------------------*/
     }
 
-
-    /*----------------------------------------------------------------------------------------*/
-    /*@Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        // En caso de no tener permisos los vuelve a solicitar
-        this.askForPermissions();
-        // Corrobora si efectivamente se le dio los permisos
-        if (!this.hasPermissions()) {
-            this.buttonStartStop.setChecked(false);
-            return;
-        }
-        //
-        if (isChecked) {
-            // Verifica el estado antes de comenzar la grabación
-            if (!this.checkStatusBeforeStart()) {
-                android.util.Log.d(tag, "if (!this.checkStatusBeforeStart())");
-                this.openDialog();
-                this.buttonStartStop.setChecked(false);
-            } else {
-                this.startTest();
-            }
-        } else {
-            this.stopTest();
-        }
-    }*/
     /*----------------------------------------------------------------------------------------*/
     public void askForPermissions() {
         if (!this.hasPermissions()) {
@@ -337,17 +215,14 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
             // Inicializa los datos del experimento
             this.data = new ExperimentData();
             this.initExperimentData();
-            // Inicializa la instancia del experimento
+            // 2-) Inicializa la instancia del experimento
             CBSensorEventListener.INSTANCE.setExperimentData(this.data);
-            /*
-            Acá es donde tengo que llamar a la clase setExperimentData(this.data) y pasarle los
-            demás datos del experimento como por ejemplo: Formato, frecuencia de muestreo,
-            tasa de bits, etc.
-             */
+            CBGPSListener.INSTANCE.setExperimentData(this.data);
             AudioRecorder.INSTANCE.setExperimentData(this.data);
             this.mode = AppMode.RUNNING;
         }
-        this.showExperimentRunning();
+        //this.showExperimentRunning();
+        // 3.0-) Inicia el servicio
         this.doBindService();
     }
 
@@ -386,13 +261,21 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         info.append("\nBATTERY:\n");
         info.append("Battery at start (%): ").append(100 * this.data.getBatteryAtStart() / (float) this.data.getBatteryCapacity()).append("\n");
         info.append("Battery at end (%): ").append(100 * this.data.getBatteryAtEnd() / (float) this.data.getBatteryCapacity()).append("\n");
-        // Agregar más información según sea necesario
+        // Guardar la información en un archivo
         FileManager.writeToFile(this.data.getTimestamp(), INFO_FILE_NAME, info.toString());
     }
     /*----------------------------------------------------------------------------------------*/
 
+    /**
+     * Inicializa los datos del experimento relacionados con el estado de la batería del dispositivo
+     * al inicio del experimento.
+     * Recupera el nivel y la capacidad de la batería actual y los almacena en un objeto
+     * ExperimentData.
+     */
     private void initExperimentData() {
+        // contiene información sobre el estado de la batería del dispositivo.
         this.batteryStatus = registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        // afirmación que verifica si batteryStatus no es nulo. Si la afirmación falla (es decir, batteryStatus es nulo), indica que no se pudo recuperar la información del estado de la batería.
         assert this.batteryStatus != null;
         data.setBatteryAtStart(this.batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1));
         data.setBatteryCapacity(this.batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1));
@@ -400,7 +283,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
     /*----------------------------------------------------------------------------------------*/
 
-    @SuppressLint("SetTextI18n")
+    /*@SuppressLint("SetTextI18n")
     private void showExperimentRunning() {
         //TableLayout filesTableLayout = findViewById(R.id.filesTableLayout);
 
@@ -416,16 +299,20 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
             this.testSensorsEventListener.stop();
             this.testSensorsEventListener = null;
         }
-    }
+    }*/
 
     /*----------------------------------------------------------------------------------------*/
 
+    /**
+     * Inicia un servicio en primer plano (CBService) y vincula la actividad que lo llama
+     * (MainActivity), lo que permite la interacción y el intercambio de datos.
+     */
     void doBindService() {
         Intent intent = new Intent(MainActivity.this, CBService.class);
         intent.putExtra(MainActivity.TEST_DATA_STRING, this.data);
 
         startForegroundService(intent);
-
+        // 3.1-) mConnection
         boolean  bind = bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
         if (bind) {
             mShouldUnbind = true;
@@ -437,10 +324,28 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
     /*----------------------------------------------------------------------------------------*/
 
+    /**
+     * Es una instancia de la clase ServiceConnection que actúa como un puente entre la actividad
+     * principal (MainActivity) y el servicio en segundo plano (CBService). <br></br>
+     * Su función principal es gestionar la conexión y la comunicación entre ambos componentes.
+     */
     private final ServiceConnection mConnection = new ServiceConnection() {
+        /**
+         * Se ejecuta cuando la actividad se conecta exitosamente al servicio.
+         * Obtiene una instancia del servicio (mBoundService) a través del IBinder proporcionado.
+         * Inicia la prueba: Llama al método startTest del servicio, iniciando la lógica principal del experimento.
+         * Deshabilita los controles de la interfaz: Impide que el usuario interactúe con ciertos controles mientras la prueba está en ejecución.
+         * Muestra un mensaje breve ("Service connected") al usuario.
+         *
+         * @param className El nombre del componente concreto del servicio al que se ha conectado.
+         *
+         * @param service El IBinder del canal de comunicación del Servicio,
+         *                desde el cual ahora podrás realizar llamadas.
+         */
         @SuppressLint("RestrictedApi")
         public void onServiceConnected(ComponentName className, IBinder service) {
             mBoundService = ((CBService.CBBinder)service).getService();
+            // 3.2-) Inicia el test
             mBoundService.startTest(MainActivity.this);
 
             // Deshabilita los controles
@@ -450,6 +355,14 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                     Toast.LENGTH_SHORT).show();
         }
 
+        /**
+         * Se ejecuta cuando la conexión con el servicio se pierde o se interrumpe inesperadamente.
+         * Libera la instancia del servicio (mBoundService).
+         * Muestra un mensaje breve ("Service disconnected") al usuario.
+         *
+         * @param className El nombre del componente concreto del servicio
+         *                  cuya conexión se ha perdido.
+         */
         @SuppressLint("RestrictedApi")
         public void onServiceDisconnected(ComponentName className) {
             mBoundService = null;

@@ -48,6 +48,7 @@ public abstract class CBBuffer {
     /**
      * agrega un nuevo objeto SensorEventData al búfer en la posición principal. Si el búfer está
      * lleno, genera una excepción.
+     *
      * @param s
      * @throws Exception
      */
@@ -60,7 +61,7 @@ public abstract class CBBuffer {
             this.sensorEventData[head] = s;
             // Actualizar el índice
             head = next;
-        // Si el buffer está lleno, lanzar una excepción
+            // Si el buffer está lleno, lanzar una excepción
         } else {
             // Obtener la hora actual en milisegundos
             String ts = Long.toString(System.currentTimeMillis());
@@ -72,6 +73,7 @@ public abstract class CBBuffer {
 
     /**
      * Devuelve el nombre del sensor
+     *
      * @return sensorName
      */
     public String getSensorName() {
@@ -92,7 +94,7 @@ public abstract class CBBuffer {
      * en el buffer.
      * @return
      */
-    public ArrayList<byte[]> getSensorEventData() {
+    public ArrayList<byte[]> getSensorEventData(String sensorName) {
         // Obtener el índice de la cola
         int copyUntil = this.head;
         // Comprobar si el buffer está vacío
@@ -103,8 +105,13 @@ public abstract class CBBuffer {
             ByteBuffer buff = ByteBuffer.allocate(Long.BYTES + 3 * Float.BYTES);
             // Obtener el evento
             SensorEventData event = this.sensorEventData[tail];
-            // Copiar los datos en el buffer
-            buff.putLong(event.getTimestamp()).putFloat(event.getX()).putFloat(event.getY()).putFloat(event.getZ());
+            if (CBBuffer.STRING_GPS.equals(sensorName)) {
+                // Copiar los datos en el buffer
+                buff.putLong(event.getTimestamp()).putFloat(event.getLat()).putFloat(event.getLon()).putFloat(event.getAlt());
+            } else {
+                // Copiar los datos en el buffer
+                buff.putLong(event.getTimestamp()).putFloat(event.getX()).putFloat(event.getY()).putFloat(event.getZ());
+            }
             // Agregar el buffer al arreglo
             bytes.add(buff.array());
             // Actualizar el índice

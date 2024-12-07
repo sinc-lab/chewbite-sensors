@@ -9,8 +9,8 @@ public enum SensorInfo {
     ACCELEROMETER_UNCALIBRATED("acelerómetro sin calibrar","accelerometer_uncalibrated", Sensor.TYPE_ACCELEROMETER_UNCALIBRATED, "status_switch_uncalibrated_accelerometer_configuration"),
     GYROSCOPE_UNCALIBRATED("giroscopio sin calibrar","gyroscope_uncalibrated", Sensor.TYPE_GYROSCOPE_UNCALIBRATED, "status_switch_uncalibrated_gyroscope_configuration"),
     MAGNETOMETER_UNCALIBRATED("magnetómetro sin calibrar","magnetometer_uncalibrated", Sensor.TYPE_MAGNETIC_FIELD_UNCALIBRATED, "status_switch_uncalibrated_magnetometer_configuration"),
-    GRAVITY("gravedad","gravity", Sensor.TYPE_GRAVITY, "status_switch_uncalibrated_magnetometer_configuration"),
-    STEP_COUNTER("contador de pasos","num_of_steps", Sensor.TYPE_STEP_COUNTER, "status_switch_uncalibrated_magnetometer_configuration"),
+    GRAVITY("gravedad","gravity", Sensor.TYPE_GRAVITY, "status_switch_gravity_configuration"),
+    STEP_COUNTER("contador de pasos","num_of_steps", Sensor.TYPE_STEP_COUNTER, "status_switch_number_of_steps_configuration"),
 
     ; // Semicolon is important here
 
