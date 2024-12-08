@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.ChewBiteSensors" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <!--<style name="Theme.ChewBiteSensors" parent="Theme.MaterialComponents.DayNight.NoActionBar"> --> <!-- Para habilitar el modo oscuro en toda la aplicación -->
+    <style name="Theme.ChewBiteSensors" parent="Theme.MaterialComponents.Light.NoActionBar"> <!-- Deshabilitar el modo oscuro para toda la aplicación -->
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/green_700</item>
         <item name="colorPrimaryVariant">@color/black</item>
@@ -12,6 +13,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item> <!-- Deshabilitar el modo oscuro para toda la aplicación -->
     </style>
 
     <style name="Theme.TextNameAPP" parent="Base.TextAppearance.AppCompat.Display1">
