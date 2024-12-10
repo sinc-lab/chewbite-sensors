@@ -21,7 +21,7 @@
     <color name="black_950">#212121</color> <!--Título--> <!--color neutro base-->
     <!-- GREEN -->
     <color name="green_50">#F5FCED</color> <!--Éxito -->
-    <color name="green_600">#454545</color> <!--Éxito --> <!--Color de Acento secundario -->
+    <color name="green_600">#338137</color> <!--Éxito --> <!--Color de Acento secundario -->
     <color name="green_700">#28652B</color> <!--Botón y barra inferior de navegación--> <!--Color de Acento primario-->
     <!-- BLUE -->
     <color name="blue_50">#eff3fd</color> <!--informacion-->
