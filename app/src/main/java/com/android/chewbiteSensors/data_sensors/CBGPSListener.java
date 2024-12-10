@@ -3,7 +3,6 @@ package com.android.chewbiteSensors.data_sensors;
 import static android.content.Context.POWER_SERVICE;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -12,7 +11,6 @@ import android.location.LocationManager;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.PowerManager;
-import android.provider.Settings;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -92,11 +90,11 @@ public enum CBGPSListener implements LocationListener {
 
         // Recupera el estado guardado
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
-        // Frecuencia de muestreo
+        // Frecuencia de muestreo (seg)
         int selectedFrequencyPositionGPS = sharedPreferences.getInt(STATUS_SPN_FREQUENCY_GPS_CONFIG, 0);
-        this.samplingRateGps = GetSettings.obtenerFrecuenciaMuestreoGPS(context, selectedFrequencyPositionGPS, R.array.text_frequency_gps_options);
-        // Convierte la frecuencia de muestreo a milisegundos
-        long samplingInterval = (long) (1000L / this.samplingRateGps);
+        this.samplingRateGps = GetSettings.obtenerFrecuenciaMuestreo(context, selectedFrequencyPositionGPS, R.array.text_frequency_gps_options);
+        // Convierte la frecuencia de muestreo de segundos a milisegundos
+        long samplingInterval = (long) (1000L * this.samplingRateGps);
 
         try {
             if (context.checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&

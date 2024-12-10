@@ -57,7 +57,7 @@
             android:layout_marginBottom="8dp"
             android:gravity="center"
             android:lineSpacingExtra="3sp"
-            android:text="@string/text_frequency"
+            android:text="@string/text_frequency_gps"
             android:textAppearance="@style/stl_text_setting_label"
             android:translationY="-1.47sp" />
 

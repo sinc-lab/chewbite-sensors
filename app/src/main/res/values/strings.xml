@@ -19,7 +19,8 @@
     <string name="text_experiment_name">Nombre del experimento</string>
     <string name="txt_start">Iniciar</string>
     <string name="txt_stop">Detener</string>
-    <string name="text_frequency">Frecuencia de muestreo</string>
+    <string name="text_frequency">Frecuencia de muestreo (Hz)</string>
+    <string name="text_frequency_gps">Frecuencia de muestreo (seg)</string>
     <string name="text_bit_rate">Bit Rate</string>
     <string name="text_type_of_file">Tipo de archivo</string>
     <string name="text_accelerometer">Acelerómetro</string>
@@ -54,9 +55,8 @@
 
     <string-array name="text_frequency_gps_options">
         <item>1</item>
-        <item>0,016</item>
-        <item>0,0055</item>
-        <item>0,0033</item>
+        <item>60</item>
+        <item>600</item>
     </string-array>
 
     <string-array name="text_type_file_options">

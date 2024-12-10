@@ -49,7 +49,7 @@ public class GetSettings {
     }
 
     // Método para obtener la frecuencia de muestreo según la posición seleccionada
-    public static double obtenerFrecuenciaMuestreoGPS(Context context, int position, int frequencyOptionsArray) {
+    /*public static double obtenerFrecuenciaMuestreoGPS(Context context, int position, int frequencyOptionsArray) {
         String[] opcionesFrecuencia = context.getResources().getStringArray(frequencyOptionsArray);
         if (position >= 0 && position < opcionesFrecuencia.length) {
             // Saca el punto que divide los miles
@@ -59,7 +59,7 @@ public class GetSettings {
         } else {
             return 1; // Valor por defecto en caso de que la posición esté fuera de rango
         }
-    }
+    }*/
 
     /*--------------------------------------------------------------------------------------------*/
     @SuppressLint("SimpleDateFormat")
