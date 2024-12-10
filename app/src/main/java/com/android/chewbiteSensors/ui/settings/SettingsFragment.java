@@ -1,9 +1,13 @@
 package com.android.chewbiteSensors.ui.settings;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -12,6 +16,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.android.chewbiteSensors.R;
 import com.android.chewbiteSensors.databinding.FragmentSettingsBinding;
+import com.android.chewbiteSensors.settings.GetSettings;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class SettingsFragment extends Fragment {
@@ -32,14 +37,14 @@ public class SettingsFragment extends Fragment {
 
     /**
      * Método modificado para agregar BottomNavigationView
-     * @param inflater The LayoutInflater object that can be used to inflate
-     * any views in the fragment,
-     * @param container If non-null, this is the parent view that the fragment's
-     * UI should be attached to.  The fragment should not add the view itself,
-     * but this can be used to generate the LayoutParams of the view.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed
-     * from a previous saved state as given here.
      *
+     * @param inflater           The LayoutInflater object that can be used to inflate
+     *                           any views in the fragment,
+     * @param container          If non-null, this is the parent view that the fragment's
+     *                           UI should be attached to.  The fragment should not add the view itself,
+     *                           but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     *                           from a previous saved state as given here.
      * @return view
      */
     @Override
@@ -53,7 +58,32 @@ public class SettingsFragment extends Fragment {
             NavController navController = navHostFragment.getNavController();
             NavigationUI.setupWithNavController(bottomNavigationView, navController);
         }
+        /*----------------------------------------------------------------------------------------*/
+        // Inicializa del EditText
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
+        EditText editTextExperimentName = view.findViewById(R.id.et_name_experiment);
+        // Se le configura el nombre del experimento
+        editTextExperimentName.setText(GetSettings.getExperimentName(requireActivity()));
 
+        editTextExperimentName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // No es necesario implementar este método en este caso
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // No es necesario implementar este método en este caso
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Guardar el texto en SharedPreferences
+                String nameExperiment = s.toString();
+                GetSettings.setExperimentName(requireActivity(), nameExperiment);
+            }
+        });
+        /*----------------------------------------------------------------------------------------*/
         return view;
     }
 
