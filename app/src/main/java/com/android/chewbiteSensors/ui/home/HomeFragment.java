@@ -133,15 +133,22 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
             switchMovementConfiguration.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean(STATUS_SWT_MOVEMENT_CONFIG, isChecked);
-                // En el caso que el Switch de "Movimiento" sea TRUE
-                // y todos los demás sean FALSE (es decir: no tienen guardado un estado previamente)
-                // Los pasa a positivos
-                if (isChecked && !accelerometerStatus && !gyroscopeStatus && !magnetometerStatus &&
-                        !accelerometerUncalibratedStatus && !gyroscopeUncalibratedStatus &&
-                        !magnetometerUncalibratedStatus && !gravityStatus && !numberOfStepsStatus){
+
+                if (isChecked){
+                    // En el caso que el Switch de "Movimiento" sea TRUE → se pasan solo a TRUE los 3 primeros
                     editor.putBoolean(STATUS_SWT_ACCELEROMETER_CONFIG, true);
                     editor.putBoolean(STATUS_SWT_GYROSCOPE_CONFIG, true);
                     editor.putBoolean(STATUS_SWT_MAGNETOMETER_CONFIG, true);
+                } else {
+                    // En el caso que el Switch de "Movimiento" sea FALSE → se pasan todos a FALSE
+                    editor.putBoolean(STATUS_SWT_ACCELEROMETER_CONFIG, false);
+                    editor.putBoolean(STATUS_SWT_GYROSCOPE_CONFIG, false);
+                    editor.putBoolean(STATUS_SWT_MAGNETOMETER_CONFIG, false);
+                    editor.putBoolean(STATUS_SWT_UNCALIBRATED_ACCELEROMETER_CONFIG, false);
+                    editor.putBoolean(STATUS_SWT_UNCALIBRATED_GYROSCOPE_CONFIG, false);
+                    editor.putBoolean(STATUS_SWT_UNCALIBRATED_MAGNETOMETER_CONFIG, false);
+                    editor.putBoolean(STATUS_SWT_GRAVITY_CONFIG, false);
+                    editor.putBoolean(STATUS_SWT_NUMBER_OF_STEPS_CONFIG, false);
                 }
                 editor.apply();
             });
