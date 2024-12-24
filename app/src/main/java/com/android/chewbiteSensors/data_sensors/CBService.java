@@ -49,7 +49,7 @@ public class CBService extends Service {
         AlarmScheduler.INSTANCE.schedule();
         // Recupera el estado guardado
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
-        soundSwitchStatus = sharedPreferences.getBoolean(STATUS_SWT_SOUND_CONFIG, false);
+        soundSwitchStatus = sharedPreferences.getBoolean(STATUS_SWT_SOUND_CONFIG, true);
         if (soundSwitchStatus) { // Verifique si el interruptor de sonido está marcado
             // 4-) inicializa las instancias de los sensores
             AudioRecorder.INSTANCE.start(this);

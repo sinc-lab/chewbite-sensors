@@ -6,14 +6,11 @@ import android.content.SharedPreferences;
 
 import com.android.chewbiteSensors.R;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class GetSettings {
     // Atributo
     private static final String PREFS_KEY = "status_controls";
     private static final String NAME_OF_THE_EXPERIMENT = "name_of_the_experiment";
-    private static final String DATE_FORMAT = "yyyy_MM_dd-HH_mm_ss";
+
 
     /*--------------------------------------------------------------------------------------------*/
     // Método para obtener el formato de archivo según la posición seleccionada
@@ -65,10 +62,11 @@ public class GetSettings {
     @SuppressLint("SimpleDateFormat")
     public static String getExperimentName(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
-        String nombreDelExperimento = sharedPreferences.getString(NAME_OF_THE_EXPERIMENT, "");
-        if (nombreDelExperimento.isEmpty()) {
-            Date fecha = new Date();
-            nombreDelExperimento = new SimpleDateFormat(DATE_FORMAT).format(fecha);
+        String nombreDelExperimento = sharedPreferences.getString(NAME_OF_THE_EXPERIMENT, "Test");
+        if (nombreDelExperimento.trim().isEmpty()) {
+            /*Date fecha = new Date();
+            nombreDelExperimento = new SimpleDateFormat(DATE_FORMAT).format(fecha);*/
+            nombreDelExperimento = "Test";
         }
         return nombreDelExperimento;
     }

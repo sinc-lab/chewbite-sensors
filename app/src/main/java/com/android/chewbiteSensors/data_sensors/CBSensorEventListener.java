@@ -3,7 +3,6 @@ package com.android.chewbiteSensors.data_sensors;
 import static android.content.Context.POWER_SERVICE;
 import static android.content.Context.SENSOR_SERVICE;
 
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
@@ -18,7 +17,6 @@ import android.util.Log;
 import com.android.chewbiteSensors.R;
 import com.android.chewbiteSensors.settings.GetSettings;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -60,6 +58,7 @@ public enum CBSensorEventListener implements SensorEventListener {
 
     /**
      * Establece los datos del experimento.
+     *
      * @param data
      */
     public void setExperimentData(ExperimentData data) {
@@ -72,7 +71,7 @@ public enum CBSensorEventListener implements SensorEventListener {
     public void changeFileNumber() {
         this.data.setFileNumber(this.data.getFileNumber() + 1);
         // Establece el número de archivo de los sensores
-        for (CBSensorBuffer sensor: this.sensors) {
+        for (CBSensorBuffer sensor : this.sensors) {
             // Establece el número de archivo del sensor
             sensor.setFileNumber(this.data.getFileNumber());
         }
@@ -80,6 +79,7 @@ public enum CBSensorEventListener implements SensorEventListener {
 
     /**
      * El método start es el encargado de iniciar la recolección de datos de los sensores en el experimento. Se encarga de configurar los sensores que se van a utilizar, la frecuencia de muestreo y otros parámetros, para luego registrarlos y comenzar a guardar los datos.
+     *
      * @param context El contexto de la aplicación.
      */
     public void start(Context context) throws SecurityException {
@@ -88,7 +88,7 @@ public enum CBSensorEventListener implements SensorEventListener {
         PowerManager powerManager = (PowerManager) context.getSystemService(POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                 "CB::MyWakelockTag");
-        wakeLock.acquire(10*60*1000L /*10 minutes*/);
+        wakeLock.acquire(10 * 60 * 1000L /*10 minutes*/);
         // Establece el estado del sensor
         this.state = SensorEventListenerState.RUNNING;
         // Obtiene el servicio de sensores
@@ -117,21 +117,37 @@ public enum CBSensorEventListener implements SensorEventListener {
         Log.d("CBSensorEventListener", "Frecuencia: " + samplingRate + " Hz, Período: " + samplingPeriodUs + " µs");
 
         if (movementStatus) {
-            if (accelerometerStatus) {this.addSensor(CBBuffer.STRING_ACCELEROMETER, Sensor.TYPE_ACCELEROMETER);}
-            if (gyroscopeStatus) {this.addSensor(CBBuffer.STRING_GYROSCOPE, Sensor.TYPE_GYROSCOPE);}
-            if (magnetometerStatus) {this.addSensor(CBBuffer.STRING_MAGNETIC_FIELD, Sensor.TYPE_MAGNETIC_FIELD);}
+            if (accelerometerStatus) {
+                this.addSensor(CBBuffer.STRING_ACCELEROMETER, Sensor.TYPE_ACCELEROMETER);
+            }
+            if (gyroscopeStatus) {
+                this.addSensor(CBBuffer.STRING_GYROSCOPE, Sensor.TYPE_GYROSCOPE);
+            }
+            if (magnetometerStatus) {
+                this.addSensor(CBBuffer.STRING_MAGNETIC_FIELD, Sensor.TYPE_MAGNETIC_FIELD);
+            }
             /*------------------------------------------------------------------------*/
-            if (accelerometerUncalibratedStatus) {this.addSensor(CBBuffer.STRING_ACCELEROMETER_UNCALIBRATED, Sensor.TYPE_ACCELEROMETER_UNCALIBRATED);}
-            if (gyroscopeUncalibratedStatus) {this.addSensor(CBBuffer.STRING_GYROSCOPE_UNCALIBRATED, Sensor.TYPE_GYROSCOPE_UNCALIBRATED);}
-            if (magnetometerUncalibratedStatus) {this.addSensor(CBBuffer.STRING_MAGNETIC_FIELD_UNCALIBRATED, Sensor.TYPE_MAGNETIC_FIELD_UNCALIBRATED);}
-            if (gravityStatus) {this.addSensor(CBBuffer.STRING_GRAVITY, Sensor.TYPE_GRAVITY);}
-            if (numberOfStepsStatus) {this.addSensor(CBBuffer.STRING_NUM_OF_STEPS, Sensor.TYPE_STEP_COUNTER);}
+            if (accelerometerUncalibratedStatus) {
+                this.addSensor(CBBuffer.STRING_ACCELEROMETER_UNCALIBRATED, Sensor.TYPE_ACCELEROMETER_UNCALIBRATED);
+            }
+            if (gyroscopeUncalibratedStatus) {
+                this.addSensor(CBBuffer.STRING_GYROSCOPE_UNCALIBRATED, Sensor.TYPE_GYROSCOPE_UNCALIBRATED);
+            }
+            if (magnetometerUncalibratedStatus) {
+                this.addSensor(CBBuffer.STRING_MAGNETIC_FIELD_UNCALIBRATED, Sensor.TYPE_MAGNETIC_FIELD_UNCALIBRATED);
+            }
+            if (gravityStatus) {
+                this.addSensor(CBBuffer.STRING_GRAVITY, Sensor.TYPE_GRAVITY);
+            }
+            if (numberOfStepsStatus) {
+                this.addSensor(CBBuffer.STRING_NUM_OF_STEPS, Sensor.TYPE_STEP_COUNTER);
+            }
             /*------------------------------------------------------------------------*/
         }
         // 5-) Registra los sensores
         this.registerDeviceSensors();
         // 6-) Guarda los datos
-        this.scheduleWriteFile(data.getTimestamp());
+        this.scheduleWriteFile(GetSettings.getExperimentName(context));
     }
 
     /**
@@ -147,6 +163,7 @@ public enum CBSensorEventListener implements SensorEventListener {
 
     /**
      * Indica si el experimento está corriendo.
+     *
      * @return
      */
     public boolean isRunning() {
@@ -161,13 +178,14 @@ public enum CBSensorEventListener implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent event) {
         // Establece el valor de los sensores
-        for (CBSensorBuffer sensor: sensors) {
+        for (CBSensorBuffer sensor : sensors) {
             // Verifica que el tipo de sensor sea el mismo
             if (event.sensor.getType() == sensor.getSensor().getType()) {
                 try {
                     sensor.append(new SensorEventData(event.timestamp, event.values[0], event.values[1], event.values[2]));
                 } catch (Exception e) {
-                    FileManager.writeToFile(this.data.getTimestamp(), "error.txt", e.getMessage() + '\n');
+                    //FileManager.writeToFile(this.data.getTimestamp(), "error.txt", e.getMessage() + '\n');
+                    FileManager.writeToFile("error.txt", e.getMessage() + '\n');
                 }
             }
         }
@@ -175,9 +193,10 @@ public enum CBSensorEventListener implements SensorEventListener {
 
     /**
      * Se llama cuando la precisión de un sensor ha cambiado.
+     *
      * @param arg0
      * @param arg1 La nueva precisión de este sensor, uno de
-     *         {@code SensorManager.SENSOR_STATUS_*}
+     *             {@code SensorManager.SENSOR_STATUS_*}
      */
     @Override
     public void onAccuracyChanged(Sensor arg0, int arg1) {
@@ -190,13 +209,14 @@ public enum CBSensorEventListener implements SensorEventListener {
      * con una ejecución de prueba específica.
      * Al llamar a este método, accede a estos archivos para su posterior procesamiento, análisis o
      * visualización.
-     * @param directoryName
+     *
      */
-    public File[] getTestFiles(String directoryName) {
+    /*public File[] getTestFiles(String directoryName) {
         // Establece el número de archivo del experimento → 2
-        return FileManager.getDirectoryContent(directoryName);
-    }
-
+        //return FileManager.getDirectoryContent(directoryName);
+        // Obtener el directorio del experimento
+         return Objects.requireNonNull(FileManager.getFile(directoryName)).listFiles();
+    }*/
     public void cancelTimer() {
         if (this.timer != null) {
             this.timer.cancel();
@@ -220,7 +240,7 @@ public enum CBSensorEventListener implements SensorEventListener {
         mSensorThread.start();
         Handler mSensorHandler = new Handler(mSensorThread.getLooper()); //Blocks until looper is prepared, which is fairly quick
 
-        for (CBSensorBuffer sensor: sensors) {
+        for (CBSensorBuffer sensor : sensors) {
             String name = sensor.getSensorName();
             int max = sensor.getSensor().getMaxDelay();
             this.sensorManager.registerListener(this, sensor.getSensor(), this.samplingPeriodUs, 1000000, mSensorHandler);
@@ -229,7 +249,7 @@ public enum CBSensorEventListener implements SensorEventListener {
 
     private void unregisterDeviceSensors() {
         this.sensorManager.unregisterListener(this);
-        for (CBSensorBuffer sensor: sensors) {
+        for (CBSensorBuffer sensor : sensors) {
             sensor.resetBuffer();
         }
         mSensorThread.quitSafely();
@@ -241,7 +261,7 @@ public enum CBSensorEventListener implements SensorEventListener {
 
         writeFileTask.addSensors(this.sensors);
 
-        writeFileTask.setDirectoryName(directoryName);
+        //writeFileTask.setDirectoryName(directoryName);
         timer.schedule(writeFileTask, WriteFileTask.DELAY_TIME_MS, WriteFileTask.PERIOD_TIME_MS);
     }
 }

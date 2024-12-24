@@ -3,7 +3,6 @@ package com.android.chewbiteSensors.data_sensors;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaRecorder;
-import android.os.Build;
 import android.util.Log;
 
 import com.android.chewbiteSensors.R;
@@ -45,53 +44,30 @@ public enum AudioRecorder {
         int bitRate = GetSettings.obtenerTasaBitRate(context, selectedBitRatePosition);
         int samplingRate = GetSettings.obtenerFrecuenciaMuestreo(context, selectedFrequencyPosition, R.array.text_frequency_sound_options);
 
-        // Comprobar si Android es inferior a Android 10
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-            // Genera un nombre de archivo único para el audio
-            String fileName = String.format("audio.%s", outputFormat);
-            File audioFile = FileManager.getPublicFile(data.getTimestamp(), fileName);
-            // Inicializa una instancia de MediaRecorder y la configura:
-            recorder = new MediaRecorder();
-            recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-            recorder.setOutputFile(audioFile.getAbsolutePath());
-            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);
-            recorder.setAudioEncodingBitRate(bitRate);
-            // Establece la frecuencia de muestreo de audio en muestras por segundo.
-            recorder.setAudioSamplingRate(samplingRate);
-
-            try {
-                //
-                recorder.prepare();
-            } catch (IOException e) {
-                Log.e("AudioRecord", "prepare() failed → " + e.getMessage());
-            }
-            recorder.start();
-
-        }   else {
-            String fileName = String.format("audio.%s", outputFormat);
-            //File audioFile = new File(context.getExternalFilesDir(data.getTimestamp()), fileName);
-            File audioFile = FileManager.getPublicFile(data.getTimestamp(), fileName);
-
-            recorder = new MediaRecorder();
-            recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-            recorder.setOutputFile(audioFile.getAbsolutePath());
-            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);
-            recorder.setAudioEncodingBitRate(bitRate);
-            // Establece la frecuencia de muestreo de audio en muestras por segundo.
-            recorder.setAudioSamplingRate(samplingRate);
-
-            try {
-                recorder.prepare();
-            } catch (IOException e) {
-                Log.e("AudioRecord", "prepare() failed → " + e.getMessage());
-            }
-
-            recorder.start();
-
+        // Genera un nombre de archivo único para el audio
+        String fileName = String.format("audio.%s", outputFormat);
+        File audioFile = FileManager.getFile(fileName);
+        // Inicializa una instancia de MediaRecorder y la configura:
+        recorder = new MediaRecorder();
+        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        assert audioFile != null;
+        recorder.setOutputFile(audioFile.getAbsolutePath());
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);
+        recorder.setAudioEncodingBitRate(bitRate);
+        // Establece la frecuencia de muestreo de audio en muestras por segundo.
+        recorder.setAudioSamplingRate(samplingRate);
+        try {
+            //
+            recorder.prepare();
+        } catch (IOException e) {
+            Log.e("AudioRecord", "prepare() failed → " + e.getMessage());
         }
-
+        try {
+            recorder.start();
+        } catch (Exception e) {
+            Log.e("AudioRecord", "start() failed → " + e.getMessage());
+        }
     }
 
 
@@ -100,9 +76,20 @@ public enum AudioRecorder {
      * Libera los recursos de MediaRecorder.
      */
     public void stop() {
-        recorder.stop();
+        /*recorder.stop();
         recorder.release();
-        recorder = null;
+        recorder = null;*/
+        if (recorder != null) {
+            try {
+                recorder.stop();
+                recorder.release();
+            } catch (Exception e) {
+                // Handle exceptions during stop or release
+                e.printStackTrace(); // Or log the error appropriately
+            } finally {
+                recorder = null;
+            }
+        }
     }
 
     public ExperimentData getExperimentData() {

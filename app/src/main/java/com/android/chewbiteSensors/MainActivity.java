@@ -1,5 +1,7 @@
 package com.android.chewbiteSensors;
 
+import static android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
@@ -8,9 +10,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.CheckBox;
@@ -19,7 +23,6 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -42,9 +45,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback{
+public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
     private final String tag = "MainActivity";
     public static String TEST_DATA_STRING = "testData";
     private static final int APPLICATION_PERMISSION_CODE = 1;
@@ -59,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     private CBService mBoundService;
     private boolean mShouldUnbind;
     private static final String APP_MODE_STRING = "appMode";
+    private static final int REQUEST_CODE_READ_EXTERNAL_STORAGE = 1;
 
 
     @Override
@@ -100,22 +107,29 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     }
 
     /*----------------------------------------------------------------------------------------*/
+
     public void askForPermissions() {
-        if (!this.hasPermissions()) {
+
+        /*if (!this.hasPermissions()) {
             /*
-            * la función shouldShowRequestPermissionRationale() devuelve:
-            * true si el usuario ha rechazado previamente el permiso pero no ha marcado la opción “No preguntar de nuevo”,
-            * false si el usuario ha rechazado el permiso y ha marcado la opción “No preguntar de nuevo” o si el permiso ha sido concedido.
-            * */
-            if ( ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) ||
+             * la función shouldShowRequestPermissionRationale() devuelve:
+             * true si el usuario ha rechazado previamente el permiso pero no ha marcado la opción “No preguntar de nuevo”,
+             * false si el usuario ha rechazado el permiso y ha marcado la opción “No preguntar de nuevo” o si el permiso ha sido concedido.
+             *
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) ||
                     ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO) ||
-                    ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE) ) {
+                    ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE) ||
+                    ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION) ||
+                    ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 // Solicitamos los permisos
                 ActivityCompat.requestPermissions(this,
                         new String[]{
                                 Manifest.permission.READ_EXTERNAL_STORAGE,
                                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                Manifest.permission.RECORD_AUDIO
+                                Manifest.permission.RECORD_AUDIO,
+                                Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION
                         },
                         MainActivity.APPLICATION_PERMISSION_CODE);
             } else {
@@ -128,14 +142,56 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                                         new String[]{
                                                 Manifest.permission.READ_EXTERNAL_STORAGE,
                                                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                                Manifest.permission.RECORD_AUDIO
+                                                Manifest.permission.RECORD_AUDIO,
+                                                Manifest.permission.ACCESS_FINE_LOCATION,
+                                                Manifest.permission.ACCESS_COARSE_LOCATION
                                         },
                                         MainActivity.APPLICATION_PERMISSION_CODE))
                         .setNegativeButton("Cancelar", null)
                         .create()
                         .show();
             }
-            /*-------------------------------------------------------------------------*/
+        }*/
+        /*-------------------------------------------------------------------------*/
+
+        // nuevo código
+        if (!this.hasPermissions()) {
+            String[] permissions;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                permissions = new String[]{
+                        Manifest.permission.RECORD_AUDIO,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        //Manifest.permission.MANAGE_EXTERNAL_STORAGE // Si es necesario
+
+
+                };
+                // Solicitar MANAGE_EXTERNAL_STORAGE manualmente
+                if (!Environment.isExternalStorageManager()) {
+                    Intent intent = new Intent(ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                    intent.setData(Uri.parse("package:" + getPackageName()));
+                    startActivity(intent);
+                }
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                permissions = new String[]{
+                        Manifest.permission.RECORD_AUDIO,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                };
+            } else {
+                permissions = new String[]{
+                        Manifest.permission.RECORD_AUDIO,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                };
+            }
+
+            ActivityCompat.requestPermissions(this, permissions, APPLICATION_PERMISSION_CODE);
         }
     }
 
@@ -149,23 +205,70 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
 
         // Comprobar si Android es inferior a Android 10
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+        /*if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
             // Para Android 9 y anteriores, necesitas el permiso WRITE_EXTERNAL_STORAGE
-            int readStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE );
+            int readStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
             int writeStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
             int recordAudioPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
+            int locatedGPSPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+            int locatedGPSPermissionCoarse = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
+
             return readStoragePermission == PackageManager.PERMISSION_GRANTED
                     && writeStoragePermission == PackageManager.PERMISSION_GRANTED
-                    && recordAudioPermission == PackageManager.PERMISSION_GRANTED;
-        } else {
-            // Para Android 10 y posteriores, no necesitas el permiso WRITE_EXTERNAL_STORAGE
-            int readStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE );
-            int writeStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                    && recordAudioPermission == PackageManager.PERMISSION_GRANTED
+                    && locatedGPSPermission == PackageManager.PERMISSION_GRANTED
+                    && locatedGPSPermissionCoarse == PackageManager.PERMISSION_GRANTED;
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // Para Android 12 y posteriores, no necesitas el permiso MANAGE_EXTERNAL_STORAGE
+            int readStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+            int writeStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.MANAGE_EXTERNAL_STORAGE);
             int recordAudioPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
+            int locatedGPSPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+            int locatedGPSPermissionCoarse = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
             return writeStoragePermission == PackageManager.PERMISSION_GRANTED
                     && recordAudioPermission == PackageManager.PERMISSION_GRANTED
-                    && readStoragePermission == PackageManager.PERMISSION_GRANTED;
+                    && readStoragePermission == PackageManager.PERMISSION_GRANTED
+                    && locatedGPSPermission == PackageManager.PERMISSION_GRANTED
+                    && locatedGPSPermissionCoarse == PackageManager.PERMISSION_GRANTED;
+        } else {
+            // Para Android 10 y posteriores, no necesitas el permiso WRITE_EXTERNAL_STORAGE
+            int readStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+            int writeStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            int recordAudioPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
+            int locatedGPSPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+            int locatedGPSPermissionCoarse = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
+            return writeStoragePermission == PackageManager.PERMISSION_GRANTED
+                    && recordAudioPermission == PackageManager.PERMISSION_GRANTED
+                    && readStoragePermission == PackageManager.PERMISSION_GRANTED
+                    && locatedGPSPermission == PackageManager.PERMISSION_GRANTED
+                    && locatedGPSPermissionCoarse == PackageManager.PERMISSION_GRANTED;
+        }*/
+        /*----------------------------------------------------------------------------------------*/
+
+        // Código mejorado
+        List<String> permissions = new ArrayList<>(Arrays.asList(
+                // Lista de lo permisos para todas las versiones de Android
+                Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.READ_EXTERNAL_STORAGE));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            //permissions.add(Manifest.permission.MANAGE_EXTERNAL_STORAGE);// Si es necesario
+            //permissions.add(ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+        } else //if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P)
+        {
+            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
+        // Convertir la lista de permisos de nuevo a un array si es necesario
+        //String[] permissionsArray = permissions.toArray(new String[0]);
+
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /*----------------------------------------------------------------------------------------*/
@@ -213,8 +316,9 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         //
         if (this.mode != AppMode.RUNNING) {
             // Inicializa los datos del experimento
-            this.data = new ExperimentData();
+            this.data = new ExperimentData(this);
             this.initExperimentData();
+            FileManager.setExperimentData(data);
             // 2-) Inicializa la instancia del experimento
             CBSensorEventListener.INSTANCE.setExperimentData(this.data);
             CBGPSListener.INSTANCE.setExperimentData(this.data);
@@ -240,8 +344,8 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         this.logExtraInfo();
 
         // Obtener los archivos generados → 1
-        File[] testFiles = CBSensorEventListener.INSTANCE.getTestFiles(data.getTimestamp());
-        this.showGeneratedFiles(testFiles);
+        //File[] testFiles = CBSensorEventListener.INSTANCE.getTestFiles(data.getTimestamp());
+        //this.showGeneratedFiles(testFiles);
         this.doUnbindService();
     }
     /*----------------------------------------------------------------------------------------*/
@@ -262,7 +366,8 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         info.append("Battery at start (%): ").append(100 * this.data.getBatteryAtStart() / (float) this.data.getBatteryCapacity()).append("\n");
         info.append("Battery at end (%): ").append(100 * this.data.getBatteryAtEnd() / (float) this.data.getBatteryCapacity()).append("\n");
         // Guardar la información en un archivo
-        FileManager.writeToFile(this.data.getTimestamp(), INFO_FILE_NAME, info.toString());
+        //FileManager.writeToFile(this.data.getTimestamp(), INFO_FILE_NAME, info.toString());
+        FileManager.writeToFile(INFO_FILE_NAME, info.toString());
     }
     /*----------------------------------------------------------------------------------------*/
 
@@ -313,7 +418,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
         startForegroundService(intent);
         // 3.1-) mConnection
-        boolean  bind = bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+        boolean bind = bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
         if (bind) {
             mShouldUnbind = true;
         } else {
@@ -344,7 +449,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
          */
         @SuppressLint("RestrictedApi")
         public void onServiceConnected(ComponentName className, IBinder service) {
-            mBoundService = ((CBService.CBBinder)service).getService();
+            mBoundService = ((CBService.CBBinder) service).getService();
             // 3.2-) Inicia el test
             mBoundService.startTest(MainActivity.this);
 
@@ -377,6 +482,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     /**
      * Método que habilita o deshabilita los controles (switch y menú de navegación)
      * cuando se inicia o se finaliza la grabación.
+     *
      * @param enable (true o false)
      */
     private void EnablingAndDisablingControls(boolean enable) {
@@ -407,7 +513,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         //TableLayout filesTableLayout = findViewById(R.id.filesTableLayout);
         //filesTableLayout.removeAllViews();
 
-        for (File file: files) {
+        for (File file : files) {
             CheckBox fileCheckBox = new CheckBox(this);
             fileCheckBox.setLayoutParams(new TableLayout.LayoutParams());
             fileCheckBox.setText(file.getName());
@@ -430,6 +536,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     }
 
     /*----------------------------------------------------------------------------------------*/
+
     /**
      * ViewModel para la persistencia de datos. <br>
      * Utilizar el ViewModel para almacenar el estado del objeto CompoundButton. El ViewModel es una
@@ -447,6 +554,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
             this.isChecked = isChecked;
         }
     }
+
     /*----------------------------------------------------------------------------------------*/
     @Override
     protected void onStart() {

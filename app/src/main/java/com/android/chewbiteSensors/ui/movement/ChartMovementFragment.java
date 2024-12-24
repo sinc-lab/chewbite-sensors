@@ -61,7 +61,7 @@ public class ChartMovementFragment extends Fragment {
             if (this.mode == AppMode.STOPPED) {
                 // Show files
                 assert data != null;
-                File[] testFiles = CBSensorEventListener.INSTANCE.getTestFiles(data.getTimestamp());
+                //File[] testFiles = CBSensorEventListener.INSTANCE.getTestFiles(data.getTimestamp());
                 // se comenta temporalmente
                 //this.showGeneratedFiles(testFiles);
             }

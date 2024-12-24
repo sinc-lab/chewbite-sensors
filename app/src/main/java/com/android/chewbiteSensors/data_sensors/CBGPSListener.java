@@ -116,7 +116,7 @@ public enum CBGPSListener implements LocationListener {
             );
             isRunning = true;
             // 6-)
-            this.scheduleDataRecording(data.getTimestamp());
+            this.scheduleDataRecording(GetSettings.getExperimentName(context));
 
         } catch (SecurityException e) {
             e.printStackTrace();
@@ -157,7 +157,8 @@ public enum CBGPSListener implements LocationListener {
         try {
             sensor.append(new SensorEventData(location.getTime(), location.getLatitude(), location.getLongitude(), location.getAltitude()));
         } catch (Exception e) {
-            FileManager.writeToFile(data.getTimestamp(), "error.txt", e.getMessage() + '\n');
+            //FileManager.writeToFile(data.getTimestamp(), "error.txt", e.getMessage() + '\n');
+            FileManager.writeToFile("error.txt", e.getMessage() + '\n');
         }
     }
 
@@ -218,7 +219,7 @@ public enum CBGPSListener implements LocationListener {
 
         writeFileTaskGps.addSensor(sensor);
         // Setear el nombre del directorio
-        writeFileTaskGps.setDirectoryName(directoryName);
+        //writeFileTaskGps.setDirectoryName(directoryName);
 
         timer = new Timer();
         timer.schedule(writeFileTaskGps, WriteFileTaskGPS.DELAY_TIME_MS, WriteFileTaskGPS.PERIOD_TIME_MS);

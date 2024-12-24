@@ -11,7 +11,7 @@ public class WriteFileTask<T extends CBBuffer> extends TimerTask {
 
     private final List<T> sensors;
 
-    private String directoryName;
+    //private String directoryName;
 
     WriteFileTask() {
         this.sensors = new ArrayList<>();
@@ -20,7 +20,8 @@ public class WriteFileTask<T extends CBBuffer> extends TimerTask {
     @Override
     public void run() {
         for (CBBuffer sensorBuffer : this.sensors) {
-            FileManager.writeToFile(this.directoryName, sensorBuffer.getSensorFileName(), sensorBuffer.getSensorEventData("Movimiento"));
+            //FileManager.writeToFile(this.directoryName, sensorBuffer.getSensorFileName(), sensorBuffer.getSensorEventData("Movimiento"));
+            FileManager.writeToFile(sensorBuffer.getSensorFileName(), sensorBuffer.getSensorEventData("Movimiento"));
         }
     }
 
@@ -28,7 +29,7 @@ public class WriteFileTask<T extends CBBuffer> extends TimerTask {
         this.sensors.addAll(sensors);
     }
 
-    public void setDirectoryName(String directoryName) {
+    /*public void setDirectoryName(String directoryName) {
         this.directoryName = directoryName;
-    }
+    }*/
 }
