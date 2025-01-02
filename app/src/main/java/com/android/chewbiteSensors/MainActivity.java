@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.Switch;
 import android.widget.TableLayout;
@@ -313,6 +314,12 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
      * Inicia el test.
      */
     public void startTest() {
+
+        // Configurar el TextView
+        TextView tvFilePathinf = findViewById(R.id.tv_file_path);
+        // Ocultar el TextView
+        tvFilePathinf.setVisibility(View.GONE);
+
         //
         if (this.mode != AppMode.RUNNING) {
             // Inicializa los datos del experimento
@@ -330,6 +337,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         this.doBindService();
     }
 
+    @SuppressLint("SetTextI18n")
     public void stopTest() {
         this.mode = AppMode.STOPPED;
         //this.sendButton.show();
@@ -347,6 +355,16 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         //File[] testFiles = CBSensorEventListener.INSTANCE.getTestFiles(data.getTimestamp());
         //this.showGeneratedFiles(testFiles);
         this.doUnbindService();
+        /*----------------------------------------------------------------------------------------*/
+        // Obtener la ruta de los archivos generados
+        String filePath = FileManager.getExperimentDirectory().toString();
+
+        // Configurar el TextView
+        TextView tvFilePathinf = findViewById(R.id.tv_file_path);
+        // Mostrar la ruta al experimento
+        tvFilePathinf.setVisibility(View.VISIBLE);
+        tvFilePathinf.setText("El experimento finalizó correctamente. El mismo se encuentra almacenado en: " + filePath);
+        /*----------------------------------------------------------------------------------------*/
     }
     /*----------------------------------------------------------------------------------------*/
 

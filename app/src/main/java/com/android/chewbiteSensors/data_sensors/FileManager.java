@@ -63,7 +63,7 @@ public class FileManager {
         return null;
     }
 
-    static File getExperimentDirectory() {
+    public static File getExperimentDirectory() {
         // Crear carpeta base si no existe
         //File baseDir = new File(context.getFilesDir(), BASE_FOLDER);
         //File baseDir = new File(context.getExternalFilesDir(null), BASE_FOLDER);

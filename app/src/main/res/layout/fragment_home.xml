@@ -109,7 +109,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:background="@drawable/background_color_black_100"
-        app:layout_constraintBottom_toTopOf="@+id/btn_start"
+        app:layout_constraintBottom_toTopOf="@+id/tv_file_path"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/informative_message_box"
@@ -175,8 +175,8 @@
                     android:gravity="center|center_vertical"
                     android:lineSpacingExtra="0sp"
                     android:text="@string/text_sound_configuration"
-                    android:textAppearance="@style/sound_configuration"
-                    android:textAllCaps="true"/>
+                    android:textAllCaps="true"
+                    android:textAppearance="@style/sound_configuration" />
 
                 <Switch
                     android:id="@+id/switch_sound_home"
@@ -216,8 +216,8 @@
                     android:gravity="center|center_vertical"
                     android:lineSpacingExtra="0sp"
                     android:text="@string/text_movement_configuration"
-                    android:textAppearance="@style/sound_configuration"
-                    android:textAllCaps="true"/>
+                    android:textAllCaps="true"
+                    android:textAppearance="@style/sound_configuration" />
 
                 <Switch
                     android:id="@+id/switch_movement_home"
@@ -274,31 +274,42 @@
                     app:trackTint="@color/blue_600"
                     app:useMaterialThemeColors="false"
                     tools:ignore="UseSwitchCompatOrMaterialXml" />
-
             </RelativeLayout>
-
         </RelativeLayout>
-
-
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_file_path"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/cabin_regular"
+        android:gravity="center"
+        android:textColor="@color/black_900"
+        android:textSize="14sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/btn_start"
+        app:layout_constraintEnd_toEndOf="@+id/basic_configuration"
+        app:layout_constraintStart_toStartOf="@+id/basic_configuration"
+        app:layout_constraintTop_toBottomOf="@+id/basic_configuration" /> <!-- android:text="El experimento finalizó correctamente. El mismo se encuentra almacenado en: /storage/emulated/0/Documents/Recordings/chewBite sensor/Prueba/2024-12-31_12-35-33" -->
 
     <ToggleButton
         android:id="@+id/btn_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_marginBottom="8dp"
         android:width="312dp"
         android:height="48dp"
+        android:background="@drawable/my_btn_toggle"
         android:foregroundGravity="center"
         android:gravity="center"
-        android:background="@drawable/my_btn_toggle"
         android:textAppearance="@style/TextAppearance.App.Button"
         android:textOff="@string/txt_start"
         android:textOn="@string/txt_stop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/basic_configuration" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
