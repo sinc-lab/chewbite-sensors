@@ -53,7 +53,12 @@ public enum AudioRecorder {
         recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         assert audioFile != null;
         recorder.setOutputFile(audioFile.getAbsolutePath());
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);
+        // Verifica la versión del SDK y configura el encoder adecuado
+        if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.O) {
+            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+        } else {
+            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);
+        }
         recorder.setAudioEncodingBitRate(bitRate);
         // Establece la frecuencia de muestreo de audio en muestras por segundo.
         recorder.setAudioSamplingRate(samplingRate);
@@ -82,6 +87,11 @@ public enum AudioRecorder {
         if (recorder != null) {
             try {
                 recorder.stop();
+            } catch (RuntimeException e) {
+                Log.e("AudioRecorder", "Error stopping recorder: " + e.getMessage());
+                // Manejar la excepción, por ejemplo, mostrar un mensaje al usuario
+            }
+            try {
                 recorder.release();
             } catch (Exception e) {
                 // Handle exceptions during stop or release
