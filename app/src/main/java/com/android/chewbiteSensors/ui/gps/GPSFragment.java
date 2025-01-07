@@ -42,7 +42,7 @@ public class GPSFragment extends Fragment {
 
         // Recupera el estado guardado
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
-        boolean switchGpsState = sharedPreferences.getBoolean(STATUS_SWT_GPS_CONFIG, true);
+        boolean switchGpsState = sharedPreferences.getBoolean(STATUS_SWT_GPS_CONFIG, false);
 
         // 1. Deshabilitar el listener inmediatamente
         switchGpsSetting.setOnCheckedChangeListener(null);
