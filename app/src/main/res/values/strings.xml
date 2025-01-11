@@ -21,7 +21,7 @@
     <string name="txt_stop">Detener</string>
     <string name="text_frequency">Frecuencia de muestreo (Hz)</string>
     <string name="text_frequency_gps">Frecuencia de muestreo (seg)</string>
-    <string name="text_bit_rate">Bit Rate</string>
+    <string name="text_bit_rate">Bit Rate (Bits)</string>
     <string name="text_type_of_file">Tipo de archivo</string>
     <string name="text_accelerometer">Acelerómetro</string>
     <string name="text_gyroscope">Giroscopio</string>
