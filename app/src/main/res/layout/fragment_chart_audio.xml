@@ -23,53 +23,48 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                tools:ignore="UselessParent">
+                android:background="@android:color/transparent"
+                android:orientation="vertical">
 
-                <TableLayout
-                    android:id="@+id/filesTableLayoutSound"
+                <com.android.chewbiteSensors.ui.audio.AudioWaveformView
+                    android:id="@+id/audio_waveform_surface"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/white" />
             </LinearLayout>
+
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                tools:ignore="UselessParent">
-
-                <TableLayout
-                    android:id="@+id/filesTableLayoutAudio"
+            <!--
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    tools:ignore="UselessParent">
 
-            </LinearLayout>
+                    <TableLayout
+                        android:id="@+id/filesTableLayoutAudio"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>-->
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
-
-            <LinearLayout
+            <!--
+            <com.android.chewbiteSensors.ui.audio.AudioWaveformDrawer
+                android:id="@+id/audio_waveform_surface"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                tools:ignore="UselessParent">
-
-                <TableLayout
-                    android:id="@+id/filesTableLayoutM"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </LinearLayout>
+                android:layout_centerInParent="true" />
+                -->
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

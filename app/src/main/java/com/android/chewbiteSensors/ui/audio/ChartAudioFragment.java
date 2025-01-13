@@ -1,6 +1,11 @@
 package com.android.chewbiteSensors.ui.audio;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.media.AudioRecord;
+import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +15,7 @@ import android.widget.TableLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.android.chewbiteSensors.R;
@@ -25,6 +31,7 @@ import com.github.mikephil.charting.charts.LineChart;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ChartAudioFragment extends Fragment {
 
@@ -34,7 +41,7 @@ public class ChartAudioFragment extends Fragment {
     private List<CheckBox> filesCheckBoxList;
     public static String TEST_DATA_STRING = "testData";
     private ExperimentData data;
-    private TestSensorsEventListenerSound testSensorsEventListenerSound ;
+    private TestSensorsEventListenerSound testSensorsEventListenerSound;
     private TestSensorsEventListenerAudio testSensorsEventListenerAudio;
     private AppMode mode;
 
@@ -43,6 +50,9 @@ public class ChartAudioFragment extends Fragment {
         return new ChartAudioFragment();
     }
 
+
+    @SuppressLint("WrongViewCast")
+    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -59,13 +69,9 @@ public class ChartAudioFragment extends Fragment {
             if (this.mode == AppMode.STOPPED) {
                 // Show files
                 assert data != null;
-                //File[] testFiles = CBSensorEventListener.INSTANCE.getTestFiles(data.getTimestamp());
-                // se comenta temporalmente
-                //this.showGeneratedFiles(testFiles);
             }
         } else {
-            this.showTestChart();
-            this.showTestChart_1();
+            this.startAudioRecording();
         }
         /*----------------------------------------------------------------------------------------*/
 
@@ -83,7 +89,7 @@ public class ChartAudioFragment extends Fragment {
     /**
      * Crea y mostra un gráfico de líneas dentro de una tabla
      */
-    private void showTestChart() {
+    /*private void showTestChart() {
         // Busca un elemento TableLayout en tu layout XML con el ID filesTableLayout y lo asigna a la variable filesTableLayout. TableLayout es un contenedor que organiza sus elementos hijos en filas y columnas.
         TableLayout filesTableLayoutSound = root.findViewById(R.id.filesTableLayoutSound);
         // Crea una nueva instancia de un objeto LineChart. Este objeto representará el gráfico de líneas.
@@ -101,7 +107,7 @@ public class ChartAudioFragment extends Fragment {
         // Crea una nueva instancia de un TestSensorsEventListener. Este listener se encargue de recibir datos de los sensores y actualizar el gráfico de líneas con esos datos.
         //this.testSensorsEventListenerSound = new TestSensorsEventListener(requireContext(), chart_Sound, Sensor.TYPE_ACCELEROMETER, CBBuffer.STRING_SOUND ,  Color.RED);
         this.testSensorsEventListenerSound = new TestSensorsEventListenerSound(requireContext(), chart_Sound, CBBuffer.STRING_SOUND, Color.RED);
-    }
+    }*/
     /*----------------------------------------------------------------------------------------*/
 
     private void showTestChart_1() {
@@ -125,21 +131,84 @@ public class ChartAudioFragment extends Fragment {
         // Inicia la grabación de audio para que comience a graficar
         this.testSensorsEventListenerAudio.startRecording();
     }
-    /*----------------------------------------------------------------------------------------*/
+
+
+    /*------------------------ GRÁFICO DE ONDAS DE AUDIO  --------------------------------------*/
+    private static final int REQUEST_MIC_PERMISSION = 1;
+    private AudioWaveformView audioWaveformView;
+    private AudioRecord audioRecord;
+    private boolean isRecording = false;
+
+    private static final int SAMPLE_RATE = 44100;
+    private static final int BUFFER_SIZE = AudioRecord.getMinBufferSize(SAMPLE_RATE,
+            android.media.AudioFormat.CHANNEL_IN_MONO, android.media.AudioFormat.ENCODING_PCM_16BIT);
+
+    private void startAudioRecording() {
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        audioWaveformView = root.findViewById(R.id.audio_waveform_surface);
+
+        audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLE_RATE,
+                android.media.AudioFormat.CHANNEL_IN_MONO,
+                android.media.AudioFormat.ENCODING_PCM_16BIT,
+                BUFFER_SIZE);
+
+        audioRecord.startRecording();
+        isRecording = true;
+
+        new Thread(() -> {
+            short[] buffer = new short[BUFFER_SIZE];
+            while (isRecording) {
+                int read = audioRecord.read(buffer, 0, buffer.length);
+                if (read > 0) {
+                    float amplitude = 0;
+                    for (int i = 0; i < read; i++) {
+                        amplitude += Math.abs(buffer[i]);
+                    }
+                    amplitude /= read;
+                    audioWaveformView.addAmplitude(amplitude);
+                }
+                try {
+                    Thread.sleep(16); // ~60 FPS
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        isRecording = false;
+        if (audioRecord != null) {
+            audioRecord.stop();
+            audioRecord.release();
+        }
+    }
+    /*------------------------ GRÁFICO DE ONDAS DE AUDIO  --------------------------------------*/
+
+    /*@Override
     public void onPause() {
         super.onPause();
         // Limpia los recursos asociados al gráfico de líneas
         if (testSensorsEventListenerSound != null) {
             testSensorsEventListenerSound.stopRecording();
         }
-        /*---------------------------------------------------------*/
+        /*---------------------------------------------------------
         // Detiene la grabación cuando el fragmento se pausa
         if (testSensorsEventListenerAudio != null) {
             testSensorsEventListenerAudio.stopRecording();
         }
-        /*---------------------------------------------------------*/
+        /*---------------------------------------------------------
         // Limpia los recursos asociados al binding
         binding = null;
 
@@ -151,24 +220,24 @@ public class ChartAudioFragment extends Fragment {
         if (testSensorsEventListenerSound != null) {
             testSensorsEventListenerSound.startRecording();
         }
-        /*---------------------------------------------------------*/
+        /*---------------------------------------------------------
         // Reinicia la grabación cuando el fragmento se reanuda
         if (testSensorsEventListenerAudio != null) {
             testSensorsEventListenerAudio.startRecording();
         }
-        /*---------------------------------------------------------*/
+        /*---------------------------------------------------------
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        /*---------------------------------------------------------*/
+        /*---------------------------------------------------------
         // Limpia los recursos
         if (testSensorsEventListenerAudio != null) {
             testSensorsEventListenerAudio.stopRecording();
         }
-        /*---------------------------------------------------------*/
+        /*---------------------------------------------------------
         binding = null;
-    }
+    }*/
 
 }
