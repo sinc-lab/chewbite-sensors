@@ -8,7 +8,7 @@
     <string name="title_sensors">Sensores</string>
     <string name="title_app">ChewBite Sensors</string>
     <string name="text_welcome">Bienvenido a ChewBite Sensors la app para realizar estudios de ganadería de precisión. \n\n    Utiliza tu teléfono, para grabar los sonidos, movimientos y ubicación de tus animales rumiantes.</string>
-    <string name="text_informative_message">Recuerda <b>desactivar</b> el gps, \naudio y poner en modo avion</string>
+    <string name="text_informative_message">Recuerda <b>desactivar</b> el audio \ny poner en modo avión.</string>
     <string name="text_sensors_chart">Monitoreo de los sensores en tiempo real</string>
     <string name="text_see_more">Ver más</string>
     <string name="text_title_configuation">Elija que desea grabar</string>
