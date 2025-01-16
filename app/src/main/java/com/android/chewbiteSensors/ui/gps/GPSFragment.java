@@ -17,13 +17,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.android.chewbiteSensors.R;
+import com.android.chewbiteSensors.settings.GetSettings;
 
 public class GPSFragment extends Fragment {
 
     private GPSViewModel mViewModel;
     private static final String PREFS_KEY = "status_controls";
-    private static final String STATUS_SWT_GPS_CONFIG = "status_switch_gps_configuration";
-    private static final String STATUS_SPN_FREQUENCY_GPS_CONFIG = "status_switch_frequency_gps_configuration";
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch switchGpsSetting;
 
@@ -42,7 +41,6 @@ public class GPSFragment extends Fragment {
 
         // Recupera el estado guardado
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
-        boolean switchGpsState = sharedPreferences.getBoolean(STATUS_SWT_GPS_CONFIG, false);
 
         // 1. Deshabilitar el listener inmediatamente
         switchGpsSetting.setOnCheckedChangeListener(null);
@@ -50,16 +48,15 @@ public class GPSFragment extends Fragment {
         // 2. Publicar un ejecutable para establecer el estado y volver a habilitar el listener
         switchGpsSetting.post(() -> {
             // 3. Establecer el estado marcado
-            switchGpsSetting.setChecked(switchGpsState);
+            switchGpsSetting.setChecked(GetSettings.getStatusSwitch("gps", requireActivity()));
 
             // 4. Saltar al estado actual para evitar la animación
             switchGpsSetting.jumpDrawablesToCurrentState();
 
             // 5. Volver a habilitar el listener
             switchGpsSetting.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean(STATUS_SWT_GPS_CONFIG, isChecked);
-                editor.apply();
+                // se pasa a TRUE el switch de movimiento
+                GetSettings.setStatusSwitch("gps", isChecked, requireActivity());
             });
         });
         /*----------------------------------------------------------------------------------------*/
@@ -79,7 +76,7 @@ public class GPSFragment extends Fragment {
         spinnerFrequencyGPSConfiguration.setAdapter(adapterFrequency);
 
         // Recuperar la última selección guardada en SharedPreferences
-        int selectedFrequencyPosition = sharedPreferences.getInt(STATUS_SPN_FREQUENCY_GPS_CONFIG, 0); // 0 es el valor por defecto (primera opción)
+        int selectedFrequencyPosition = GetSettings.getStatusSpinner("frecuency_gps", requireActivity()); // 0 es el valor por defecto (primera opción)
         // Seleccionar la opción guardada
         spinnerFrequencyGPSConfiguration.setSelection(selectedFrequencyPosition);
 
@@ -90,8 +87,7 @@ public class GPSFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 // Guardar la posición seleccionada en SharedPreferences
-                editor.putInt(STATUS_SPN_FREQUENCY_GPS_CONFIG, position);
-                editor.apply();
+                GetSettings.setStatusSpinner("frecuency_gps", position, requireActivity());
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {

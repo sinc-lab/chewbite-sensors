@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.android.chewbiteSensors.R;
 import com.android.chewbiteSensors.data_sensors.SensorInfo;
+import com.android.chewbiteSensors.settings.GetSettings;
 
 import kotlin.Pair;
 
@@ -52,26 +53,6 @@ public class MovementFragment extends Fragment {
     TextView textViewNumberOfSteps;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch switchNumberOfStepsSetting;
-    private boolean movementStatus;
-    private boolean accelerometerStatus;
-    private boolean gyroscopeStatus;
-    private boolean magnetometerStatus;
-    private boolean accelerometerUncalibratedStatus;
-    private boolean gyroscopeUncalibratedStatus;
-    private boolean magnetometerUncalibratedStatus;
-    private boolean gravityStatus;
-    private boolean numberOfStepsStatus;
-
-    private static final String STATUS_SPN_FREQUENCY_MOVEMENT_CONFIG = "status_spinner_frequency_movement_configuration";
-    private static final String STATUS_SWT_ACCELEROMETER_CONFIG = "status_switch_accelerometer_configuration";
-    private static final String STATUS_SWT_GYROSCOPE_CONFIG = "status_switch_gyroscope_configuration";
-    private static final String STATUS_SWT_MAGNETOMETER_CONFIG = "status_switch_magnetometer_configuration";
-    private static final String STATUS_SWT_UNCALIBRATED_ACCELEROMETER_CONFIG = "status_switch_uncalibrated_accelerometer_configuration";
-    private static final String STATUS_SWT_UNCALIBRATED_GYROSCOPE_CONFIG = "status_switch_uncalibrated_gyroscope_configuration";
-    private static final String STATUS_SWT_UNCALIBRATED_MAGNETOMETER_CONFIG = "status_switch_uncalibrated_magnetometer_configuration";
-    private static final String STATUS_SWT_GRAVITY_CONFIG = "status_switch_gravity_configuration";
-    private static final String STATUS_SWT_NUMBER_OF_STEPS_CONFIG = "status_switch_number_of_steps_configuration";
-    private static final String STATUS_SWT_MOVEMENT_CONFIG = "status_switch_movement_configuration";
 
     public static MovementFragment newInstance() {
         return new MovementFragment();
@@ -103,7 +84,7 @@ public class MovementFragment extends Fragment {
         // Recupera el estado guardado
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
         // Recuperar la última selección guardada en SharedPreferences
-        int selectedFrequencyPosition = sharedPreferences.getInt(STATUS_SPN_FREQUENCY_MOVEMENT_CONFIG, 0); // 0 es el valor por defecto (primera opción)
+        int selectedFrequencyPosition = GetSettings.getStatusSpinner("frecuency_movement", requireActivity()); // 0 es el valor por defecto (primera opción)
 
         // Seleccionar la opción guardada
         spinnerFrequencyMovementConfiguration.setSelection(selectedFrequencyPosition);
@@ -114,8 +95,7 @@ public class MovementFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 // Guardar la posición seleccionada en SharedPreferences
-                editor.putInt(STATUS_SPN_FREQUENCY_MOVEMENT_CONFIG, position);
-                editor.apply();
+                GetSettings.setStatusSpinner("frecuency_movement", position, requireActivity());
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -143,25 +123,6 @@ public class MovementFragment extends Fragment {
         textViewNumberOfSteps = view.findViewById(R.id.txt_number_of_steps);
         switchNumberOfStepsSetting = view.findViewById(R.id.switch_number_of_steps_configuration);
 
-        // Recupera el estado guardado
-        movementStatus = sharedPreferences.getBoolean(STATUS_SWT_MOVEMENT_CONFIG, false);
-        accelerometerStatus = sharedPreferences.getBoolean(STATUS_SWT_ACCELEROMETER_CONFIG, false);
-        accelerometerStatus = accelerometerStatus && movementStatus;
-        gyroscopeStatus = sharedPreferences.getBoolean(STATUS_SWT_GYROSCOPE_CONFIG, false);
-        gyroscopeStatus = gyroscopeStatus && movementStatus;
-        magnetometerStatus = sharedPreferences.getBoolean(STATUS_SWT_MAGNETOMETER_CONFIG, false);
-        magnetometerStatus = magnetometerStatus && movementStatus;
-        accelerometerUncalibratedStatus = sharedPreferences.getBoolean(STATUS_SWT_UNCALIBRATED_ACCELEROMETER_CONFIG, false);
-        accelerometerUncalibratedStatus = accelerometerUncalibratedStatus && movementStatus;
-        gyroscopeUncalibratedStatus = sharedPreferences.getBoolean(STATUS_SWT_UNCALIBRATED_GYROSCOPE_CONFIG, false);
-        gyroscopeUncalibratedStatus = gyroscopeUncalibratedStatus && movementStatus;
-        magnetometerUncalibratedStatus = sharedPreferences.getBoolean(STATUS_SWT_UNCALIBRATED_MAGNETOMETER_CONFIG, false);
-        magnetometerUncalibratedStatus = magnetometerUncalibratedStatus && movementStatus;
-        gravityStatus = sharedPreferences.getBoolean(STATUS_SWT_GRAVITY_CONFIG, false);
-        gravityStatus = gravityStatus && movementStatus;
-        numberOfStepsStatus = sharedPreferences.getBoolean(STATUS_SWT_NUMBER_OF_STEPS_CONFIG, false);
-        numberOfStepsStatus = numberOfStepsStatus && movementStatus;
-
         // 1. Deshabilitar el listener inmediatamente
         switchAccelerometerSetting.setOnCheckedChangeListener(null);
         switchGyroscopeSetting.setOnCheckedChangeListener(null);
@@ -176,31 +137,20 @@ public class MovementFragment extends Fragment {
         // 2. Publicar un ejecutable para establecer el estado y volver a habilitar el listener
         switchAccelerometerSetting.post(() -> {
             // 3. Establecer el estado marcado
-            switchAccelerometerSetting.setChecked(accelerometerStatus);
+            switchAccelerometerSetting.setChecked(GetSettings.getStatusSwitch("accelerometer", requireActivity()));
 
             // 4. Saltar al estado actual para evitar la animación
             switchAccelerometerSetting.jumpDrawablesToCurrentState();
 
             // 5. Volver a habilitar el listener
             switchAccelerometerSetting.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean(STATUS_SWT_ACCELEROMETER_CONFIG, isChecked);
+                // Guarda el estado del switch
+                GetSettings.setStatusSwitch("accelerometer", isChecked, requireActivity());
                 // si se pasa a TRUE el switch de acelerómetro
                 if (isChecked) {
                     // se pasa a TRUE el switch de movimiento
-                    editor.putBoolean(STATUS_SWT_MOVEMENT_CONFIG, true);
-
-                // si se pasa a FALSE el switch de acelerómetro
-                // se obtiene el estado de los otros switches
-                // si los otros switches están en false (es decir: todos los switches están en false)
-                } else if (!gyroscopeStatus && !magnetometerStatus && !accelerometerUncalibratedStatus
-                            && !gyroscopeUncalibratedStatus && !magnetometerUncalibratedStatus &&
-                            !gravityStatus && !numberOfStepsStatus ) {
-                        // se pasa a false el switch de movimiento
-                        editor.putBoolean(STATUS_SWT_MOVEMENT_CONFIG, false);
-
+                    GetSettings.setStatusSwitch("movement", true, requireActivity());
                 }
-                editor.apply();
             });
         });
         /*---------- Configura el listener de ACELERÓMETRO ------------*/
@@ -209,29 +159,20 @@ public class MovementFragment extends Fragment {
         // 2. Publicar un ejecutable para establecer el estado y volver a habilitar el listener
         switchGyroscopeSetting.post(() -> {
             // 3. Establecer el estado marcado
-            switchGyroscopeSetting.setChecked(gyroscopeStatus);
+            switchGyroscopeSetting.setChecked(GetSettings.getStatusSwitch("gyroscope", requireActivity()));
 
             // 4. Saltar al estado actual para evitar la animación
             switchGyroscopeSetting.jumpDrawablesToCurrentState();
 
             // 5. Volver a habilitar el listener
             switchGyroscopeSetting.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean(STATUS_SWT_GYROSCOPE_CONFIG, isChecked);
+                // Guarda el estado del switch
+                GetSettings.setStatusSwitch("gyroscope", isChecked, requireActivity());
                 // si se pasa a TRUE el switch de giroscopio
                 if (isChecked) {
                     // se pasa a TRUE el switch de movimiento
-                    editor.putBoolean(STATUS_SWT_MOVEMENT_CONFIG, true);
-                // si se pasa a false el switch de giroscopio
-                // se obtiene el estado de los otros switches
-                // si los otros switches estan en false (es decir: todos los switches estan en false)
-                } else if (!accelerometerStatus && !magnetometerStatus && !accelerometerUncalibratedStatus
-                            && !gyroscopeUncalibratedStatus && !magnetometerUncalibratedStatus &&
-                            !gravityStatus && !numberOfStepsStatus ) {
-                        // se pasa a false el switch de movimiento
-                        editor.putBoolean(STATUS_SWT_MOVEMENT_CONFIG, false);
+                    GetSettings.setStatusSwitch("movement", true, requireActivity());
                 }
-                editor.apply();
             });
         });
         /*---------- Configura el listener de GIROSCOPIO ------------*/
@@ -240,29 +181,20 @@ public class MovementFragment extends Fragment {
         // 2. Publicar un ejecutable para establecer el estado y volver a habilitar el listener
         switchMagnetometerSetting.post(() -> {
             // 3. Establecer el estado marcado
-            switchMagnetometerSetting.setChecked(magnetometerStatus);
+            switchMagnetometerSetting.setChecked(GetSettings.getStatusSwitch("magnetometer", requireActivity()));
 
             // 4. Saltar al estado actual para evitar la animación
             switchMagnetometerSetting.jumpDrawablesToCurrentState();
 
             // 5. Volver a habilitar el listener
             switchMagnetometerSetting.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean(STATUS_SWT_MAGNETOMETER_CONFIG, isChecked);
+                // Guarda el estado del switch
+                GetSettings.setStatusSwitch("magnetometer", isChecked, requireActivity());
                 // si se pasa a TRUE el switch de magnetómetro
                 if (isChecked) {
                     // se pasa a TRUE el switch de movimiento
-                    editor.putBoolean(STATUS_SWT_MOVEMENT_CONFIG, true);
-                // si se pasa a false el switch de magnetómetro
-                // se obtiene el estado de los otros switches
-                // si los otros switches estan en false (es decir: todos los switches estan en false)
-                } else if (!accelerometerStatus && !gyroscopeStatus &&  !accelerometerUncalibratedStatus
-                            && !gyroscopeUncalibratedStatus && !magnetometerUncalibratedStatus &&
-                            !gravityStatus && !numberOfStepsStatus ) {
-                        // se pasa a false el switch de movimiento
-                        editor.putBoolean(STATUS_SWT_MOVEMENT_CONFIG, false);
+                    GetSettings.setStatusSwitch("movement", true, requireActivity());
                 }
-                editor.apply();
             });
         });
         /*---------- Configura el listener de MAGNETÓMETRO ------------*/
@@ -271,29 +203,20 @@ public class MovementFragment extends Fragment {
         // 2. Publicar un ejecutable para establecer el estado y volver a habilitar el listener
         switchUncalibratedAccelerometerSetting.post(() -> {
             // 3. Establecer el estado marcado
-            switchUncalibratedAccelerometerSetting.setChecked(accelerometerUncalibratedStatus);
+            switchUncalibratedAccelerometerSetting.setChecked(GetSettings.getStatusSwitch("uncalibrated_accelerometer", requireActivity()));
 
             // 4. Saltar al estado actual para evitar la animación
             switchUncalibratedAccelerometerSetting.jumpDrawablesToCurrentState();
 
             // 5. Volver a habilitar el listener
             switchUncalibratedAccelerometerSetting.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean(STATUS_SWT_UNCALIBRATED_ACCELEROMETER_CONFIG, isChecked);
+                // Guarda el estado del switch
+                GetSettings.setStatusSwitch("uncalibrated_accelerometer", isChecked, requireActivity());
                 // si se pasa a TRUE el switch de acelerómetro sin calibrar
                 if (isChecked) {
                     // se pasa a TRUE el switch de movimiento
-                    editor.putBoolean(STATUS_SWT_MOVEMENT_CONFIG, true);
-                // si se pasa a false el switch de acelerómetro sin calibrar
-                // se obtiene el estado de los otros switches
-                // si los otros switches estan en false (es decir: todos los switches estan en false)
-                } else if (!accelerometerStatus && !gyroscopeStatus && !magnetometerStatus &&
-                            !gyroscopeUncalibratedStatus && !magnetometerUncalibratedStatus &&
-                            !gravityStatus && !numberOfStepsStatus ) {
-                        // se pasa a false el switch de movimiento
-                        editor.putBoolean(STATUS_SWT_MOVEMENT_CONFIG, false);
+                    GetSettings.setStatusSwitch("movement", true, requireActivity());
                 }
-                editor.apply();
             });
         });
         /*---------- Configura el listener de ACELERÓMETRO SIN CALIBRAR ------------*/
@@ -302,29 +225,20 @@ public class MovementFragment extends Fragment {
         // 2. Publicar un ejecutable para establecer el estado y volver a habilitar el listener
         switchUncalibratedGyroscopeSetting.post(() -> {
             // 3. Establecer el estado marcado
-            switchUncalibratedGyroscopeSetting.setChecked(gyroscopeUncalibratedStatus);
+            switchUncalibratedGyroscopeSetting.setChecked(GetSettings.getStatusSwitch("uncalibrated_gyroscope", requireActivity()));
 
             // 4. Saltar al estado actual para evitar la animación
             switchUncalibratedGyroscopeSetting.jumpDrawablesToCurrentState();
 
             // 5. Volver a habilitar el listener
             switchUncalibratedGyroscopeSetting.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean(STATUS_SWT_UNCALIBRATED_GYROSCOPE_CONFIG, isChecked);
+                // Guarda el estado del switch
+                GetSettings.setStatusSwitch("uncalibrated_gyroscope", isChecked, requireActivity());
                 // si se pasa a TRUE el switch de giroscopio sin calibrar
                 if (isChecked) {
                     // si se pasa a TRUE el switch de movimiento
-                    editor.putBoolean(STATUS_SWT_MOVEMENT_CONFIG, true);
-                // si se pasa a false el switch de giroscopio sin calibrar
-                // se obtiene el estado de los otros switches
-                // si los otros switches estan en false (es decir: todos los switches estan en false)
-                } else if (!accelerometerStatus && !gyroscopeStatus && !magnetometerStatus &&
-                            !accelerometerUncalibratedStatus && !magnetometerUncalibratedStatus &&
-                            !gravityStatus && !numberOfStepsStatus ) {
-                        // se pasa a false el switch de movimiento
-                        editor.putBoolean(STATUS_SWT_MOVEMENT_CONFIG, false);
+                    GetSettings.setStatusSwitch("movement", true, requireActivity());
                 }
-                editor.apply();
             });
         });
         /*---------- Configura el listener de GIROSCOPIO SIN CALIBRAR ------------*/
@@ -333,29 +247,20 @@ public class MovementFragment extends Fragment {
         // 2. Publicar un ejecutable para establecer el estado y volver a habilitar el listener
         switchUncalibratedMagnetometerSetting.post(() -> {
             // 3. Establecer el estado marcado
-            switchUncalibratedMagnetometerSetting.setChecked(magnetometerUncalibratedStatus);
+            switchUncalibratedMagnetometerSetting.setChecked(GetSettings.getStatusSwitch("uncalibrated_magnetometer", requireActivity()));
 
             // 4. Saltar al estado actual para evitar la animación
             switchUncalibratedMagnetometerSetting.jumpDrawablesToCurrentState();
 
             // 5. Volver a habilitar el listener
             switchUncalibratedMagnetometerSetting.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean(STATUS_SWT_UNCALIBRATED_MAGNETOMETER_CONFIG, isChecked);
+                // Guarda el estado del switch
+                GetSettings.setStatusSwitch("uncalibrated_magnetometer", isChecked, requireActivity());
                 // si se pasa a TRUE el switch de magnetómetro sin calibrar
                 if (isChecked) {
                     // se pasa a TRUE el switch de movimiento
-                    editor.putBoolean(STATUS_SWT_MOVEMENT_CONFIG, true);
-                // si se pasa a false el switch de magnetómetro sin calibrar
-                // se obtiene el estado de los otros switches
-                // si los otros switches estan en false (es decir: todos los switches estan en false)
-                } else if (!accelerometerStatus && !gyroscopeStatus && !magnetometerStatus &&
-                            !accelerometerUncalibratedStatus && !gyroscopeUncalibratedStatus &&
-                            !gravityStatus && !numberOfStepsStatus ) {
-                        // se pasa a false el switch de movimiento
-                        editor.putBoolean(STATUS_SWT_MOVEMENT_CONFIG, false);
+                    GetSettings.setStatusSwitch("movement", true, requireActivity());
                 }
-                editor.apply();
             });
         });
         /*---------- Configura el listener de MAGNETÓMETRO SIN CALIBRAR ------------*/
@@ -364,29 +269,20 @@ public class MovementFragment extends Fragment {
         // 2. Publicar un ejecutable para establecer el estado y volver a habilitar el listener
         switchGravitySetting.post(() -> {
             // 3. Establecer el estado marcado
-            switchGravitySetting.setChecked(gravityStatus);
+            switchGravitySetting.setChecked(GetSettings.getStatusSwitch("gravity", requireActivity()));
 
             // 4. Saltar al estado actual para evitar la animación
             switchGravitySetting.jumpDrawablesToCurrentState();
 
             // 5. Volver a habilitar el listener
             switchGravitySetting.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean(STATUS_SWT_GRAVITY_CONFIG, isChecked);
+                // Guarda el estado del switch
+                GetSettings.setStatusSwitch("gravity", isChecked, requireActivity());
                 // si se pasa a TRUE el switch de gravedad
                 if (isChecked) {
                     // se pasa a true el switch de movimiento
-                    editor.putBoolean(STATUS_SWT_MOVEMENT_CONFIG, true);
-                // si se pasa a false el switch de gravedad
-                // se obtiene el estado de los otros switches
-                // si los otros switches estan en false (es decir: todos los switches estan en false)
-                } else if (!accelerometerStatus && !gyroscopeStatus && !magnetometerStatus &&
-                            !accelerometerUncalibratedStatus && !gyroscopeUncalibratedStatus &&
-                            !magnetometerUncalibratedStatus && !numberOfStepsStatus ) {
-                        // se pasa a false el switch de movimiento
-                        editor.putBoolean(STATUS_SWT_MOVEMENT_CONFIG, false);
+                    GetSettings.setStatusSwitch("movement", true, requireActivity());
                 }
-                editor.apply();
             });
         });
         /*---------- Configura el listener de GRAVEDAD ------------*/
@@ -395,29 +291,20 @@ public class MovementFragment extends Fragment {
         // 2. Publicar un ejecutable para establecer el estado y volver a habilitar el listener
         switchNumberOfStepsSetting.post(() -> {
             // 3. Establecer el estado marcado
-            switchNumberOfStepsSetting.setChecked(numberOfStepsStatus);
+            switchNumberOfStepsSetting.setChecked(GetSettings.getStatusSwitch("number_of_steps", requireActivity()));
 
             // 4. Saltar al estado actual para evitar la animación
             switchNumberOfStepsSetting.jumpDrawablesToCurrentState();
 
             // 5. Volver a habilitar el listener
             switchNumberOfStepsSetting.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean(STATUS_SWT_NUMBER_OF_STEPS_CONFIG, isChecked);
+                // Guarda el estado del switch
+                GetSettings.setStatusSwitch("number_of_steps", isChecked, requireActivity());
                 // si se pasa a TRUE el switch de contador de pasos
                 if (isChecked) {
                     // se pasa a TRUE el switch de movimiento
-                    editor.putBoolean(STATUS_SWT_MOVEMENT_CONFIG, true);
-                // si se pasa a false el switch de contador de pasos
-                // se obtiene el estado de los otros switches
-                // si los otros switches estan en false (es decir: todos los switches estan en false)
-                } else if (!accelerometerStatus && !gyroscopeStatus && !magnetometerStatus &&
-                            !accelerometerUncalibratedStatus && !gyroscopeUncalibratedStatus &&
-                            !magnetometerUncalibratedStatus && !gravityStatus) {
-                        // se pasa a false el switch de movimiento
-                        editor.putBoolean(STATUS_SWT_MOVEMENT_CONFIG, false);
+                    GetSettings.setStatusSwitch("movement", true, requireActivity());
                 }
-                editor.apply();
             });
         });
         /*---------- Configura el listener de CONTADOR DE PASOS ------------*/
@@ -429,20 +316,6 @@ public class MovementFragment extends Fragment {
         SensorManager sensorManager = (SensorManager) requireActivity().getSystemService(Context.SENSOR_SERVICE);
         viewModel.setSensorManager(sensorManager);
 
-        // Check sensor availability and update Switch
-        /*viewModel.checkSensorAvailability(Sensor.TYPE_ACCELEROMETER); // Replace with your desired sensor type
-
-        viewModel.isSwitchEnabled.observe(getViewLifecycleOwner(), isEnabled -> {
-            switchAccelerometerSetting.setEnabled(isEnabled);
-        });*/
-        //viewModel.checkSensorAvailability(Sensor.TYPE_ACCELEROMETER_UNCALIBRATED); // Replace with your desired sensor type
-
-        /*viewModel.isSwitchEnabled.observe(getViewLifecycleOwner(), isEnabled -> {
-            switchUncalibratedAccelerometerSetting.setEnabled(isEnabled);
-            //switchUncalibratedAccelerometerSetting.setClickable(isEnabled);
-            //switchUncalibratedAccelerometerSetting.setFocusable(isEnabled);
-        });*/
-        /*---------- Habilita y Deshabilita los switch ------------*/
         // Iterate through all sensors in SensorInfo
         for (SensorInfo sensorInfo : SensorInfo.values()) {
             // Check sensor availability

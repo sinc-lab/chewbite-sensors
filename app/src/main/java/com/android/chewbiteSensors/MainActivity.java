@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.BatteryManager;
@@ -44,6 +45,7 @@ import com.android.chewbiteSensors.data_sensors.FileManager;
 import com.android.chewbiteSensors.databinding.ActivityMainBinding;
 import com.android.chewbiteSensors.deviceStatus.DeviceStatus;
 import com.android.chewbiteSensors.deviceStatus.DeviceStatusService;
+import com.android.chewbiteSensors.settings.GetSettings;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
@@ -302,7 +304,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         StringBuilder info = new StringBuilder();
 
         info.append("DEVICE INFO: ").append(Build.MANUFACTURER).append(" ").append(Build.MODEL).append("\n");
-        info.append("ANDROID VERSION: : ").append(Build.VERSION.RELEASE).append("\n\n");
+        info.append("ANDROID VERSION: ").append(Build.VERSION.RELEASE).append("\n\n");
 
         @SuppressLint("SimpleDateFormat") String formattedStartDate = new SimpleDateFormat(DATE_FORMAT).format(this.data.getStartDate());
         info.append("STARTED AT ").append(formattedStartDate).append("\n");
@@ -313,6 +315,33 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         info.append("\nBATTERY:\n");
         info.append("Battery at start (%): ").append(100 * this.data.getBatteryAtStart() / (float) this.data.getBatteryCapacity()).append("\n");
         info.append("Battery at end (%): ").append(100 * this.data.getBatteryAtEnd() / (float) this.data.getBatteryCapacity()).append("\n");
+
+
+        info.append("\nSETTINGS:\n");
+        info.append("Audio: ").append(GetSettings.getStatusSwitch("sound", this)).append("\n");
+        // Obtén el array de opciones desde los recursos
+        String optionBitRate = getResources().getStringArray(R.array.text_bit_rate_options)[GetSettings.getStatusSpinner("bit_rate_sound", this)];
+        info.append(this.getString(R.string.text_bit_rate)).append(": ").append(optionBitRate).append("\n");
+        String optionFrequencySound = getResources().getStringArray(R.array.text_frequency_sound_options)[GetSettings.getStatusSpinner("frecuency_sound", this)];
+        info.append(this.getString(R.string.text_frequency)).append(": ").append(optionFrequencySound).append("\n");
+        String optionFileType = getResources().getStringArray(R.array.text_type_file_options)[GetSettings.getStatusSpinner("file_type", this)];
+        info.append(this.getString(R.string.text_type_of_file)).append(": ").append(optionFileType).append("\n\n");
+
+        info.append("Movement: ").append(GetSettings.getStatusSwitch("movement", this)).append("\n");
+        String optionFrequencyMovement = getResources().getStringArray(R.array.text_frequency_movement_options)[GetSettings.getStatusSpinner("frecuency_movement", this)];
+        info.append(this.getString(R.string.text_frequency)).append(": ").append(optionFrequencyMovement).append("\n");
+        info.append("Accelerometer: ").append(GetSettings.getStatusSwitch("accelerometer", this)).append("\n");
+        info.append("Gyroscope: ").append(GetSettings.getStatusSwitch("gyroscope", this)).append("\n");
+        info.append("Magnetometer: ").append(GetSettings.getStatusSwitch("magnetometer", this)).append("\n");
+        info.append("Accelerometer uncalibrated: ").append(GetSettings.getStatusSwitch("uncalibrated_accelerometer", this)).append("\n");
+        info.append("Gyroscope uncalibrated: ").append(GetSettings.getStatusSwitch("uncalibrated_gyroscope", this)).append("\n");
+        info.append("Magnetometer uncalibrated: ").append(GetSettings.getStatusSwitch("uncalibrated_magnetometer", this)).append("\n");
+        info.append("Gravity: ").append(GetSettings.getStatusSwitch("gravity", this)).append("\n");
+        info.append("Number of Steps: ").append(GetSettings.getStatusSwitch("number_of_steps", this)).append("\n\n");
+
+        info.append("GPS: ").append(GetSettings.getStatusSwitch("gps", this)).append("\n");
+        String optionFrequencyGPS = getResources().getStringArray(R.array.text_frequency_gps_options)[GetSettings.getStatusSpinner("frecuency_gps", this)];
+        info.append(this.getString(R.string.text_frequency_gps)).append(": ").append(optionFrequencyGPS).append("\n");
         // Guardar la información en un archivo
         //FileManager.writeToFile(this.data.getTimestamp(), INFO_FILE_NAME, info.toString());
         FileManager.writeToFile(INFO_FILE_NAME, info.toString());

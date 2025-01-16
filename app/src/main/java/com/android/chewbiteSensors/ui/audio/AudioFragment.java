@@ -17,16 +17,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.android.chewbiteSensors.R;
+import com.android.chewbiteSensors.settings.GetSettings;
 
 public class AudioFragment extends Fragment {
 
     private AudioViewModel mViewModel;
-    private final String tag = "MainActivity";
     private static final String PREFS_KEY = "status_controls";
-    private static final String STATUS_SWT_SOUND_CONFIG = "status_switch_sound_configuration";
-    private static final String STATUS_SPN_BIT_RATE_CONFIG = "status_switch_bit_rate_configuration";
-    private static final String STATUS_SPN_FREQUENCY_CONFIG = "status_switch_frequency_sound_configuration";
-    private static final String STATUS_SPN_FILE_TYPE_CONFIG = "status_switch_file_type_configuration";
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch switchAudioSetting;
 
@@ -47,7 +43,6 @@ public class AudioFragment extends Fragment {
 
         // Recupera el estado guardado
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
-        boolean switchSoundState = sharedPreferences.getBoolean(STATUS_SWT_SOUND_CONFIG, true);
 
         // 1. Deshabilitar el listener inmediatamente
         switchAudioSetting.setOnCheckedChangeListener(null);
@@ -55,16 +50,15 @@ public class AudioFragment extends Fragment {
         // 2. Publicar un ejecutable para establecer el estado y volver a habilitar el listener
         switchAudioSetting.post(() -> {
             // 3. Establecer el estado marcado
-            switchAudioSetting.setChecked(switchSoundState);
+            switchAudioSetting.setChecked(GetSettings.getStatusSwitch("sound", requireActivity()));
 
             // 4. Saltar al estado actual para evitar la animación
             switchAudioSetting.jumpDrawablesToCurrentState();
 
             // 5. Volver a habilitar el listener
             switchAudioSetting.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean(STATUS_SWT_SOUND_CONFIG, isChecked);
-                editor.apply();
+                // Guarda el estado del switch
+                GetSettings.setStatusSwitch("sound", isChecked, requireActivity());
             });
         });
 
@@ -96,9 +90,9 @@ public class AudioFragment extends Fragment {
         spinnerFileTypeConfiguration.setAdapter(adapterFileType);
 
         // Recuperar la última selección guardada en SharedPreferences
-        int selectedBitRatePosition = sharedPreferences.getInt(STATUS_SPN_BIT_RATE_CONFIG, 0); // 0 es el valor por defecto (primera opción)
-        int selectedFrequencyPosition = sharedPreferences.getInt(STATUS_SPN_FREQUENCY_CONFIG, 0); // 0 es el valor por defecto (primera opción)
-        int selectedFileTypePosition = sharedPreferences.getInt(STATUS_SPN_FILE_TYPE_CONFIG, 0); // 0 es el valor por defecto (primera opción)
+        int selectedBitRatePosition = GetSettings.getStatusSpinner("bit_rate_sound", requireActivity()); // 0 es el valor por defecto (primera opción)
+        int selectedFrequencyPosition = GetSettings.getStatusSpinner("frecuency_sound", requireActivity()); // 0 es el valor por defecto (primera opción)
+        int selectedFileTypePosition = GetSettings.getStatusSpinner("file_type", requireActivity()); // 0 es el valor por defecto (primera opción)
         // Seleccionar la opción guardada
         spinnerBitRateConfiguration.setSelection(selectedBitRatePosition);
         spinnerFrequencyAudioConfiguration.setSelection(selectedFrequencyPosition);
@@ -110,8 +104,7 @@ public class AudioFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 // Guardar la posición seleccionada en SharedPreferences
-                editor.putInt(STATUS_SPN_BIT_RATE_CONFIG, position);
-                editor.apply();
+                GetSettings.setStatusSpinner("bit_rate_sound", position, requireActivity());
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -124,8 +117,7 @@ public class AudioFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 // Guardar la posición seleccionada en SharedPreferences
-                editor.putInt(STATUS_SPN_FREQUENCY_CONFIG, position);
-                editor.apply();
+                GetSettings.setStatusSpinner("frecuency_sound", position, requireActivity());
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -138,8 +130,7 @@ public class AudioFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 // Guardar la posición seleccionada en SharedPreferences
-                editor.putInt(STATUS_SPN_FILE_TYPE_CONFIG, position);
-                editor.apply();
+                GetSettings.setStatusSpinner("file_type", position, requireActivity());
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
