@@ -63,6 +63,11 @@ public class AudioWaveformView extends View {
         invalidate(); // Solicitar redibujar la vista
     }
 
+    public void clearAmplitudes() {
+        amplitudes.clear();
+        invalidate(); // Redibujar la vista para reflejar el cambio
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);

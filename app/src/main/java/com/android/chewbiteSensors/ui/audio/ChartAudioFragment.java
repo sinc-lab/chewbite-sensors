@@ -3,7 +3,6 @@ package com.android.chewbiteSensors.ui.audio;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.TableLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,18 +18,14 @@ import androidx.fragment.app.Fragment;
 
 import com.android.chewbiteSensors.R;
 import com.android.chewbiteSensors.data_sensors.AppMode;
-import com.android.chewbiteSensors.data_sensors.CBBuffer;
 import com.android.chewbiteSensors.data_sensors.CBSensorEventListener;
 import com.android.chewbiteSensors.data_sensors.ExperimentData;
 import com.android.chewbiteSensors.data_sensors.TestSensorsEventListenerAudio;
 import com.android.chewbiteSensors.data_sensors.TestSensorsEventListenerSound;
 import com.android.chewbiteSensors.databinding.FragmentChartAudioBinding;
-import com.github.mikephil.charting.charts.LineChart;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ChartAudioFragment extends Fragment {
 
@@ -110,9 +104,9 @@ public class ChartAudioFragment extends Fragment {
     }*/
     /*----------------------------------------------------------------------------------------*/
 
-    private void showTestChart_1() {
+    /*private void showTestChart_1() {
         // Busca un elemento TableLayout en tu layout XML con el ID filesTableLayoutSound
-        TableLayout filesTableLayoutAudio = root.findViewById(R.id.filesTableLayoutAudio);
+        //TableLayout filesTableLayoutAudio = root.findViewById(R.id.filesTableLayoutAudio);
 
         // Crea una nueva instancia de un objeto LineChart para mostrar la onda de audio
         LineChart chart_Audio = new LineChart(requireContext());
@@ -130,7 +124,7 @@ public class ChartAudioFragment extends Fragment {
 
         // Inicia la grabación de audio para que comience a graficar
         this.testSensorsEventListenerAudio.startRecording();
-    }
+    }*/
 
 
     /*------------------------ GRÁFICO DE ONDAS DE AUDIO  --------------------------------------*/
@@ -155,6 +149,9 @@ public class ChartAudioFragment extends Fragment {
             return;
         }
         audioWaveformView = root.findViewById(R.id.audio_waveform_surface);
+
+        // Reinicia el gráfico
+        audioWaveformView.clearAmplitudes();
 
         audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLE_RATE,
                 android.media.AudioFormat.CHANNEL_IN_MONO,
@@ -185,15 +182,48 @@ public class ChartAudioFragment extends Fragment {
         }).start();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
+    private void stopAudioRecording() {
         isRecording = false;
         if (audioRecord != null) {
             audioRecord.stop();
             audioRecord.release();
+            audioRecord = null;
+        }
+        // Reinicia el gráfico
+        audioWaveformView.clearAmplitudes();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!isRecording) {
+            this.startAudioRecording();
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!isRecording) {
+            this.startAudioRecording();
+        }
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopAudioRecording();
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        stopAudioRecording();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopAudioRecording();
+    }
+
     /*------------------------ GRÁFICO DE ONDAS DE AUDIO  --------------------------------------*/
 
     /*@Override
