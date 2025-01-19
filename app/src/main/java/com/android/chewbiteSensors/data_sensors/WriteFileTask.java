@@ -21,7 +21,8 @@ public class WriteFileTask<T extends CBBuffer> extends TimerTask {
     public void run() {
         for (CBBuffer sensorBuffer : this.sensors) {
             //FileManager.writeToFile(this.directoryName, sensorBuffer.getSensorFileName(), sensorBuffer.getSensorEventData("Movimiento"));
-            FileManager.writeToFile(sensorBuffer.getSensorFileName(), sensorBuffer.getSensorEventData("Movimiento"));
+            //FileManager.writeToFile(sensorBuffer.getSensorFileName(), sensorBuffer.getSensorEventData("Movimiento"));
+            FileManager.writeToFile(sensorBuffer.getSensorFileName(), sensorBuffer.getSensorEventData(sensorBuffer.getSensorName()));
         }
     }
 

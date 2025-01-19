@@ -182,7 +182,12 @@ public enum CBSensorEventListener implements SensorEventListener {
             // Verifica que el tipo de sensor sea el mismo
             if (event.sensor.getType() == sensor.getSensor().getType()) {
                 try {
-                    sensor.append(new SensorEventData(event.timestamp, event.values[0], event.values[1], event.values[2]));
+                    if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
+                        sensor.append(new SensorEventData(event.timestamp, event.values[0]));
+                    } else {
+                        sensor.append(new SensorEventData(event.timestamp, event.values[0], event.values[1], event.values[2]));
+                    }
+
                 } catch (Exception e) {
                     //FileManager.writeToFile(this.data.getTimestamp(), "error.txt", e.getMessage() + '\n');
                     FileManager.writeToFile("error.txt", e.getMessage() + '\n');

@@ -105,7 +105,11 @@ public abstract class CBBuffer {
             ByteBuffer buff = ByteBuffer.allocate(Long.BYTES + 3 * Float.BYTES);
             // Obtener el evento
             SensorEventData event = this.sensorEventData[tail];
-            if (CBBuffer.STRING_GPS.equals(sensorName)) {
+
+            if (CBBuffer.STRING_NUM_OF_STEPS.equals(sensorName)) { // Identificar el Step Counter
+                // Copiar los datos específicos del Step Counter al buffer
+                buff.putLong(event.getTimestamp()).putFloat(event.getCount());
+            } else if (CBBuffer.STRING_GPS.equals(sensorName)) {
                 // Copiar los datos en el buffer
                 buff.putLong(event.getTimestamp()).putFloat(event.getLat()).putFloat(event.getLon()).putFloat(event.getAlt());
             } else {
