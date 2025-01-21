@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -18,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.android.chewbiteSensors.R;
 import com.android.chewbiteSensors.databinding.FragmentChartGpsBinding;
 
 import org.osmdroid.config.Configuration;
@@ -30,6 +32,7 @@ public class ChartGPSFragment extends Fragment {
     private FragmentChartGpsBinding binding;
     private MapView mapView;
     private LocationManager locationManager;
+    private TextView messageTextView;
 
     // Lanzador para gestionar permisos
     private final ActivityResultLauncher<String[]> requestPermissionLauncher =
@@ -38,7 +41,9 @@ public class ChartGPSFragment extends Fragment {
                 Boolean coarseLocationGranted = result.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false);
 
                 if (fineLocationGranted != null && fineLocationGranted || coarseLocationGranted != null && coarseLocationGranted) {
-                    getCurrentLocation();
+                    checkLocationSettings();
+                } else {
+                    showMessage("Se requieren permisos de ubicación para mostrar el mapa.");
                 }
             });
 
@@ -50,6 +55,8 @@ public class ChartGPSFragment extends Fragment {
 
         // Configurar el MapView
         mapView = binding.map;
+        messageTextView = root.findViewById(R.id.messageTextView); // Referencia al TextView
+
         Context context = getContext();
         if (context != null) {
             Configuration.getInstance().load(context, context.getSharedPreferences("prefs", Context.MODE_PRIVATE));
@@ -65,23 +72,47 @@ public class ChartGPSFragment extends Fragment {
                     Manifest.permission.ACCESS_COARSE_LOCATION
             });
         } else {
-            getCurrentLocation();
+            checkLocationSettings();
         }
 
         return root;
     }
 
-    private void getCurrentLocation() {
+    private void checkLocationSettings() {
         locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager != null && !locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            showMessage("Por favor, encienda el GPS para continuar.");
+        } else {
+            getCurrentLocation();
+        }
+    }
 
+    private void getCurrentLocation() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            showMessage("Buscando ubicación, por favor aguarde un momento...");
 
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
                 @Override
                 public void onLocationChanged(@NonNull Location location) {
                     showLocationOnMap(location);
                     locationManager.removeUpdates(this);  // Detener actualizaciones después de obtener la ubicación
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+                    // Puedes manejar el cambio de estado aquí si es necesario
+                }
+
+                @Override
+                public void onProviderEnabled(@NonNull String provider) {
+                    // El proveedor ha sido habilitado
+                }
+
+                @Override
+                public void onProviderDisabled(@NonNull String provider) {
+                    showMessage("El GPS ha sido desactivado.");
                 }
             });
         }
@@ -101,6 +132,16 @@ public class ChartGPSFragment extends Fragment {
         marker.setTitle("Ubicación Actual");
         mapView.getOverlays().add(marker);
         marker.showInfoWindow();
+
+        // Limpiar el mensaje
+        messageTextView.setVisibility(View.GONE); // Ocultar el mensaje
+        mapView.setVisibility(View.VISIBLE);  // Mostrar el mapa
+    }
+
+    private void showMessage(String message) {
+        messageTextView.setText(message);
+        messageTextView.setVisibility(View.VISIBLE); // Mostrar el mensaje
+        mapView.setVisibility(View.GONE);  // Ocultar el mapa
     }
 
     @Override
