@@ -6,6 +6,8 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -96,7 +98,11 @@ public class ChartGPSFragment extends Fragment {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
                 @Override
                 public void onLocationChanged(@NonNull Location location) {
-                    showLocationOnMap(location);
+                    if (isInternetAvailable()) {
+                        showLocationOnMap(location);
+                    } else {
+                        showLocationInfo(location); // Mostrar información de ubicación
+                    }
                     locationManager.removeUpdates(this);  // Detener actualizaciones después de obtener la ubicación
                 }
 
@@ -116,6 +122,24 @@ public class ChartGPSFragment extends Fragment {
                 }
             });
         }
+    }
+
+    private boolean isInternetAvailable() {
+        ConnectivityManager cm = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    }
+
+    private void showLocationInfo(Location location) {
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        double altitude = location.getAltitude();
+
+        String locationInfo = "Latitud: " + latitude + "\nLongitud: " + longitude + "\nAltura: " + altitude + " m";
+        messageTextView.setText(locationInfo);
+        messageTextView.setVisibility(View.VISIBLE); // Mostrar el texto con la ubicación
+        mapView.setVisibility(View.GONE);  // Ocultar el mapa
+        //messageTextView.setVisibility(View.GONE); // Ocultar el mensaje
     }
 
     private void showLocationOnMap(Location location) {
