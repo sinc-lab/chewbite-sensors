@@ -6,37 +6,37 @@
     android:orientation="vertical"
     tools:context=".ui.gps.GPSFragment">
 
-        <RelativeLayout
-            android:id="@+id/gps"
+    <RelativeLayout
+        android:id="@+id/gps"
+        android:layout_width="wrap_content"
+        android:layout_height="49dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp">
+
+        <TextView
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_toStartOf="@+id/switch_gps_configuration"
+            android:gravity="center_vertical"
+            android:text="@string/text_gps_configuration"
+            android:textAppearance="@style/stl_text_setting_label" />
+
+        <Switch
+            android:id="@+id/switch_gps_configuration"
+            android:layout_width="49dp"
             android:layout_height="49dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginBottom="0dp"
-                android:layout_toStartOf="@+id/switch_gps_configuration"
-                android:gravity="center_vertical"
-                android:text="@string/text_gps_configuration"
-                android:textAppearance="@style/stl_text_setting_label" />
-
-            <Switch
-                android:id="@+id/switch_gps_configuration"
-                android:layout_width="49dp"
-                android:layout_height="49dp"
-                android:layout_alignParentEnd="true"
-                android:layout_gravity="center"
-                android:layout_marginEnd="12dp"
-                android:gravity="center"
-                tools:ignore="UseSwitchCompatOrMaterialXml" />
-        </RelativeLayout>
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center"
+            android:layout_marginEnd="12dp"
+            android:gravity="center"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/frequency_gps"
@@ -76,5 +76,36 @@
             android:entries="@array/text_frequency_gps_options"
             android:overlapAnchor="false"
             tools:visibility="visible" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/space"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"/>
+
+    <RelativeLayout
+        android:id="@+id/descript_gps"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/messageTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:fontFamily="@font/hind_madurai_medium"
+            android:gravity="center"
+            android:textColor="@color/black_500"
+            android:text="@string/text_gps_information"
+            android:textSize="14sp"
+            android:visibility="visible" />
     </RelativeLayout>
 </LinearLayout>

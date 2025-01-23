@@ -36,6 +36,7 @@
     <string name="notification_title">ChewBite test is running</string>
     <string name="notification_text">Saving device sensor data...</string>
     <string name="channel_name">Notificaciones de ChewBite</string>
+    <string name="text_gps_information"> Esta aplicación usa la API de ubicación nativa de Android.</string>
 
     <string-array name="text_frequency_sound_options">
         <item>8.000</item>
