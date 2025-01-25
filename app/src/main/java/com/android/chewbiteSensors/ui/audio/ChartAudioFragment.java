@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,6 +39,7 @@ public class ChartAudioFragment extends Fragment {
     private TestSensorsEventListenerSound testSensorsEventListenerSound;
     private TestSensorsEventListenerAudio testSensorsEventListenerAudio;
     private AppMode mode;
+    private TextView messageTextViewChartAudio;
 
 
     public static ChartAudioFragment newInstance() {
@@ -48,12 +50,13 @@ public class ChartAudioFragment extends Fragment {
     @SuppressLint("WrongViewCast")
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // return inflater.inflate(R.layout.fragment_chart_audio, container, false);
         binding = FragmentChartAudioBinding.inflate(inflater, container, false);
         root = binding.getRoot();
 
+        audioWaveformView = root.findViewById(R.id.audio_waveform_surface);
+        messageTextViewChartAudio = root.findViewById(R.id.messageTextViewChartAudio); // Referencia al TextView
         /*----------------------------------------------------------------------------------------*/
         // Restore views
         this.filesCheckBoxList = new ArrayList<>();
@@ -134,8 +137,7 @@ public class ChartAudioFragment extends Fragment {
     private boolean isRecording = false;
 
     private static final int SAMPLE_RATE = 44100;
-    private static final int BUFFER_SIZE = AudioRecord.getMinBufferSize(SAMPLE_RATE,
-            android.media.AudioFormat.CHANNEL_IN_MONO, android.media.AudioFormat.ENCODING_PCM_16BIT);
+    private static final int BUFFER_SIZE = AudioRecord.getMinBufferSize(SAMPLE_RATE, android.media.AudioFormat.CHANNEL_IN_MONO, android.media.AudioFormat.ENCODING_PCM_16BIT);
 
     private void startAudioRecording() {
         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
@@ -146,17 +148,16 @@ public class ChartAudioFragment extends Fragment {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
+            showMessage("Se requieren permisos de microfono para mostrar el gráfico de ondas de audio.");
+
             return;
         }
-        audioWaveformView = root.findViewById(R.id.audio_waveform_surface);
+
 
         // Reinicia el gráfico
         audioWaveformView.clearAmplitudes();
 
-        audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLE_RATE,
-                android.media.AudioFormat.CHANNEL_IN_MONO,
-                android.media.AudioFormat.ENCODING_PCM_16BIT,
-                BUFFER_SIZE);
+        audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLE_RATE, android.media.AudioFormat.CHANNEL_IN_MONO, android.media.AudioFormat.ENCODING_PCM_16BIT, BUFFER_SIZE);
 
         audioRecord.startRecording();
         isRecording = true;
@@ -189,8 +190,10 @@ public class ChartAudioFragment extends Fragment {
             audioRecord.release();
             audioRecord = null;
         }
-        // Reinicia el gráfico
-        audioWaveformView.clearAmplitudes();
+        if (audioWaveformView != null) {
+            // Reinicia el gráfico
+            audioWaveformView.clearAmplitudes();
+        }
     }
 
     @Override
@@ -208,16 +211,19 @@ public class ChartAudioFragment extends Fragment {
             this.startAudioRecording();
         }
     }
+
     @Override
     public void onPause() {
         super.onPause();
         stopAudioRecording();
     }
+
     @Override
     public void onStop() {
         super.onStop();
         stopAudioRecording();
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -226,48 +232,10 @@ public class ChartAudioFragment extends Fragment {
 
     /*------------------------ GRÁFICO DE ONDAS DE AUDIO  --------------------------------------*/
 
-    /*@Override
-    public void onPause() {
-        super.onPause();
-        // Limpia los recursos asociados al gráfico de líneas
-        if (testSensorsEventListenerSound != null) {
-            testSensorsEventListenerSound.stopRecording();
-        }
-        /*---------------------------------------------------------
-        // Detiene la grabación cuando el fragmento se pausa
-        if (testSensorsEventListenerAudio != null) {
-            testSensorsEventListenerAudio.stopRecording();
-        }
-        /*---------------------------------------------------------
-        // Limpia los recursos asociados al binding
-        binding = null;
-
+    private void showMessage(String message) {
+        messageTextViewChartAudio.setText(message);
+        messageTextViewChartAudio.setVisibility(View.VISIBLE); // Mostrar el mensaje
+        audioWaveformView.setVisibility(View.GONE);  // Ocultar el mapa
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (testSensorsEventListenerSound != null) {
-            testSensorsEventListenerSound.startRecording();
-        }
-        /*---------------------------------------------------------
-        // Reinicia la grabación cuando el fragmento se reanuda
-        if (testSensorsEventListenerAudio != null) {
-            testSensorsEventListenerAudio.startRecording();
-        }
-        /*---------------------------------------------------------
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        /*---------------------------------------------------------
-        // Limpia los recursos
-        if (testSensorsEventListenerAudio != null) {
-            testSensorsEventListenerAudio.stopRecording();
-        }
-        /*---------------------------------------------------------
-        binding = null;
-    }*/
 
 }
