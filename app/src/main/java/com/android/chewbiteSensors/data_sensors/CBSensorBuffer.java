@@ -8,6 +8,8 @@ import android.hardware.Sensor;
 public class CBSensorBuffer extends CBBuffer {
 
     private final Sensor sensor;
+    private int initialStepCount = -1; // Valor inicial del contador de pasos
+
 
     /**
      * Cuando crea un objeto CBSensorBuffer, proporciona dos cosas:
@@ -26,4 +28,23 @@ public class CBSensorBuffer extends CBBuffer {
     public Sensor getSensor() {
         return sensor;
     }
+
+    /**
+     * Este método devuelve el valor inicial del contador de pasos.
+     *
+     * @return El valor inicial del contador de pasos.
+     */
+    public int getInitialStepCount() {
+        return initialStepCount;
+    }
+
+    /**
+     * Este método establece el valor inicial del contador de pasos.
+     *
+     * @param initialStepCount El nuevo valor inicial del contador de pasos.
+     */
+    public void setInitialStepCount(int initialStepCount) {
+        this.initialStepCount = initialStepCount;
+    }
+
 }

@@ -78,7 +78,10 @@ public enum CBSensorEventListener implements SensorEventListener {
     }
 
     /**
-     * El método start es el encargado de iniciar la recolección de datos de los sensores en el experimento. Se encarga de configurar los sensores que se van a utilizar, la frecuencia de muestreo y otros parámetros, para luego registrarlos y comenzar a guardar los datos.
+     * El método start es el encargado de iniciar la recolección de datos de los sensores en el experimento.
+     * Se encarga de configurar los sensores que se van a utilizar,
+     * la frecuencia de muestreo y otros parámetros,
+     * para luego registrarlos y comenzar a guardar los datos.
      *
      * @param context El contexto de la aplicación.
      */
@@ -184,8 +187,18 @@ public enum CBSensorEventListener implements SensorEventListener {
                 try {
                     if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
                         int stepCount = (int) event.values[0];  // Confirma si este cast es seguro
+                        // Si es la primera lectura, guarda el valor inicial
+                        if (sensor.getSensorName().equals(CBBuffer.STRING_NUM_OF_STEPS)) {
+                            if (sensor.getInitialStepCount() == -1) {
+                                sensor.setInitialStepCount(stepCount);
+                            }
+                            // Ajusta el valor restando el valor inicial
+                            stepCount -= sensor.getInitialStepCount();
+                        }
+                        // Agrega los datos ajustados al buffer
                         sensor.append(new SensorEventData(event.timestamp, stepCount));
                     } else {
+                        // Otros sensores
                         sensor.append(new SensorEventData(event.timestamp, event.values[0], event.values[1], event.values[2]));
                     }
 
@@ -250,6 +263,10 @@ public enum CBSensorEventListener implements SensorEventListener {
             String name = sensor.getSensorName();
             int max = sensor.getSensor().getMaxDelay();
             this.sensorManager.registerListener(this, sensor.getSensor(), this.samplingPeriodUs, 1000000, mSensorHandler);
+            // Si el sensor es un contador de pasos, reinicia el valor inicial
+            if (sensor.getSensorName().equals(CBBuffer.STRING_NUM_OF_STEPS)) {
+                sensor.setInitialStepCount(-1); // Reinicia el valor inicial
+            }
         }
     }
 
