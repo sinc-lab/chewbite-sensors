@@ -82,6 +82,7 @@ public abstract class CBBuffer {
 
     /**
      * Devuelve el nombre del archivo de datos del sensor
+     *
      * @return this.getSensorName() + String.format("_%02d", fileNumber) + FILE_EXTENSION
      */
     @SuppressLint("DefaultLocale")
@@ -92,6 +93,7 @@ public abstract class CBBuffer {
     /**
      * devuelve una lista de arreglos de bytes que representan los datos de los eventos almacenados
      * en el buffer.
+     *
      * @return
      */
     public ArrayList<byte[]> getSensorEventData(String sensorName) {
@@ -101,23 +103,34 @@ public abstract class CBBuffer {
         ArrayList<byte[]> bytes = new ArrayList<>();
         // Si el buffer no está vacío, copiar los datos
         while (tail != copyUntil) {
-            // Crear un buffer
-            ByteBuffer buff = ByteBuffer.allocate(Long.BYTES + 3 * Float.BYTES);
+
             // Obtener el evento
             SensorEventData event = this.sensorEventData[tail];
 
             if (CBBuffer.STRING_NUM_OF_STEPS.equals(sensorName)) { // Identificar el Step Counter
+                // Crear un buffer
+                ByteBuffer buff = ByteBuffer.allocate(Long.BYTES + Integer.BYTES);  // Solo timestamp y count
                 // Copiar los datos específicos del Step Counter al buffer
-                buff.putLong(event.getTimestamp()).putFloat(event.getCount());
+                buff.putLong(event.getTimestamp()).putInt(event.getCount());
+                // Agregar el buffer al arreglo
+                bytes.add(buff.array());
             } else if (CBBuffer.STRING_GPS.equals(sensorName)) {
+                // Crear un buffer
+                ByteBuffer buff = ByteBuffer.allocate(Long.BYTES + 3 * Float.BYTES);
                 // Copiar los datos en el buffer
                 buff.putLong(event.getTimestamp()).putFloat(event.getLat()).putFloat(event.getLon()).putFloat(event.getAlt());
+                // Agregar el buffer al arreglo
+                bytes.add(buff.array());
             } else {
+                // Crear un buffer
+                ByteBuffer buff = ByteBuffer.allocate(Long.BYTES + 3 * Float.BYTES);
                 // Copiar los datos en el buffer
                 buff.putLong(event.getTimestamp()).putFloat(event.getX()).putFloat(event.getY()).putFloat(event.getZ());
+                // Agregar el buffer al arreglo
+                bytes.add(buff.array());
             }
             // Agregar el buffer al arreglo
-            bytes.add(buff.array());
+            //bytes.add(buff.array());
             // Actualizar el índice
             tail = (tail + 1) & (BUFFER_SIZE - 1);
         }
@@ -127,6 +140,7 @@ public abstract class CBBuffer {
 
     /**
      * Devuelve el número de archivo actual.
+     *
      * @return fileNumber
      */
     public int getFileNumber() {
@@ -135,6 +149,7 @@ public abstract class CBBuffer {
 
     /**
      * Establece el número de archivo actual.
+     *
      * @param fileNumber
      */
     public void setFileNumber(int fileNumber) {

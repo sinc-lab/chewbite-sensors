@@ -2,8 +2,9 @@ package com.android.chewbiteSensors.data_sensors;
 
 public class SensorEventData {
     private final long timestamp;
-    private float x, y, z, count;
+    private float x, y, z;
     private double lat, lon, alt;
+    private int count;
 
     public SensorEventData(long timestamp, float x, float y, float z) {
         this.timestamp = timestamp;
@@ -19,7 +20,7 @@ public class SensorEventData {
         this.alt = alt;
     }
 
-    public SensorEventData(long timestamp, float count) {
+    public SensorEventData(long timestamp, int count) {
         this.timestamp = timestamp;
         this.count = count;
     }
@@ -52,7 +53,7 @@ public class SensorEventData {
         return (float) alt;
     }
 
-    public float getCount() {
+    public int getCount() {
         return count;
     }
 }

@@ -183,7 +183,8 @@ public enum CBSensorEventListener implements SensorEventListener {
             if (event.sensor.getType() == sensor.getSensor().getType()) {
                 try {
                     if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
-                        sensor.append(new SensorEventData(event.timestamp, event.values[0]));
+                        int stepCount = (int) event.values[0];  // Confirma si este cast es seguro
+                        sensor.append(new SensorEventData(event.timestamp, stepCount));
                     } else {
                         sensor.append(new SensorEventData(event.timestamp, event.values[0], event.values[1], event.values[2]));
                     }
