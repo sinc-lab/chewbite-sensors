@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
@@ -152,7 +153,15 @@ public class HomeFragment extends Fragment implements CompoundButton.OnCheckedCh
             this.buttonStartStop.setChecked(false);
             return;
         }
-        //
+        // Corrobora que haya al menos un switch seleccionado
+        if (!switchSoundConfiguration.isChecked() && !switchMovementConfiguration.isChecked() && !switchGpsConfiguration.isChecked()) {
+            this.buttonStartStop.setChecked(false);
+            // El usuario ha querido iniciar la grabación pero no ha seleccionado ningún sensor
+            Toast.makeText(requireContext(), "Debe seleccionar al menos un sensor para continuar", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        // isChecked = true → se inicia la grabación
+        // isChecked = false → se detiene la grabación
         if (isChecked) {
             // Verifica el estado antes de comenzar la grabación
             if (!main.checkStatusBeforeStart() && it_is_the_first_notification) {
