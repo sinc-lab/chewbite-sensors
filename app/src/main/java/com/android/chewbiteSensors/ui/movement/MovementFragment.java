@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -58,7 +59,7 @@ public class MovementFragment extends Fragment {
         return new MovementFragment();
     }
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility"})
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -97,6 +98,7 @@ public class MovementFragment extends Fragment {
                 // Guardar la posición seleccionada en SharedPreferences
                 GetSettings.setStatusSpinner("frecuency_movement", position, requireActivity());
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 // No se necesita implementar, pero es necesario sobrescribir el método
@@ -153,6 +155,14 @@ public class MovementFragment extends Fragment {
                 }
             });
         });
+
+        View switchContainerAccelerometer = view.findViewById(R.id.accelerometer);
+        switchContainerAccelerometer.setOnClickListener(v -> {
+            if (!switchAccelerometerSetting.isEnabled()) {
+                // Mostrar el mensaje si el switch está deshabilitado
+                this.toastMessage();
+            }
+        });
         /*---------- Configura el listener de ACELERÓMETRO ------------*/
 
         /*---------- Configura el listener de GIROSCOPIO ------------*/
@@ -174,6 +184,14 @@ public class MovementFragment extends Fragment {
                     GetSettings.setStatusSwitch("movement", true, requireActivity());
                 }
             });
+        });
+
+        View switchContainerGyroscope = view.findViewById(R.id.gyroscope);
+        switchContainerGyroscope.setOnClickListener(v -> {
+            if (!switchGyroscopeSetting.isEnabled()) {
+                // Mostrar el mensaje si el switch está deshabilitado
+                this.toastMessage();
+            }
         });
         /*---------- Configura el listener de GIROSCOPIO ------------*/
 
@@ -197,6 +215,14 @@ public class MovementFragment extends Fragment {
                 }
             });
         });
+
+        View switchContainerMagnetometer = view.findViewById(R.id.magnetometer);
+        switchContainerMagnetometer.setOnClickListener(v -> {
+            if (!switchMagnetometerSetting.isEnabled()) {
+                // Mostrar el mensaje si el switch está deshabilitado
+                this.toastMessage();
+            }
+        });
         /*---------- Configura el listener de MAGNETÓMETRO ------------*/
 
         /*---------- Configura el listener de ACELERÓMETRO SIN CALIBRAR ------------*/
@@ -218,6 +244,14 @@ public class MovementFragment extends Fragment {
                     GetSettings.setStatusSwitch("movement", true, requireActivity());
                 }
             });
+        });
+
+        View switchContainerAccelerometerUncalibrated = view.findViewById(R.id.accelerometer_uncalibrated);
+        switchContainerAccelerometerUncalibrated.setOnClickListener(v -> {
+            if (!switchUncalibratedAccelerometerSetting.isEnabled()) {
+                // Mostrar el mensaje si el switch está deshabilitado
+                this.toastMessage();
+            }
         });
         /*---------- Configura el listener de ACELERÓMETRO SIN CALIBRAR ------------*/
 
@@ -241,6 +275,14 @@ public class MovementFragment extends Fragment {
                 }
             });
         });
+
+        View switchContainerGyroscopeUncalibrated = view.findViewById(R.id.gyroscope_uncalibrated);
+        switchContainerGyroscopeUncalibrated.setOnClickListener(v -> {
+            if (!switchUncalibratedGyroscopeSetting.isEnabled()) {
+                // Mostrar el mensaje si el switch está deshabilitado
+                this.toastMessage();
+            }
+        });
         /*---------- Configura el listener de GIROSCOPIO SIN CALIBRAR ------------*/
 
         /*---------- Configura el listener de MAGNETÓMETRO SIN CALIBRAR ------------*/
@@ -262,6 +304,14 @@ public class MovementFragment extends Fragment {
                     GetSettings.setStatusSwitch("movement", true, requireActivity());
                 }
             });
+        });
+
+        View switchContainerMagnetometerUncalibrated = view.findViewById(R.id.magnetometer_uncalibrated);
+        switchContainerMagnetometerUncalibrated.setOnClickListener(v -> {
+            if (!switchUncalibratedMagnetometerSetting.isEnabled()) {
+                // Mostrar el mensaje si el switch está deshabilitado
+                this.toastMessage();
+            }
         });
         /*---------- Configura el listener de MAGNETÓMETRO SIN CALIBRAR ------------*/
 
@@ -285,6 +335,14 @@ public class MovementFragment extends Fragment {
                 }
             });
         });
+
+        View switchContainerGravity = view.findViewById(R.id.gravity);
+        switchContainerGravity.setOnClickListener(v -> {
+            if (!switchGravitySetting.isEnabled()) {
+                // Mostrar el mensaje si el switch está deshabilitado
+                this.toastMessage();
+            }
+        });
         /*---------- Configura el listener de GRAVEDAD ------------*/
 
         /*---------- Configura el listener de CONTADOR DE PASOS ------------*/
@@ -306,6 +364,14 @@ public class MovementFragment extends Fragment {
                     GetSettings.setStatusSwitch("movement", true, requireActivity());
                 }
             });
+        });
+
+        View switchContainerNumberOfSteps = view.findViewById(R.id.number_of_steps);
+        switchContainerNumberOfSteps.setOnClickListener(v -> {
+            if (!switchNumberOfStepsSetting.isEnabled()) {
+                // Mostrar el mensaje si el switch está deshabilitado
+                this.toastMessage();
+            }
         });
         /*---------- Configura el listener de CONTADOR DE PASOS ------------*/
 
@@ -369,5 +435,10 @@ public class MovementFragment extends Fragment {
             default:
                 return null;
         }
+    }
+
+    private void toastMessage() {
+        // Mostrar mensaje de que el sensor no está disponible
+        Toast.makeText(requireActivity(), "El dispositivo no cuenta con este sensor.", Toast.LENGTH_SHORT).show();
     }
 }
