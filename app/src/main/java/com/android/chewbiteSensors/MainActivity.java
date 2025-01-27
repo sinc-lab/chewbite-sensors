@@ -267,6 +267,8 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         //this.showExperimentRunning();
         // 3.0-) Inicia el servicio
         this.doBindService();
+        // Código existente para iniciar la grabación
+        setStatusBarColor(R.color.green_700); // Cambia a verde (o el color definido en tu archivo de recursos).green_700); // Cambia a verde (o el color definido en tu archivo de recursos):color/holo_green_dark"); // Cambia a verde (o el color definido en tu archivo de recursos)@theme/colorPrimary""); // Cambia a verde (o el color definido en tu archivo de recursos)
     }
 
     @SuppressLint("SetTextI18n")
@@ -297,6 +299,18 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         tvFilePathinf.setVisibility(View.VISIBLE);
         tvFilePathinf.setText("El experimento finalizó correctamente. El mismo se encuentra almacenado en: " + filePath);
         /*----------------------------------------------------------------------------------------*/
+        // Código existente para detener la grabación
+        setStatusBarColor(android.R.color.black); // Cambia a negro
+    }
+    /*----------------------------------------------------------------------------------------*/
+
+    /**
+     * Establece el color de la barra de estado.
+     *
+     * @param colorResId
+     */
+    private void setStatusBarColor(int colorResId) {
+        getWindow().setStatusBarColor(getResources().getColor(colorResId));
     }
     /*----------------------------------------------------------------------------------------*/
 
