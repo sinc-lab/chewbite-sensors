@@ -41,15 +41,15 @@ public class SensorEventData {
         return z;
     }
 
-    public float getLat() {
-        return (float) lat;
+    public double getLat() {
+        return lat;
     }
 
-    public float getLon() {
-        return (float) lon;
+    public double getLon() {
+        return lon;
     }
 
-    public float getAlt() {
+    public double getAlt() {
         return (float) alt;
     }
 

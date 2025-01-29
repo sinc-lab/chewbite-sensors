@@ -116,9 +116,9 @@ public abstract class CBBuffer {
                 bytes.add(buff.array());
             } else if (CBBuffer.STRING_GPS.equals(sensorName)) {
                 // Crear un buffer
-                ByteBuffer buff = ByteBuffer.allocate(Long.BYTES + 3 * Float.BYTES);
+                ByteBuffer buff = ByteBuffer.allocate(Long.BYTES + 3 * Double.BYTES);
                 // Copiar los datos en el buffer
-                buff.putLong(event.getTimestamp()).putFloat(event.getLat()).putFloat(event.getLon()).putFloat(event.getAlt());
+                buff.putLong(event.getTimestamp()).putDouble(event.getLat()).putDouble(event.getLon()).putDouble(event.getAlt());
                 // Agregar el buffer al arreglo
                 bytes.add(buff.array());
             } else {
