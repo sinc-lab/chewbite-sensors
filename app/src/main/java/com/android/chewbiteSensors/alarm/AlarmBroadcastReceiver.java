@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.android.chewbiteSensors.data_sensors.CBGPSListener;
 import com.android.chewbiteSensors.data_sensors.CBSensorEventListener;
 
 /**
@@ -27,6 +28,7 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
          * en el sistema
          */
         CBSensorEventListener.INSTANCE.changeFileNumber();
+        CBGPSListener.INSTANCE.changeFileNumber();
         /**
          * Programa la siguiente aparición del evento
          * en el sistema

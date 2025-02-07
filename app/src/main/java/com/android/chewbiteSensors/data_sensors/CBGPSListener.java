@@ -45,6 +45,13 @@ public enum CBGPSListener implements LocationListener {
         this.data = data;
     }
 
+    /**
+     * Establece el número de archivo del experimento.
+     */
+    public void changeFileNumber() {
+        // Establece el número de archivo del sensor
+        sensor.setFileNumber(this.data.getFileNumber());
+    }
 
     // API de GOOGLE
     // No se usa porque son pagas
