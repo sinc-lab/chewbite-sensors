@@ -31,6 +31,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         //android.util.Log.d(tag, "onCreate");
         super.onCreate(savedInstanceState);
 
-        com.android.chewbiteSensors.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         //BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -96,6 +97,15 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
+        /*----------------------------------------------------------------------------------------*/
+        // Obtén la instancia del MainViewModel asociado a la actividad
+        MainViewModel viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        // Observa los cambios en la ruta del experimento para actualizar el TextView
+        viewModel.getExperimentPath().observe(this, filePath -> {
+            TextView tvFilePathinf = findViewById(R.id.tv_file_path);
+            tvFilePathinf.setVisibility(View.VISIBLE);
+            tvFilePathinf.setText("El experimento finalizó correctamente. El mismo se encuentra almacenado en: " + filePath);
+        });
         /*----------------------------------------------------------------------------------------*/
         // Restore AppMode
         if (savedInstanceState != null && savedInstanceState.containsKey(APP_MODE_STRING)) {
@@ -274,7 +284,6 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     @SuppressLint("SetTextI18n")
     public void stopTest() {
         this.mode = AppMode.STOPPED;
-        //this.sendButton.show();
         mBoundService.stopTest();
 
         this.batteryStatus = registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
@@ -294,10 +303,13 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         String filePath = FileManager.getExperimentDirectory().toString();
 
         // Configurar el TextView
-        TextView tvFilePathinf = findViewById(R.id.tv_file_path);
+        //TextView tvFilePathinf = findViewById(R.id.tv_file_path);
         // Mostrar la ruta al experimento
-        tvFilePathinf.setVisibility(View.VISIBLE);
-        tvFilePathinf.setText("El experimento finalizó correctamente. El mismo se encuentra almacenado en: " + filePath);
+        //tvFilePathinf.setVisibility(View.VISIBLE);
+        //tvFilePathinf.setText("El experimento finalizó correctamente. El mismo se encuentra almacenado en: " + filePath);
+        // Actualiza el MainViewModel con la ruta del experimento
+        MainViewModel viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        viewModel.setExperimentPath(filePath);
         /*----------------------------------------------------------------------------------------*/
         // Código existente para detener la grabación
         setStatusBarColor(android.R.color.black); // Cambia a negro

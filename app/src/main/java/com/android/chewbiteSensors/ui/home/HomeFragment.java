@@ -22,167 +22,130 @@ import com.android.chewbiteSensors.settings.GetSettings;
 public class HomeFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
 
     private FragmentHomeBinding binding;
-    private ToggleButton buttonStartStop; // Variable de clase para la referencia
-    private final String tag = "MainActivity";
+    private ToggleButton buttonStartStop;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch switchSoundConfiguration;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch switchMovementConfiguration;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch switchGpsConfiguration;
-    private boolean soundStatus;
-    private boolean movementStatus;
-    private boolean gpsStatus;
-    private boolean it_is_the_first_notification = true;
+    private boolean itIsTheFirstNotification = true;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        // Se obtiene la instancia del HomeViewModel
+        // Declaramos la instancia del ViewModel
+        HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        //final TextView textView = binding.textHome;
-        //homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        /*----------------------------------------------------------------------------------------*/
-        // Inicializa el boton
-        buttonStartStop = root.findViewById(R.id.btn_start); // Obtén la referencia en onCreate
-        buttonStartStop.setOnCheckedChangeListener(this); // Establece el listener
+        // Si en el layout tienes, por ejemplo, un TextView (binding.textHome)
+        // Puedes observar el LiveData y actualizar la UI:
+        // homeViewModel.getText().observe(getViewLifecycleOwner(), text -> binding.textHome.setText(text));
+
+        // Inicializa el botón y configura su listener
+        buttonStartStop = root.findViewById(R.id.btn_start);
+        buttonStartStop.setOnCheckedChangeListener(this);
         buttonStartStop.setChecked(false);
-        /*----------------------------------------------------------------------------------------*/
-        // Inicializa el switch
+
+        // Inicializa los switches
         switchSoundConfiguration = root.findViewById(R.id.switch_sound_home);
         switchMovementConfiguration = root.findViewById(R.id.switch_movement_home);
         switchGpsConfiguration = root.findViewById(R.id.switch_gps_home);
 
-        /*----------------------------*/
-        soundStatus = GetSettings.getStatusSwitch("sound", requireActivity());
-        movementStatus = GetSettings.getStatusSwitch("movement", requireActivity());
-        gpsStatus = GetSettings.getStatusSwitch("gps", requireActivity());
-        /*----------------------------*/
+        // Recupera el estado guardado de cada switch (por ejemplo, desde las preferencias)
+        boolean soundStatus = GetSettings.getStatusSwitch("sound", requireActivity());
+        boolean movementStatus = GetSettings.getStatusSwitch("movement", requireActivity());
+        boolean gpsStatus = GetSettings.getStatusSwitch("gps", requireActivity());
 
-        // 1. Deshabilitar el listener inmediatamente
-        switchSoundConfiguration.setOnCheckedChangeListener(null);
-        switchMovementConfiguration.setOnCheckedChangeListener(null);
-        switchGpsConfiguration.setOnCheckedChangeListener(null);
-
-        /*---------- Configura el listener de audio ------------*/
-        // 2. Publicar un ejecutable para establecer el estado y volver a habilitar el listener
-        switchSoundConfiguration.post(() -> {
-            // 3. Establecer el estado marcado
-            switchSoundConfiguration.setChecked(soundStatus);
-
-            // 4. Saltar al estado actual para evitar la animación
-            switchSoundConfiguration.jumpDrawablesToCurrentState();
-
-            // 5. Volver a habilitar el listener
-            switchSoundConfiguration.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                GetSettings.setStatusSwitch("sound", isChecked, requireActivity());
-            });
-        });
-        /*---------- Configura el listener de audio ------------*/
-
-        /*---------- Configura el listener de movimiento ------------*/
-        // 2. Publicar un ejecutable para establecer el estado y volver a habilitar el listener
-        switchMovementConfiguration.post(() -> {
-            // 3. Establecer el estado marcado
-            switchMovementConfiguration.setChecked(movementStatus);
-
-            // 4. Saltar al estado actual para evitar la animación
-            switchMovementConfiguration.jumpDrawablesToCurrentState();
-
-            // 5. Volver a habilitar el listener
-            switchMovementConfiguration.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                GetSettings.setStatusSwitch("movement", isChecked, requireActivity());
-
-                if (isChecked) {
-                    // En el caso que el Switch de "Movimiento" sea TRUE → se pasan solo a TRUE los 3 primeros
-                    GetSettings.setStatusSwitch("accelerometer", true, requireActivity());
-                    GetSettings.setStatusSwitch("gyroscope", true, requireActivity());
-                    GetSettings.setStatusSwitch("magnetometer", true, requireActivity());
-                } else {
-                    // En el caso que el Switch de "Movimiento" sea FALSE → se pasan todos a FALSE
-                    String[] sensors = {"accelerometer", "gyroscope", "magnetometer",
-                            "uncalibrated_accelerometer", "uncalibrated_gyroscope",
-                            "uncalibrated_magnetometer", "gravity", "number_of_steps"};
-                    for (String sensor : sensors) {
-                        GetSettings.setStatusSwitch(sensor, false, requireActivity());
-                    }
-                }
-            });
-        });
-        /*---------- Configura el listener de movimiento ------------*/
-
-        /*---------- Configura el listener de GPS ------------*/
-        // 2. Publicar un ejecutable para establecer el estado y volver a habilitar el listener
-        switchGpsConfiguration.post(() -> {
-            // 3. Establecer el estado marcado
-            switchGpsConfiguration.setChecked(gpsStatus);
-
-            // 4. Saltar al estado actual para evitar la animación
-            switchGpsConfiguration.jumpDrawablesToCurrentState();
-
-            // 5. Volver a habilitar el listener
-            switchGpsConfiguration.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                GetSettings.setStatusSwitch("gps", isChecked, requireActivity());
-            });
-        });
-        /*---------- Configura el listener de GPS ------------*/
-        /*----------------------------------------------------------------------------------------*/
+        // Configura cada switch de forma similar para evitar que el listener se dispare al establecer el estado
+        configureSwitch(switchSoundConfiguration, soundStatus, "sound");
+        configureSwitch(switchMovementConfiguration, movementStatus, "movement");
+        configureSwitch(switchGpsConfiguration, gpsStatus, "gps");
 
         return root;
     }
 
+    /**
+     * Método auxiliar para configurar un Switch.
+     * Se deshabilita el listener, se establece el estado inicial, y luego se vuelve a habilitar.
+     *
+     * @param sw Switch a configurar
+     * @param initialStatus Estado inicial del Switch
+     * @param key Clave del sensor correspondiente al Switch
+     */
+    private void configureSwitch(@SuppressLint("UseSwitchCompatOrMaterialCode") Switch sw, boolean initialStatus, String key) {
+        // 1. Deshabilitar el listener inmediatamente
+        sw.setOnCheckedChangeListener(null);
+        // 2. Publicar un ejecutable para establecer el estado y volver a habilitar el listener
+        sw.post(() -> {
+            // 3. Establecer el estado marcado
+            sw.setChecked(initialStatus);
+            // 4. Saltar al estado actual para evitar la animación
+            sw.jumpDrawablesToCurrentState();
+            // 5. Volver a habilitar el listener
+            sw.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                GetSettings.setStatusSwitch(key, isChecked, requireActivity());
+                // Lógica adicional para el switch de "movement"
+                if (key.equals("movement")) {
+                    if (isChecked) {
+                        // En el caso que el Switch de "Movimiento" sea TRUE → se pasan solo a TRUE los 3 primeros
+                        GetSettings.setStatusSwitch("accelerometer", true, requireActivity());
+                        GetSettings.setStatusSwitch("gyroscope", true, requireActivity());
+                        GetSettings.setStatusSwitch("magnetometer", true, requireActivity());
+                    } else {
+                        // En el caso que el Switch de "Movimiento" sea FALSE → se pasan todos a FALSE
+                        String[] sensors = {"accelerometer", "gyroscope", "magnetometer",
+                                "uncalibrated_accelerometer", "uncalibrated_gyroscope",
+                                "uncalibrated_magnetometer", "gravity", "number_of_steps"};
+                        for (String sensor : sensors) {
+                            GetSettings.setStatusSwitch(sensor, false, requireActivity());
+                        }
+                    }
+                }
+            });
+        });
+    }
 
     /**
+     * Listener para el ToggleButton de iniciar/detener.
      *
      * @param buttonView The compound button view whose state has changed.
      * @param isChecked  The new checked state of buttonView.
      */
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        // En caso de no tener permisos los vuelve a solicitar
         MainActivity main = (MainActivity) getActivity();
         if (main == null) {
-            android.util.Log.d(tag, "if (main == null)");
-        }
-        main.askForPermissions();
-        // Corrobora si efectivamente se le dio los permisos
-        if (!main.hasPermissions()) {
-            this.buttonStartStop.setChecked(false);
             return;
         }
-        // Corrobora que haya al menos un switch seleccionado
+        // Solicita permisos si es necesario
+        main.askForPermissions();
+        if (!main.hasPermissions()) {
+            buttonStartStop.setChecked(false);
+            return;
+        }
+        // Verifica que al menos un sensor esté seleccionado
         if (!switchSoundConfiguration.isChecked() && !switchMovementConfiguration.isChecked() && !switchGpsConfiguration.isChecked()) {
-            this.buttonStartStop.setChecked(false);
-            // El usuario ha querido iniciar la grabación pero no ha seleccionado ningún sensor
+            buttonStartStop.setChecked(false);
             Toast.makeText(requireContext(), "Debe seleccionar al menos un sensor para continuar", Toast.LENGTH_SHORT).show();
             return;
         }
-        // isChecked = true → se inicia la grabación
-        // isChecked = false → se detiene la grabación
+        // Inicia o detiene la grabación según el estado del botón
         if (isChecked) {
-            // Verifica el estado antes de comenzar la grabación
-            if (!main.checkStatusBeforeStart() && it_is_the_first_notification) {
-                it_is_the_first_notification = false;
-                android.util.Log.d(tag, "if (!this.checkStatusBeforeStart())");
+            if (!main.checkStatusBeforeStart() && itIsTheFirstNotification) {
+                itIsTheFirstNotification = false;
                 main.openDialog();
-                this.buttonStartStop.setChecked(false);
+                buttonStartStop.setChecked(false);
             } else {
-                // 1-) Presina el boton de "Iniciar" y si no se cumplen las validaciones comienza la grabación
+                // 1-) Presina el boton de "Iniciar" y si se cumplen las validaciones comienza la grabación
                 main.startTest();
             }
         } else {
             main.stopTest();
         }
-    }
-    /*----------------------------------------------------------------------------------------*/
-
-    @Override
-    public void onStart() {
-        //android.util.Log.d(tag, "onStart HomeFragment.java");
-        super.onStart();
     }
 
     @Override
