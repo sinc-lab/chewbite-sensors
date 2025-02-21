@@ -90,13 +90,14 @@ public abstract class CBBuffer {
         return this.getSensorName() + String.format("_%02d", fileNumber) + FILE_EXTENSION;
     }
 
-    /**
+    /*
+     * Método anterior que guarda los datos codificados en bytes para que ocupen menos espacio
      * devuelve una lista de arreglos de bytes que representan los datos de los eventos almacenados
      * en el buffer.
      *
      * @return
      */
-    public ArrayList<byte[]> getSensorEventData(String sensorName) {
+    /*public ArrayList<byte[]> getSensorEventData(String sensorName) {
         // Obtener el índice de la cola
         int copyUntil = this.head;
         // Comprobar si el buffer está vacío
@@ -136,6 +137,73 @@ public abstract class CBBuffer {
         }
         // Si el buffer está vacío, no hacer nada
         return bytes;
+    }*/
+
+
+    /**
+     * Devuelve una lista de cadenas que representan los datos de los eventos almacenados en el
+     *
+     * @param sensorName nombre del sensor
+     * @return una lista de cadenas que representan los datos de los eventos almacenados en el buffer
+     */
+    @SuppressLint("DefaultLocale")
+    public ArrayList<String> getSensorEventData(String sensorName) {
+        // Obtener el índice de la cola
+        int copyUntil = this.head;
+        // Declara la variable para almacenar los datos en formato de cadena
+        ArrayList<String> lines = new ArrayList<>();
+        // Si el buffer no está vacío, copiar los datos
+        while (tail != copyUntil) {
+
+            // Obtener el evento
+            SensorEventData event = this.sensorEventData[tail];
+            // Crear una cadena con los datos del evento
+            String line;
+
+            if (CBBuffer.STRING_NUM_OF_STEPS.equals(sensorName)) { // Identificar el Step Counter
+                // Crear un buffer
+                //ByteBuffer buff = ByteBuffer.allocate(Long.BYTES + Integer.BYTES);  // Solo timestamp y count
+                // Copiar los datos específicos del Step Counter al buffer
+                //buff.putLong(event.getTimestamp()).putInt(event.getCount());
+                // Agregar el buffer al arreglo
+                //bytes.add(buff.array());
+                // Crear una cadena con los datos del evento
+                line = event.getTimestamp() + "," + event.getCount();
+                // otra opción
+                //line = String.format("%d,%d", event.getTimestamp(), event.getCount());
+            } else if (CBBuffer.STRING_GPS.equals(sensorName)) {
+                // Crear un buffer
+                //ByteBuffer buff = ByteBuffer.allocate(Long.BYTES + 3 * Double.BYTES);
+                // Copiar los datos en el buffer
+                //buff.putLong(event.getTimestamp()).putDouble(event.getLat()).putDouble(event.getLon()).putDouble(event.getAlt());
+                // Agregar el buffer al arreglo
+                //bytes.add(buff.array());
+                // Crear una cadena con los datos del evento
+                line = event.getTimestamp() + "," + event.getLat() + "," + event.getLon() + "," + event.getAlt();
+            } else {
+                // Crear un buffer
+                //ByteBuffer buff = ByteBuffer.allocate(Long.BYTES + 3 * Float.BYTES);
+                // Copiar los datos en el buffer
+                //buff.putLong(event.getTimestamp()).putFloat(event.getX()).putFloat(event.getY()).putFloat(event.getZ());
+                // Agregar el buffer al arreglo
+                //bytes.add(buff.array());
+                // Crear una cadena con los datos del evento
+                line = event.getTimestamp() + "," + event.getX() + "," + event.getY() + "," + event.getZ();
+                // otra opción
+                /*line = String.format("%d,%.4f,%.4f,%.4f",
+                        event.getTimestamp(),
+                        event.getX(),
+                        event.getY(),
+                        event.getZ());*/
+            }
+            // Agregar el buffer al arreglo
+            //bytes.add(buff.array());
+            lines.add(line + "\n");
+            // Actualizar el índice
+            tail = (tail + 1) & (BUFFER_SIZE - 1);
+        }
+        // Si el buffer está vacío, no hacer nada
+        return lines;
     }
 
     /**

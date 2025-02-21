@@ -38,13 +38,41 @@ public class FileManager {
         }
     }
 
-    public static void writeToFile(String fileName, ArrayList<byte[]> data) {
+    /**
+     * Escribe un array de bytes a un archivo.
+     *
+     * @param fileName nombre del archivo
+     * @param data     array de byte a escribir
+     */
+    /*public static void writeToFile(String fileName, ArrayList<byte[]> data) {
         File file = getFile(fileName);
         if (file != null) {
             synchronized (getLock(fileName)) {
                 try (FileOutputStream fileOutputStream = new FileOutputStream(file, true)) {
                     for (byte[] bytes : data) {
                         fileOutputStream.write(bytes);
+                    }
+                } catch (IOException e) {
+                    Log.e("File Error", e.toString());
+                }
+            }
+        }
+    }*/
+
+
+    /**
+     * Nuevo método que escribe un array de strings a un archivo.
+     *
+     * @param fileName nombre del archivo
+     * @param data     array de strings a escribir
+     */
+    public static void writeToFile(String fileName, ArrayList<String> data) {
+        File file = getFile(fileName);
+        if (file != null) {
+            synchronized (getLock(fileName)) {
+                try (FileOutputStream fileOutputStream = new FileOutputStream(file, true)) {
+                    for (String line : data) {
+                        fileOutputStream.write(line.getBytes(StandardCharsets.UTF_8));
                     }
                 } catch (IOException e) {
                     Log.e("File Error", e.toString());
