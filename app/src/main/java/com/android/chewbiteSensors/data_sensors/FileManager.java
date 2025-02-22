@@ -102,13 +102,9 @@ public class FileManager {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
             // menor o igual a Android 9
             baseDir = new File(Environment.getExternalStorageDirectory(), BASE_FOLDER.concat("/").concat(SUB_FOLDER));
-        } else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
-            // mayor a Android 9 y menor a Android 12
-            baseDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), BASE_FOLDER.concat("/").concat(SUB_FOLDER));
         } else {
-            //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-            // mayor o igual a Android 12
-            baseDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_RECORDINGS), SUB_FOLDER);
+            // mayor a Android 9
+            baseDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), BASE_FOLDER.concat("/").concat(SUB_FOLDER));
         }
 
         File subDir = new File(baseDir, data.getExperimentName());

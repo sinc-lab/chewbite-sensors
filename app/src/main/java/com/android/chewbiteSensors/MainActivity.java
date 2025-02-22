@@ -140,7 +140,18 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     }
 
     private String[] getRequiredPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return new String[]{
+                    Manifest.permission.RECORD_AUDIO,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.BODY_SENSORS,
+                    Manifest.permission.ACTIVITY_RECOGNITION,
+                    Manifest.permission.HIGH_SAMPLING_RATE_SENSORS
+                    // Manifest.permission.READ_EXTERNAL_STORAGE // --> No es necesario en Android 13 o posteriores
+            };
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             return new String[]{
                     Manifest.permission.RECORD_AUDIO,
                     Manifest.permission.ACCESS_FINE_LOCATION,

@@ -1,5 +1,9 @@
 package com.android.chewbiteSensors.data_sensors;
 
+import static android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_HEALTH;
+import static android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION;
+import static android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE;
+
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -10,8 +14,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.android.chewbiteSensors.MainActivity;
 import com.android.chewbiteSensors.R;
@@ -101,6 +108,7 @@ public class CBService extends Service {
         return true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     @SuppressLint("ForegroundServiceType")
     private void startForegroudService() {
         Intent notificationIntent = new Intent(this, MainActivity.class);
@@ -116,7 +124,17 @@ public class CBService extends Service {
                 .setContentIntent(pendingIntent).build();
 
         int NOTIFICATION_ID = 1336;
-        this.startForeground(NOTIFICATION_ID, notification);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // Por esto (agregar el tipo de servicio):
+            this.startForeground(NOTIFICATION_ID, notification,
+                    FOREGROUND_SERVICE_TYPE_MICROPHONE |
+                            FOREGROUND_SERVICE_TYPE_LOCATION |
+                            FOREGROUND_SERVICE_TYPE_HEALTH);
+        } else {
+            this.startForeground(NOTIFICATION_ID, notification);
+        }
+
+
     }
 
     private void createNotificationChannel() {
