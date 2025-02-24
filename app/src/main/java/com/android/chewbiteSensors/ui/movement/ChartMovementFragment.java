@@ -22,10 +22,8 @@ import com.android.chewbiteSensors.data_sensors.TestSensorsEventListener;
 import com.android.chewbiteSensors.databinding.FragmentChartMovementBinding;
 import com.github.mikephil.charting.charts.LineChart;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ChartMovementFragment extends Fragment {
 
@@ -35,7 +33,7 @@ public class ChartMovementFragment extends Fragment {
     private List<CheckBox> filesCheckBoxList;
     public static String TEST_DATA_STRING = "testData";
     private ExperimentData data;
-    private TestSensorsEventListener testSensorsEventListenerAccelerometer ;
+    private TestSensorsEventListener testSensorsEventListenerAccelerometer;
     private TestSensorsEventListener testSensorsEventListenerGyroscope;
     private TestSensorsEventListener testSensorsEventListenerMagnetometer;
     private AppMode mode;
@@ -112,17 +110,13 @@ public class ChartMovementFragment extends Fragment {
         filesTableLayoutMagnetometer.addView(chart_Magnetometer);
 
         // Crea una nueva instancia de un TestSensorsEventListener. Este listener se encargue de recibir datos de los sensores y actualizar el gráfico de líneas con esos datos.
-        this.testSensorsEventListenerAccelerometer = new TestSensorsEventListener(requireContext(), chart_Accelerometer, Sensor.TYPE_ACCELEROMETER, CBBuffer.STRING_ACCELEROMETER,  Color.RED);
-        this.testSensorsEventListenerGyroscope = new TestSensorsEventListener(requireContext(), chart_Gyroscope, Sensor.TYPE_GYROSCOPE, CBBuffer.STRING_GYROSCOPE, Color.GREEN);
-        this.testSensorsEventListenerMagnetometer = new TestSensorsEventListener(requireContext(), chart_Magnetometer, Sensor.TYPE_MAGNETIC_FIELD, CBBuffer.STRING_MAGNETIC_FIELD, Color.BLUE);
+        this.testSensorsEventListenerAccelerometer = new TestSensorsEventListener(requireContext(), chart_Accelerometer, Sensor.TYPE_ACCELEROMETER, CBBuffer.STRING_ACCELEROMETER, Color.RED, -45f, 45f);
+        this.testSensorsEventListenerGyroscope = new TestSensorsEventListener(requireContext(), chart_Gyroscope, Sensor.TYPE_GYROSCOPE, CBBuffer.STRING_GYROSCOPE, Color.GREEN, -15f, 15f);
+        this.testSensorsEventListenerMagnetometer = new TestSensorsEventListener(requireContext(), chart_Magnetometer, Sensor.TYPE_MAGNETIC_FIELD, CBBuffer.STRING_MAGNETIC_FIELD, Color.BLUE, -25f, 25f);
     }
     /*----------------------------------------------------------------------------------------*/
 
-
-
-    @Override
-    public void onPause() {
-        super.onPause();
+    private void stopTestSensorsEventListener() {
         // Limpia los recursos asociados al gráfico de líneas
         if (this.testSensorsEventListenerAccelerometer != null) {
             this.testSensorsEventListenerAccelerometer.stop();
@@ -136,8 +130,75 @@ public class ChartMovementFragment extends Fragment {
             this.testSensorsEventListenerMagnetometer.stop();
             this.testSensorsEventListenerMagnetometer = null;
         }
-        // Limpia los recursos asociados al binding
-        binding = null;
+        // Limpiamos los gráficos eliminando todas las vistas de los contenedores
+        TableLayout filesTableLayoutAccelerometer = root.findViewById(R.id.filesTableLayoutAccelerometer);
+        if (filesTableLayoutAccelerometer != null) {
+            filesTableLayoutAccelerometer.removeAllViews();
+        }
 
+        TableLayout filesTableLayoutGyroscope = root.findViewById(R.id.filesTableLayoutGyroscope);
+        if (filesTableLayoutGyroscope != null) {
+            filesTableLayoutGyroscope.removeAllViews();
+        }
+
+        TableLayout filesTableLayoutMagnetometer = root.findViewById(R.id.filesTableLayoutMagnetometer);
+        if (filesTableLayoutMagnetometer != null) {
+            filesTableLayoutMagnetometer.removeAllViews();
+        }
+
+        // Liberamos el binding
+        binding = null;
     }
+
+    /*----------------------------------------------------------------------------------------*/
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (binding == null) {
+            this.showTestChart();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (binding == null) {
+            this.showTestChart();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (binding != null) {
+            stopTestSensorsEventListener();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (binding != null) {
+            stopTestSensorsEventListener();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (binding != null) {
+            stopTestSensorsEventListener();
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        // Detenemos los sensores
+        if (binding != null) {
+            stopTestSensorsEventListener();
+        }
+    }
+
 }

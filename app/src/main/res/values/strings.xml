@@ -32,6 +32,9 @@
     <string name="text_gravity">Gravedad</string>
     <string name="text_number_of_steps">Cantidad de pasos</string>
     <string name="permission_rationale">Se necesitan permisos para poder continuar.</string>
+    <string name="unit_of_measurement_accelerometer">[m/s²]</string>
+    <string name="unit_of_measurement_gyroscope">[rad/s]</string>
+    <string name="unit_of_measurement_magnetometer">[µT]</string>
     <string name="ok">OK</string>
     <string name="notification_title">ChewBite test is running</string>
     <string name="notification_text">Saving device sensor data...</string>

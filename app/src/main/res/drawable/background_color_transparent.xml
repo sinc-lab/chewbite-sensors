@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:shape="rectangle"
+    android:width="312dp"
+    android:height="229dp"
+    android:viewportWidth="312"
+    android:viewportHeight="229"
+    tools:ignore="VectorRaster">
+
+    <solid android:color="@android:color/transparent" /> <!-- Fondo transparente -->
+
+    <stroke
+        android:width="1dp"
+        android:color="#7F949494" /> <!-- Color del contorno con 50% de transparencia -->
+    <!-- 7F es el valor alpha en hexadecimal (127 en decimal, que es 50% de 255) -->
+
+    <corners android:radius="16dp" /> <!-- Bordes redondeados opcional -->
+</shape>
