@@ -406,6 +406,13 @@ public class MovementFragment extends Fragment {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean(sensorInfo.getStatusKey(), isSensorAvailable);
                 editor.apply();
+            } else {
+                int minHz = viewModel.getMinHzSensor(sensorInfo.getSensorType());
+
+                if (minHz < 100){
+                    mostrarTextViewLimitation(sensorInfo, minHz, view);
+                }
+
             }
         }
         /*---------- Habilita y Deshabilita los switch ------------*/
@@ -440,5 +447,60 @@ public class MovementFragment extends Fragment {
     private void toastMessage() {
         // Mostrar mensaje de que el sensor no está disponible
         Toast.makeText(requireActivity(), "El dispositivo no cuenta con este sensor.", Toast.LENGTH_SHORT).show();
+    }
+
+    private void mostrarTextViewLimitation(SensorInfo sensorInfo, int Hz, View view) {
+
+        String text = "* Limitado a "+ Hz +"Hz como máximo";
+        switch (sensorInfo) {
+            case ACCELEROMETER:
+                // Inicializa el switch para la configuración
+                TextView textViewAccelerometerLimitation = view.findViewById(R.id.txt_accelerometer_limitation);
+                textViewAccelerometerLimitation.setText(text);
+                textViewAccelerometerLimitation.setVisibility(View.VISIBLE);
+                break;
+            case GYROSCOPE:
+                // Inicializa el switch para la configuración
+                TextView textViewGyroscopeLimitation = view.findViewById(R.id.txt_gyroscope_limitation);
+                textViewGyroscopeLimitation.setText(text);
+                textViewGyroscopeLimitation.setVisibility(View.VISIBLE);
+                break;
+            case MAGNETOMETER:
+                // Inicializa el switch para la configuración
+                TextView textViewMagnetometerLimitation = view.findViewById(R.id.txt_magnetometer_limitation);
+                textViewMagnetometerLimitation.setText(text);
+                textViewMagnetometerLimitation.setVisibility(View.VISIBLE);
+                break;
+            case ACCELEROMETER_UNCALIBRATED:
+                // Inicializa el switch para la configuración
+                TextView textViewUncalibratedAccelerometerLimitation = view.findViewById(R.id.txt_accelerometer_uncalibrated_limitation);
+                textViewUncalibratedAccelerometerLimitation.setText(text);
+                textViewUncalibratedAccelerometerLimitation.setVisibility(View.VISIBLE);
+                break;
+            case GYROSCOPE_UNCALIBRATED:
+                // Inicializa el switch para la configuración
+                TextView textViewUncalibratedGyroscopeLimitation = view.findViewById(R.id.txt_gyroscope_uncalibrated_limitation);
+                textViewUncalibratedGyroscopeLimitation.setText(text);
+                textViewUncalibratedGyroscopeLimitation.setVisibility(View.VISIBLE);
+                break;
+            case MAGNETOMETER_UNCALIBRATED:
+                // Inicializa el switch para la configuración
+                TextView textViewUncalibratedMagnetometerLimitation = view.findViewById(R.id.txt_magnetometer_uncalibrated_limitation);
+                textViewUncalibratedMagnetometerLimitation.setText(text);
+                textViewUncalibratedMagnetometerLimitation.setVisibility(View.VISIBLE);
+                break;
+            case GRAVITY:
+                // Inicializa el switch para la configuración
+                TextView textViewGravityLimitation = view.findViewById(R.id.txt_gravity_limitation);
+                textViewGravityLimitation.setText(text);
+                textViewGravityLimitation.setVisibility(View.VISIBLE);
+                break;
+            case STEP_COUNTER:
+                // Inicializa el switch para la configuración
+                TextView textViewNumberOfStepsLimitation = view.findViewById(R.id.txt_number_of_steps_limitation);
+                textViewNumberOfStepsLimitation.setText(text);
+                textViewNumberOfStepsLimitation.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 }

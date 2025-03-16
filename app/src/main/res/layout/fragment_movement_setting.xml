@@ -82,6 +82,20 @@
                 android:layout_marginEnd="12dp"
                 android:gravity="center"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            <TextView
+                android:id="@+id/txt_accelerometer_limitation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="bottom"
+                android:visibility="gone"
+                android:textAppearance="@style/stl_text_setting_label_limitation" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -115,6 +129,20 @@
                 android:layout_marginEnd="12dp"
                 android:gravity="center"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            <TextView
+                android:id="@+id/txt_gyroscope_limitation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="bottom"
+                android:visibility="gone"
+                android:textAppearance="@style/stl_text_setting_label_limitation" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -148,6 +176,20 @@
                 android:layout_marginEnd="12dp"
                 android:gravity="center"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            <TextView
+                android:id="@+id/txt_magnetometer_limitation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="bottom"
+                android:visibility="gone"
+                android:textAppearance="@style/stl_text_setting_label_limitation" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -181,6 +223,20 @@
                 android:layout_marginEnd="12dp"
                 android:gravity="center"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            <TextView
+                android:id="@+id/txt_accelerometer_uncalibrated_limitation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="bottom"
+                android:visibility="gone"
+                android:textAppearance="@style/stl_text_setting_label_limitation" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -214,6 +270,20 @@
                 android:layout_marginEnd="12dp"
                 android:gravity="center"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            <TextView
+                android:id="@+id/txt_gyroscope_uncalibrated_limitation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="bottom"
+                android:visibility="gone"
+                android:textAppearance="@style/stl_text_setting_label_limitation" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -247,6 +317,20 @@
                 android:layout_marginEnd="12dp"
                 android:gravity="center"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            <TextView
+                android:id="@+id/txt_magnetometer_uncalibrated_limitation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="bottom"
+                android:visibility="gone"
+                android:textAppearance="@style/stl_text_setting_label_limitation" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -280,6 +364,20 @@
                 android:layout_marginEnd="12dp"
                 android:gravity="center"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            <TextView
+                android:id="@+id/txt_gravity_limitation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="bottom"
+                android:visibility="gone"
+                android:textAppearance="@style/stl_text_setting_label_limitation" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -313,6 +411,20 @@
                 android:layout_marginEnd="12dp"
                 android:gravity="center"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            <TextView
+                android:id="@+id/txt_number_of_steps_limitation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="bottom"
+                android:visibility="gone"
+                android:textAppearance="@style/stl_text_setting_label_limitation" />
         </RelativeLayout>
     </LinearLayout>
 </ScrollView>

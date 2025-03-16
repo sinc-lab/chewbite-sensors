@@ -81,6 +81,13 @@
         <item name="android:textColor">@color/black_experiment_name</item>
     </style>
 
+    <style name="stl_text_setting_label_limitation">
+        <item name="fontFamily">@font/open_sans_semi_bold</item>
+        <item name="android:fontFamily">@font/open_sans_semi_bold</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/orange_600</item>
+    </style>
+
     <!-- ↓ styles del texto del menú de navegación dentro de configuraciones ↓ -->
     <style name="BottomNavigationTextActive" parent="TextAppearance.MaterialComponents.Caption">
         <item name="android:textSize">16sp</item> <!-- Tamaño del texto activo -->
