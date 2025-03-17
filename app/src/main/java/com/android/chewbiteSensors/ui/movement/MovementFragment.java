@@ -397,6 +397,7 @@ public class MovementFragment extends Fragment {
 
             if (!isSensorAvailable) {
                 sensorSwitch.setEnabled(isSensorAvailable);
+                sensorSwitch.setClickable(isSensorAvailable);
 
                 // Disable TextView and reduce opacity only if sensor is not available
                 textView.setEnabled(isSensorAvailable);
