@@ -17,6 +17,7 @@
     <string name="text_movement_configuration">Movimiento</string>
     <string name="text_gps_configuration">GPS</string>
     <string name="text_experiment_name">Nombre del experimento</string>
+    <string name="text_path_storage">Ruta de almacenamiento</string>
     <string name="txt_start">Iniciar</string>
     <string name="txt_stop">Detener</string>
     <string name="text_frequency">Frecuencia de muestreo (Hz)</string>

@@ -91,7 +91,14 @@ public class FileManager {
         return null;
     }
 
-    public static File getExperimentDirectory() {
+    /**
+     * Crea la carpeta base si no existe
+     * Se sacó del método "getExperimentDirectory" porque se necesitaba para mostrar la ruta de
+     * almacenamiento del experimento.
+     *
+     * @return File path base de almacenamiento.
+     */
+    public static File getbaseDir() {
         // Crear carpeta base si no existe
         //File baseDir = new File(context.getFilesDir(), BASE_FOLDER);
         //File baseDir = new File(context.getExternalFilesDir(null), BASE_FOLDER);
@@ -106,6 +113,11 @@ public class FileManager {
             // mayor a Android 9
             baseDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), BASE_FOLDER.concat("/").concat(SUB_FOLDER));
         }
+        return baseDir;
+    }
+
+    public static File getExperimentDirectory() {
+        File baseDir = getbaseDir();
 
         File subDir = new File(baseDir, data.getExperimentName());
 

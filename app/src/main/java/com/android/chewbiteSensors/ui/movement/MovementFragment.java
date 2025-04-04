@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -410,7 +412,7 @@ public class MovementFragment extends Fragment {
             } else {
                 int minHz = viewModel.getMinHzSensor(sensorInfo.getSensorType());
 
-                if (minHz < 100){
+                if (minHz < 100) {
                     mostrarTextViewLimitation(sensorInfo, minHz, view);
                 }
 
@@ -452,7 +454,7 @@ public class MovementFragment extends Fragment {
 
     private void mostrarTextViewLimitation(SensorInfo sensorInfo, int Hz, View view) {
 
-        String text = "* Limitado a "+ Hz +"Hz como máximo";
+        String text = "* Limitado a " + Hz + "Hz como máximo";
         switch (sensorInfo) {
             case ACCELEROMETER:
                 // Inicializa el switch para la configuración
@@ -498,10 +500,33 @@ public class MovementFragment extends Fragment {
                 break;
             case STEP_COUNTER:
                 // Inicializa el switch para la configuración
-                TextView textViewNumberOfStepsLimitation = view.findViewById(R.id.txt_number_of_steps_limitation);
+                /*TextView textViewNumberOfStepsLimitation = view.findViewById(R.id.txt_number_of_steps_limitation);
                 textViewNumberOfStepsLimitation.setText(text);
-                textViewNumberOfStepsLimitation.setVisibility(View.VISIBLE);
+                textViewNumberOfStepsLimitation.setVisibility(View.VISIBLE);*/
+                RelativeLayout rl_war_rect = view.findViewById(R.id.rl_warning_rectangle);
+                rl_war_rect.setVisibility(View.VISIBLE);
+                rl_war_rect.setOnClickListener(v -> openDialog());
                 break;
         }
+    }
+
+    private void openDialog() {
+        String message = "Los datos del contador de pasos son almacenados cuando el sensor del sistema detecta un cambio.\n" +
+                "Sin importar la frecuencia de muestreo que se asigne.";
+        // Usar MaterialAlertDialogBuilder si tienes Material Components
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(requireContext());
+        alertDialogBuilder.setTitle("Información");
+        alertDialogBuilder.setMessage(message);
+
+        // Icono opcional (recomendado para diálogos informativos)
+        //alertDialogBuilder.setIcon(R.drawable.warning_blue); // Añade tu propio ícono
+
+        alertDialogBuilder.setPositiveButton("Aceptar", (dialog, which) -> {
+            // Acción al hacer clic en Aceptar
+            dialog.dismiss(); // Cierra el diálogo
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }

@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.movement.MovementFragment"
-    android:layout_marginBottom="60dp">
+    android:layout_marginBottom="60dp"
+    tools:context=".ui.movement.MovementFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -94,8 +94,8 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="0dp"
                 android:gravity="bottom"
-                android:visibility="gone"
-                android:textAppearance="@style/stl_text_setting_label_limitation" />
+                android:textAppearance="@style/stl_text_setting_label_limitation"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -141,8 +141,8 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="0dp"
                 android:gravity="bottom"
-                android:visibility="gone"
-                android:textAppearance="@style/stl_text_setting_label_limitation" />
+                android:textAppearance="@style/stl_text_setting_label_limitation"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -188,8 +188,8 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="0dp"
                 android:gravity="bottom"
-                android:visibility="gone"
-                android:textAppearance="@style/stl_text_setting_label_limitation" />
+                android:textAppearance="@style/stl_text_setting_label_limitation"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -235,8 +235,8 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="0dp"
                 android:gravity="bottom"
-                android:visibility="gone"
-                android:textAppearance="@style/stl_text_setting_label_limitation" />
+                android:textAppearance="@style/stl_text_setting_label_limitation"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -282,8 +282,8 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="0dp"
                 android:gravity="bottom"
-                android:visibility="gone"
-                android:textAppearance="@style/stl_text_setting_label_limitation" />
+                android:textAppearance="@style/stl_text_setting_label_limitation"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -329,8 +329,8 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="0dp"
                 android:gravity="bottom"
-                android:visibility="gone"
-                android:textAppearance="@style/stl_text_setting_label_limitation" />
+                android:textAppearance="@style/stl_text_setting_label_limitation"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -376,8 +376,8 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="0dp"
                 android:gravity="bottom"
-                android:visibility="gone"
-                android:textAppearance="@style/stl_text_setting_label_limitation" />
+                android:textAppearance="@style/stl_text_setting_label_limitation"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -397,10 +397,31 @@
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="0dp"
-                android:layout_toStartOf="@+id/switch_number_of_steps_configuration"
                 android:gravity="center_vertical"
                 android:text="@string/text_number_of_steps"
                 android:textAppearance="@style/stl_text_setting_label" />
+
+            <RelativeLayout
+                android:id="@+id/rl_warning_rectangle"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_toEndOf="@id/txt_number_of_steps"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:id="@+id/warning_rectangle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    tools:ignore="UselessParent">
+
+                    <View
+                        android:id="@+id/System_Status"
+                        android:layout_width="21dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/warning_blue" />
+                </RelativeLayout>
+            </RelativeLayout>
 
             <Switch
                 android:id="@+id/switch_number_of_steps_configuration"
@@ -411,20 +432,6 @@
                 android:layout_marginEnd="12dp"
                 android:gravity="center"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
-
-            <TextView
-                android:id="@+id/txt_number_of_steps_limitation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginBottom="0dp"
-                android:gravity="bottom"
-                android:visibility="gone"
-                android:textAppearance="@style/stl_text_setting_label_limitation" />
         </RelativeLayout>
     </LinearLayout>
 </ScrollView>

@@ -8,19 +8,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.android.chewbiteSensors.R;
+import com.android.chewbiteSensors.data_sensors.FileManager;
 import com.android.chewbiteSensors.databinding.FragmentSettingsBinding;
 import com.android.chewbiteSensors.settings.GetSettings;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class SettingsFragment extends Fragment {
 
+    private TextView tvPathStorage;
     private SettingsViewModel mViewModel;
     private FragmentSettingsBinding binding;
 
@@ -84,7 +88,32 @@ public class SettingsFragment extends Fragment {
             }
         });
         /*----------------------------------------------------------------------------------------*/
+        tvPathStorage = view.findViewById(R.id.tv_path_storage);
+        tvPathStorage.setOnClickListener(v -> openDialog());
+        /*----------------------------------------------------------------------------------------*/
         return view;
+    }
+
+    private void openDialog() {
+        // Obtener la ruta de los archivos generados
+        String baseDir = FileManager.getbaseDir().toString();
+        String filePath = baseDir + "/" + GetSettings.getExperimentName(requireActivity());
+        String message = "La ruta de almacenamiento de los archivos generados es: " + filePath;
+        // Usar MaterialAlertDialogBuilder si tienes Material Components
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(requireContext());
+        alertDialogBuilder.setTitle("Información");
+        alertDialogBuilder.setMessage(message);
+
+        // Icono opcional (recomendado para diálogos informativos)
+        //alertDialogBuilder.setIcon(R.drawable.warning_blue); // Añade tu propio ícono
+
+        alertDialogBuilder.setPositiveButton("Aceptar", (dialog, which) -> {
+            // Acción al hacer clic en Aceptar
+            dialog.dismiss(); // Cierra el diálogo
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     /*@Override
