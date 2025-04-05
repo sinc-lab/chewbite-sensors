@@ -4,13 +4,15 @@ public class DeviceStatus {
     private Status airplane;
     private Status bluetooth;
     private Status wifi;
+    private Status silence;
 
     public DeviceStatus(){}
 
-    public DeviceStatus(Status airplane, Status bluetooth, Status wifi) {
+    public DeviceStatus(Status airplane, Status bluetooth, Status wifi, Status silence) {
         this.airplane = airplane;
         this.bluetooth = bluetooth;
         this.wifi = wifi;
+        this.silence = silence;
     }
 
     @Override
@@ -45,5 +47,11 @@ public class DeviceStatus {
 
     public void setWifi(Status wifi) {
         this.wifi = wifi;
+    }
+    public Status getSilence() {
+        return silence;
+    }
+    public void setSilence(Status silence) {
+        this.silence = silence;
     }
 }

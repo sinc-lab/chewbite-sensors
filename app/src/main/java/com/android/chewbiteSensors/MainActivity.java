@@ -239,23 +239,35 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
     public void openDialog() {
         android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("WARNING");
+        alertDialogBuilder.setTitle("Atención");
 
         DeviceStatus requiredStatus = DeviceStatusService.getRequiredStatus();
 
-        String message = "El test no puede comenzar por las siguientes razones:\n\n";
+        String message = "Estado del dispositivo: \n\n";//"El test no puede comenzar por las siguientes razones:\n\n";
+        String messageDesactivar = "";
+        String messageActivar = "";
         if (this.currentStatus.getAirplane() != requiredStatus.getAirplane()) {
-            message += "* MODO AVIÓN DESHABILITADO *\n\n";
+            message += "- Modo avión desactivado.\n";
+            messageActivar += "activar el Modo avión";
         }
         if (this.currentStatus.getBluetooth() != requiredStatus.getBluetooth()) {
-            message += "* BLUETOOTH ACTIVADO *\n\n";
+            message += "- Bluetooth activado.\n";
+            messageDesactivar += "desactivar el Bluetooth";
         }
         if (this.currentStatus.getWifi() != requiredStatus.getWifi()) {
-            message += "* WIFI ACTIVADO *\n\n";
+            message += "- WiFi activado.\n";
+            // Operador ternario
+            messageDesactivar += messageDesactivar.isEmpty() ? "desactivar el WiFi" : " y el WiFi";
         }
+        if (this.currentStatus.getSilence() != requiredStatus.getSilence()) {
+            message += "- Silencio desactivado.\n";
+            messageActivar += messageActivar.isEmpty() ? "activar el Silencio" : " y el Silencio";
+        }
+        message += "\nLo cual puede realizar un consumo excesivo de la batería o afectar la precisión de la grabación.\n\n";
+        message += "Si no es requerido recuerda " + messageActivar + ", y " + messageDesactivar + ". Luego vuelva a iniciar el experimento.";
         alertDialogBuilder.setMessage(message);
 
-        alertDialogBuilder.setPositiveButton("Accept", (dialog, arg1) -> Log.d("DIALOG", "yes"));
+        alertDialogBuilder.setPositiveButton("Aceptar", (dialog, arg1) -> Log.d("DIALOG", "yes"));
 
         android.app.AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
