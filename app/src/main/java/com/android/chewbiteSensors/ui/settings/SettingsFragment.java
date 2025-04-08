@@ -7,8 +7,8 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -24,7 +24,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class SettingsFragment extends Fragment {
 
-    private TextView tvPathStorage;
+    private Button btnPathStorage;
     private SettingsViewModel mViewModel;
     private FragmentSettingsBinding binding;
 
@@ -88,8 +88,8 @@ public class SettingsFragment extends Fragment {
             }
         });
         /*----------------------------------------------------------------------------------------*/
-        tvPathStorage = view.findViewById(R.id.tv_path_storage);
-        tvPathStorage.setOnClickListener(v -> openDialog());
+        btnPathStorage = view.findViewById(R.id.btn_path_storage);
+        btnPathStorage.setOnClickListener(v -> openDialog());
         /*----------------------------------------------------------------------------------------*/
         return view;
     }

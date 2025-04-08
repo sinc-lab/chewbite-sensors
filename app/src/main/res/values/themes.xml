@@ -65,6 +65,16 @@
         <item name="android:background">@drawable/my_btn_toggle</item>
     </style>
 
+    <!-- styles del botón ruta de almacenamiento -->
+    <style name="Theme.Paht_Button" parent="@style/Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:backgroundTint">@color/black_50</item>
+        <item name="android:textAppearance">@style/TextAppearance.App.Button</item>
+        <item name="fontFamily">@font/open_sans_regular</item>
+        <item name="android:fontFamily">@font/open_sans_regular</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/black_experiment_name</item>
+    </style>
+
     <!-- styles del texto de ">Nombre del experimento<" -->
     <style name="stl_experiment_name">
         <item name="fontFamily">@font/open_sans_regular</item>
