@@ -26,6 +26,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -148,16 +149,18 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                     Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.BODY_SENSORS,
                     Manifest.permission.ACTIVITY_RECOGNITION,
-                    Manifest.permission.HIGH_SAMPLING_RATE_SENSORS
+                    Manifest.permission.HIGH_SAMPLING_RATE_SENSORS,
                     // Manifest.permission.READ_EXTERNAL_STORAGE // --> No es necesario en Android 13 o posteriores
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION //El acceso en segundo plano
             };
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             return new String[]{
                     Manifest.permission.RECORD_AUDIO,
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
                     // No es necesario WRITE_EXTERNAL_STORAGE en Android 11 y posteriores
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION //El acceso en segundo plano
             };
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             return new String[]{
@@ -165,7 +168,8 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE // Necesario para Android 10
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE, // Necesario para Android 10
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION //El acceso en segundo plano
             };
         } else {
             return new String[]{
@@ -173,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE // Necesario para Android 9 y anteriores
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE, // Necesario para Android 9 y anteriores
             };
         }
     }

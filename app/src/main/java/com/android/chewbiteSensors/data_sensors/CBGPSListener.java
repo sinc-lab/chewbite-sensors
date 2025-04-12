@@ -19,6 +19,7 @@ import com.android.chewbiteSensors.R;
 import com.android.chewbiteSensors.settings.GetSettings;
 
 import java.util.Timer;
+import java.util.TimerTask;
 
 public enum CBGPSListener implements LocationListener {
     INSTANCE;
@@ -35,6 +36,8 @@ public enum CBGPSListener implements LocationListener {
     private double samplingRateGps;
     private Context context;
     private CBGpsBuffer sensor = new CBGpsBuffer(CBBuffer.STRING_GPS);
+    // Al nivel de la clase, junto a las demás variables
+    private volatile Location lastReceivedLocation;
 
     /**
      * Establece los datos del experimento.
@@ -100,8 +103,10 @@ public enum CBGPSListener implements LocationListener {
         // Frecuencia de muestreo (seg)
         int selectedFrequencyPositionGPS = sharedPreferences.getInt(STATUS_SPN_FREQUENCY_GPS_CONFIG, 0);
         this.samplingRateGps = GetSettings.obtenerFrecuenciaMuestreo(context, selectedFrequencyPositionGPS, R.array.text_frequency_gps_options);
-        // Convierte la frecuencia de muestreo de segundos a milisegundos
-        long samplingInterval = (long) (1000L * this.samplingRateGps);
+        // Convierte el tiempo entre muestras de segundos a milisegundos
+        //long samplingInterval = (long) (1000L * this.samplingRateGps);
+        // milisegundos fijos para mínimos requeridos
+        long samplingInterval = 1000L;
 
         try {
             if (context.checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -123,7 +128,7 @@ public enum CBGPSListener implements LocationListener {
             );
             isRunning = true;
             // 6-)
-            this.scheduleDataRecording(GetSettings.getExperimentName(context));
+            this.scheduleDataRecording();
 
         } catch (SecurityException e) {
             e.printStackTrace();
@@ -162,7 +167,9 @@ public enum CBGPSListener implements LocationListener {
     public void onLocationChanged(@NonNull Location location) {
         //currentLocation = location;
         try {
-            sensor.append(new SensorEventData(location.getTime(), location.getLatitude(), location.getLongitude(), location.getAltitude()));
+            //sensor.append(new SensorEventData(location.getTime(), location.getLatitude(), location.getLongitude(), location.getAltitude()));
+            // Solo se almacena el último valor recibido para ser muestreado luego
+            lastReceivedLocation = location;
         } catch (Exception e) {
             //FileManager.writeToFile(data.getTimestamp(), "error.txt", e.getMessage() + '\n');
             FileManager.writeToFile("error.txt", e.getMessage() + '\n');
@@ -214,9 +221,8 @@ public enum CBGPSListener implements LocationListener {
     /**
      * Programa la grabación de datos GPS.
      *
-     * @param directoryName El nombre del directorio donde se guardarán los datos.
      */
-    private void scheduleDataRecording(String directoryName) {
+    /*private void scheduleDataRecording() {
         // Crear una instancia de CBGpsBuffer
         //CBGpsBuffer sensor = new CBGpsBuffer(CBBuffer.STRING_GPS);
         // Asignar los datos del experimento al sensor
@@ -229,27 +235,58 @@ public enum CBGPSListener implements LocationListener {
         //writeFileTaskGps.setDirectoryName(directoryName);
 
         timer = new Timer();
-        timer.schedule(writeFileTaskGps, WriteFileTaskGPS.DELAY_TIME_MS, WriteFileTaskGPS.PERIOD_TIME_MS);
-        /*timer.schedule(new TimerTask() {
+        //timer.schedule(writeFileTaskGps, WriteFileTaskGPS.DELAY_TIME_MS, WriteFileTaskGPS.PERIOD_TIME_MS);
+        timer.schedule(writeFileTaskGps, WriteFileTaskGPS.DELAY_TIME_MS, samplingIntervalMs);
+    }*/
+
+    /**
+     * Programa el muestreo exacto de datos GPS.
+     */
+    private void scheduleDataRecording() {
+        // Se asegura de que el sensor utilice el número de archivo correcto
+        sensor.setFileNumber(this.data.getFileNumber());
+
+        // Se crea un Timer para programar el muestreo a intervalos fijos
+        if (timer != null) {
+            timer.cancel();
+        }
+        timer = new Timer();
+
+        // Se convierte la frecuencia de muestreo (en segundos) a milisegundos.
+        final long samplingIntervalMs = (long) (this.samplingRateGps * 1000L);
+
+        timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if (currentLocation != null) {
-                    // Registrar datos GPS (latitud, longitud, altitud, marca de tiempo)
-                    // en su objeto ExperimentData u otro mecanismo de almacenamiento.
-                    // ... Acceder a los datos usando currentLocation.getLatitude(), etc. ...
-                    double latitude = currentLocation.getLatitude();
-                    double longitude = currentLocation.getLongitude();
-                    double altitude = currentLocation.getAltitude();
-                    long timestamp = currentLocation.getTime();
+                // Se toma la hora actual; puedes elegir entre System.currentTimeMillis() o el
+                // timestamp del dato GPS. Aquí uso el tiempo del muestreo para garantizar exactitud.
+                //long sampleTimestamp = System.currentTimeMillis();
 
+                // Se verifica que se tenga un dato GPS (en caso de que todavía no haya llegado ninguno)
+                if (lastReceivedLocation != null) {
+                    long timestamp = lastReceivedLocation.getTime();
+                    // Se utiliza la última ubicación recibida
+                    double latitude = lastReceivedLocation.getLatitude();
+                    double longitude = lastReceivedLocation.getLongitude();
+                    double altitude = lastReceivedLocation.getAltitude();
+
+                    // Se crea un nuevo objeto SensorEventData (asegúrate que su constructor o método acepte estos datos)
+                    SensorEventData sample = new SensorEventData(timestamp, latitude, longitude, altitude);
+
+                    // Se guarda la muestra en el buffer
                     try {
-                        sensor.append(new SensorEventData(timestamp, latitude, longitude, altitude));
+                        sensor.append(sample);
                     } catch (Exception e) {
-                        FileManager.writeToFile(data.getTimestamp(), "error.txt", e.getMessage() + '\n');
+                        FileManager.writeToFile("error.txt", e.getMessage() + '\n');
                     }
+
+                    // Escribimos el contenido acumulado del sensor a disco
+                    // (Si prefieres escribir solo la muestra actual, podrías modificar esto para no reescribir todo el buffer)
+                    FileManager.writeToFile(sensor.getSensorFileName(), sensor.getSensorEventData(CBBuffer.STRING_GPS));
+                    // limpia la variable
+                    lastReceivedLocation = null;
                 }
             }
-        }, WriteFileTaskGPS.DELAY_TIME_MS, WriteFileTaskGPS.PERIOD_TIME_MS); ///Grabar cada 1000 milisegundos (1 segundo)
-         */
+        }, samplingIntervalMs, samplingIntervalMs);
     }
 }
