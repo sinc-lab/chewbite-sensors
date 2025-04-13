@@ -11,6 +11,7 @@ import android.location.LocationManager;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.PowerManager;
+import android.os.Process;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -115,8 +116,13 @@ public enum CBGPSListener implements LocationListener {
             }
 
             // Inicia el hilo para la recolección de datos GPS
-            mGPSThread = new HandlerThread("GPS thread", Thread.MAX_PRIORITY);
+            mGPSThread = new HandlerThread("GPS thread", Process.THREAD_PRIORITY_DISPLAY);
             mGPSThread.start();
+            /*  Establecer la prioridad a nivel Java:
+                - NORM_PRIORITY = 5
+                - MAX_PRIORITY = 10
+             */
+            mGPSThread.setPriority(8); // Esto establece el valor a 8
             mGPSHandler = new Handler(mGPSThread.getLooper());
             // 5-)
             locationManager.requestLocationUpdates(
