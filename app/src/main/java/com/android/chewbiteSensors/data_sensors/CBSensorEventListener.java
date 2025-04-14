@@ -12,6 +12,7 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.PowerManager;
+import android.os.Process;
 import android.util.Log;
 
 import com.android.chewbiteSensors.R;
@@ -180,33 +181,40 @@ public enum CBSensorEventListener implements SensorEventListener {
      */
     @Override
     public void onSensorChanged(SensorEvent event) {
-        // Establece el valor de los sensores
-        for (CBSensorBuffer sensor : sensors) {
-            // Verifica que el tipo de sensor sea el mismo
-            if (event.sensor.getType() == sensor.getSensor().getType()) {
-                try {
-                    if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
-                        int stepCount = (int) event.values[0];  // Confirma si este cast es seguro
-                        // Si es la primera lectura, guarda el valor inicial
-                        if (sensor.getSensorName().equals(CBBuffer.STRING_NUM_OF_STEPS)) {
-                            if (sensor.getInitialStepCount() == -1) {
-                                sensor.setInitialStepCount(stepCount);
-                            }
-                            // Ajusta el valor restando el valor inicial
-                            stepCount -= sensor.getInitialStepCount();
-                        }
-                        // Agrega los datos ajustados al buffer
-                        sensor.append(new SensorEventData(event.timestamp, stepCount));
-                    } else {
-                        // Otros sensores
-                        sensor.append(new SensorEventData(event.timestamp, event.values[0], event.values[1], event.values[2]));
-                    }
+        int event_sensor_Type = event.sensor.getType();
+        long event_timestamp = event.timestamp;
+        float[] event_values = event.values;
 
-                } catch (Exception e) {
-                    //FileManager.writeToFile(this.data.getTimestamp(), "error.txt", e.getMessage() + '\n');
-                    FileManager.writeToFile("error.txt", e.getMessage() + '\n');
-                }
+        try {
+            if (sensors.stream().noneMatch(s -> s.getSensor().getType() == event_sensor_Type) ) {
+                // No existe ningún sensor con este eventType
+                return;
             }
+            // Busca el sensor correspondiente al tipo de evento
+            CBSensorBuffer sensor = sensors.stream()
+                    .filter(s -> s.getSensor().getType() == event_sensor_Type)
+                    .findFirst()
+                    .orElse(null);
+
+            if (event_sensor_Type == Sensor.TYPE_STEP_COUNTER) {
+                int stepCount = (int) event_values[0];  // Confirma si este cast es seguro
+                // Si es la primera lectura, guarda el valor inicial
+                assert sensor != null; // Asegúrate de que sensor no sea nulo
+                if (sensor.getInitialStepCount() == -1) {
+                    sensor.setInitialStepCount(stepCount);
+                }
+                // Ajusta el valor restando el valor inicial
+                stepCount -= sensor.getInitialStepCount();
+                // Agrega los datos ajustados al buffer
+                sensor.append(new SensorEventData(event_timestamp, stepCount));
+            } else {
+                // Otros sensores
+                assert sensor != null;
+                sensor.append(new SensorEventData(event_timestamp, event_values[0], event_values[1], event_values[2]));
+            }
+
+        } catch (Exception e) {
+            FileManager.writeToFile("error.txt", e.getMessage() + "\n");
         }
     }
 
@@ -255,14 +263,32 @@ public enum CBSensorEventListener implements SensorEventListener {
      * Registra los sensores en el dispositivo.
      */
     private void registerDeviceSensors() {
-        mSensorThread = new HandlerThread("Sensor thread", Thread.MAX_PRIORITY);
+        /* Parámetros:
+            - tid: Identificador del hilo/proceso que se va a modificar.
+            - priority: Nivel de prioridad de Linux, desde -20 para la máxima prioridad de
+            programación hasta 19 para la mínima.
+         */
+        //mSensorThread = new HandlerThread("Sensor thread", Process.THREAD_PRIORITY_URGENT_DISPLAY);
+        mSensorThread = new HandlerThread("Sensor thread", -18);
+        // Se crea un hilo de sensor con Thread.MAX_PRIORITY (10)
+        // y en onLooperPrepared se cambiará a THREAD_PRIORITY_URGENT_DISPLAY
+        //mSensorThread = new SensorHandlerThread("Sensor thread", Process.THREAD_PRIORITY_URGENT_DISPLAY);
         mSensorThread.start();
+        // Establecer la máxima prioridad a nivel Java:
+        mSensorThread.setPriority(Thread.MAX_PRIORITY); // Esto establece el valor a 10
         Handler mSensorHandler = new Handler(mSensorThread.getLooper()); //Blocks until looper is prepared, which is fairly quick
 
         for (CBSensorBuffer sensor : sensors) {
             String name = sensor.getSensorName();
             int max = sensor.getSensor().getMaxDelay();
-            this.sensorManager.registerListener(this, sensor.getSensor(), this.samplingPeriodUs, 1000000, mSensorHandler);
+            //this.sensorManager.registerListener(this, sensor.getSensor(), this.samplingPeriodUs, 1000000, mSensorHandler);
+            this.sensorManager.registerListener(
+                    this,
+                    sensor.getSensor(),
+                    0,      // En microsegundos (la API espera microsegundos)
+                    0,                      // Mínimo delay: se recomienda dejarlo igual para que la entrega de eventos sea rápida.
+                    mSensorHandler
+            );
             // Si el sensor es un contador de pasos, reinicia el valor inicial
             if (sensor.getSensorName().equals(CBBuffer.STRING_NUM_OF_STEPS)) {
                 sensor.setInitialStepCount(-1); // Reinicia el valor inicial
