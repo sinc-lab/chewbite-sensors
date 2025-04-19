@@ -76,9 +76,9 @@ public class SensorEventData {
         long eventTimeMillis = currentTimeMillis - elapsedRealtimeMillis + TimeUnit.NANOSECONDS.toMillis(timestamp);
 
         // Extraer milisegundos, microsegundos y nanosegundos restantes
-        long millis = eventTimeMillis % 1000;
-        long micros = (timestamp / 1000) % 1000;
-        long nanos = timestamp % 1000;
+        //long millis = eventTimeMillis % 1000;
+        //long micros = (timestamp / 1000) % 1000;
+        //long nanos = timestamp % 1000;
 
         // Formatear la fecha y hora
         Date date = new Date(eventTimeMillis);

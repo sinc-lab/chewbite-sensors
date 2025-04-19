@@ -3,7 +3,6 @@ package com.android.chewbiteSensors.data_sensors;
 
 import android.annotation.SuppressLint;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 /**
@@ -24,7 +23,6 @@ public abstract class CBBuffer {
     public static final String STRING_GRAVITY = "gravity";
     public static final String STRING_NUM_OF_STEPS = "num_of_steps";
     public static final String STRING_GPS = "gps";
-    public static final String STRING_SOUND = "audio";
 
     private static final int BUFFER_SIZE = 4096;  // Must be power of 2 since it uses bit operations
     private static final String FILE_EXTENSION = ".txt";
@@ -46,11 +44,11 @@ public abstract class CBBuffer {
     }
 
     /**
-     * agrega un nuevo objeto SensorEventData al búfer en la posición principal. Si el búfer está
+     * Agrega un nuevo objeto SensorEventData al búfer en la posición principal. Si el búfer está
      * lleno, genera una excepción.
      *
-     * @param s
-     * @throws Exception
+     * @param s objeto SensorEventData a agregar
+     * @throws Exception si el búfer está lleno
      */
     public void append(SensorEventData s) throws Exception {
         // Comprobar si el buffer está lleno
@@ -97,7 +95,8 @@ public abstract class CBBuffer {
      *
      * @return
      */
-    /*public ArrayList<byte[]> getSensorEventData(String sensorName) {
+    /*
+    public ArrayList<byte[]> getSensorEventData(String sensorName) {
         // Obtener el índice de la cola
         int copyUntil = this.head;
         // Comprobar si el buffer está vacío
@@ -161,32 +160,14 @@ public abstract class CBBuffer {
             String line;
 
             if (CBBuffer.STRING_NUM_OF_STEPS.equals(sensorName)) { // Identificar el Step Counter
-                // Crear un buffer
-                //ByteBuffer buff = ByteBuffer.allocate(Long.BYTES + Integer.BYTES);  // Solo timestamp y count
-                // Copiar los datos específicos del Step Counter al buffer
-                //buff.putLong(event.getTimestamp()).putInt(event.getCount());
-                // Agregar el buffer al arreglo
-                //bytes.add(buff.array());
                 // Crear una cadena con los datos del evento
                 line = event.getTimestamp() + "," + event.getCount();
                 // otra opción
                 //line = String.format("%d,%d", event.getTimestamp(), event.getCount());
             } else if (CBBuffer.STRING_GPS.equals(sensorName)) {
-                // Crear un buffer
-                //ByteBuffer buff = ByteBuffer.allocate(Long.BYTES + 3 * Double.BYTES);
-                // Copiar los datos en el buffer
-                //buff.putLong(event.getTimestamp()).putDouble(event.getLat()).putDouble(event.getLon()).putDouble(event.getAlt());
-                // Agregar el buffer al arreglo
-                //bytes.add(buff.array());
                 // Crear una cadena con los datos del evento
                 line = event.getTimestamp() + "," + event.getLat() + "," + event.getLon() + "," + event.getAlt();
             } else {
-                // Crear un buffer
-                //ByteBuffer buff = ByteBuffer.allocate(Long.BYTES + 3 * Float.BYTES);
-                // Copiar los datos en el buffer
-                //buff.putLong(event.getTimestamp()).putFloat(event.getX()).putFloat(event.getY()).putFloat(event.getZ());
-                // Agregar el buffer al arreglo
-                //bytes.add(buff.array());
                 // Crear una cadena con los datos del evento
                 line = event.getTimestamp() + "," + event.getX() + "," + event.getY() + "," + event.getZ();
                 // otra opción
@@ -196,8 +177,6 @@ public abstract class CBBuffer {
                         event.getY(),
                         event.getZ());*/
             }
-            // Agregar el buffer al arreglo
-            //bytes.add(buff.array());
             lines.add(line + "\n");
             // Actualizar el índice
             tail = (tail + 1) & (BUFFER_SIZE - 1);
@@ -206,19 +185,19 @@ public abstract class CBBuffer {
         return lines;
     }
 
-    /**
+    /*
      * Devuelve el número de archivo actual.
      *
      * @return fileNumber
      */
-    public int getFileNumber() {
+    /*public int getFileNumber() {
         return fileNumber;
-    }
+    }*/
 
     /**
      * Establece el número de archivo actual.
      *
-     * @param fileNumber
+     * @param fileNumber número de archivo
      */
     public void setFileNumber(int fileNumber) {
         this.fileNumber = fileNumber;
