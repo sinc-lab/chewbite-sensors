@@ -12,15 +12,18 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.PowerManager;
-import android.os.Process;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.android.chewbiteSensors.R;
 import com.android.chewbiteSensors.settings.GetSettings;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Es el corazón de la recopilación y gestión de datos de sus sensores en el proyecto "chewBite Sensors".
@@ -56,11 +59,18 @@ public enum CBSensorEventListener implements SensorEventListener {
     private static final String STATUS_SPN_FREQUENCY_MOVEMENT_CONFIG = "status_spinner_frequency_movement_configuration";
     private int samplingRate;
     private int samplingPeriodUs;
+    // Cola para encolar eventos de sensor de forma thread-safe
+    private final ConcurrentLinkedQueue<SensorEventCopy> sensorEventQueue = new ConcurrentLinkedQueue<>();
+    private Handler mSensorHandler;
+    private long bootOffset; // Offset para convertir el timestamp del sensor a tiempo real (ms)
+    // Variables de instancia
+    private long currentSecond = -1;
+    private final Map<Integer, List<SensorEventCopy>> pendingEvents = new HashMap<>();
 
     /**
      * Establece los datos del experimento.
      *
-     * @param data
+     * @param data Los datos del experimento.
      */
     public void setExperimentData(ExperimentData data) {
         this.data = data;
@@ -87,6 +97,9 @@ public enum CBSensorEventListener implements SensorEventListener {
      * @param context El contexto de la aplicación.
      */
     public void start(Context context) throws SecurityException {
+        // ——— 0) Limpieza de estado previo ———
+        this.clearVariables();
+
         // Obtiene un WakeLock para evitar que el dispositivo entre en suspensión durante la
         // recolección de datos, asegurando que el proceso continúe sin interrupciones.
         PowerManager powerManager = (PowerManager) context.getSystemService(POWER_SERVICE);
@@ -148,10 +161,17 @@ public enum CBSensorEventListener implements SensorEventListener {
             }
             /*------------------------------------------------------------------------*/
         }
+        // Calcular el offset entre System.currentTimeMillis() y SystemClock.elapsedRealtime()
+        bootOffset = System.currentTimeMillis() - SystemClock.elapsedRealtime();
+        Log.d("CBSensorEventListener", "Boot offset: " + bootOffset +
+                "\nSystem.currentTimeMillis(): " + System.currentTimeMillis() +
+                "\nSystemClock.elapsedRealtime(): " + SystemClock.elapsedRealtime());
         // 5-) Registra los sensores
         this.registerDeviceSensors();
+        // En lugar de procesar evento a evento, se lanza el procesamiento por lotes cada segundo
+        mSensorHandler.post(processBatchRunnable);
         // 6-) Guarda los datos
-        this.scheduleWriteFile(GetSettings.getExperimentName(context));
+        this.scheduleWriteFile();
     }
 
     /**
@@ -163,23 +183,32 @@ public enum CBSensorEventListener implements SensorEventListener {
         this.state = SensorEventListenerState.IDLE;
 
         wakeLock.release();
+
+        // Limpieza al parar
+        this.clearVariables();
+    }
+
+    private void clearVariables() {
+        this.currentSecond = -1;
+        this.sensorEventQueue.clear();
+        this.pendingEvents.clear();
     }
 
     /**
      * Indica si el experimento está corriendo.
      *
-     * @return
+     * @return true si el experimento está corriendo, false en caso contrario.
      */
     public boolean isRunning() {
         return this.state == SensorEventListenerState.RUNNING;
     }
 
-    /**
+    /*
      * Se llama cuando un sensor cambia de valor.
      *
      * @param event the {@link android.hardware.SensorEvent SensorEvent}.
      */
-    @Override
+    /*@Override
     public void onSensorChanged(SensorEvent event) {
         int event_sensor_Type = event.sensor.getType();
         long event_timestamp = event.timestamp;
@@ -216,12 +245,39 @@ public enum CBSensorEventListener implements SensorEventListener {
         } catch (Exception e) {
             FileManager.writeToFile("error.txt", e.getMessage() + "\n");
         }
+    }*/
+
+    /*------------------------------- Cambios 1---------------------------------------------------*/
+    /*@Override
+    public void onSensorChanged(SensorEvent event) {
+        sensorEventQueue.offer(event);
+        Log.d("CBSensorEventListener", "Evento encolado: " + event.timestamp);
+    }*/
+    /*------------------------------- Cambios 1---------------------------------------------------*/
+    /*------------------------------- Cambios 2---------------------------------------------------*/
+    /*@Override
+    public void onSensorChanged(SensorEvent event) {
+        // Crear una copia de los datos del evento
+        SensorEventCopy copy = new SensorEventCopy(
+                event.timestamp,
+                event.values,
+                event.sensor.getType()
+        );
+        sensorEventQueue.offer(copy);
+        //Log.d("CBSensorEventListener", "sensorEventQueue.offer(copy) size: " + sensorEventQueue.size());
+    }*/
+    /*------------------------------- Cambios 2---------------------------------------------------*/
+    /*------------------------------- Cambios 3---------------------------------------------------*/
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        sensorEventQueue.offer(new SensorEventCopy(event));
     }
+    /*------------------------------- Cambios 3---------------------------------------------------*/
 
     /**
      * Se llama cuando la precisión de un sensor ha cambiado.
      *
-     * @param arg0
+     * @param arg0 El sensor que ha cambiado de precisión.
      * @param arg1 La nueva precisión de este sensor, uno de
      *             {@code SensorManager.SENSOR_STATUS_*}
      */
@@ -230,20 +286,8 @@ public enum CBSensorEventListener implements SensorEventListener {
     }
 
     /**
-     * Este método proporciona una manera conveniente de obtener una lista de archivos asociados
-     * con una prueba o experimento.
-     * El nombre del directorio apunte a una ruta donde su aplicación almacena datos relacionados
-     * con una ejecución de prueba específica.
-     * Al llamar a este método, accede a estos archivos para su posterior procesamiento, análisis o
-     * visualización.
-     *
+     * Cancela el temporizador de escritura de archivos.
      */
-    /*public File[] getTestFiles(String directoryName) {
-        // Establece el número de archivo del experimento → 2
-        //return FileManager.getDirectoryContent(directoryName);
-        // Obtener el directorio del experimento
-         return Objects.requireNonNull(FileManager.getFile(directoryName)).listFiles();
-    }*/
     public void cancelTimer() {
         if (this.timer != null) {
             this.timer.cancel();
@@ -276,11 +320,11 @@ public enum CBSensorEventListener implements SensorEventListener {
         mSensorThread.start();
         // Establecer la máxima prioridad a nivel Java:
         mSensorThread.setPriority(Thread.MAX_PRIORITY); // Esto establece el valor a 10
-        Handler mSensorHandler = new Handler(mSensorThread.getLooper()); //Blocks until looper is prepared, which is fairly quick
+        mSensorHandler = new Handler(mSensorThread.getLooper()); //Blocks until looper is prepared, which is fairly quick
 
         for (CBSensorBuffer sensor : sensors) {
-            String name = sensor.getSensorName();
-            int max = sensor.getSensor().getMaxDelay();
+            //String name = sensor.getSensorName();
+            //int max = sensor.getSensor().getMaxDelay();
             //this.sensorManager.registerListener(this, sensor.getSensor(), this.samplingPeriodUs, 1000000, mSensorHandler);
             this.sensorManager.registerListener(
                     this,
@@ -304,13 +348,145 @@ public enum CBSensorEventListener implements SensorEventListener {
         mSensorThread.quitSafely();
     }
 
-    private void scheduleWriteFile(String directoryName) {
+    /**
+     * Se encarga de escribir los datos en archivos.
+     */
+    private void scheduleWriteFile() {
         this.timer = new Timer();
         WriteFileTask<CBSensorBuffer> writeFileTask = new WriteFileTask<>();
-
         writeFileTask.addSensors(this.sensors);
-
-        //writeFileTask.setDirectoryName(directoryName);
         timer.schedule(writeFileTask, WriteFileTask.DELAY_TIME_MS, WriteFileTask.PERIOD_TIME_MS);
     }
+
+    /**
+     * Procesa un único evento de sensor.
+     * La lógica es la misma que en la versión anterior: encuentra el buffer correspondiente y lo actualiza.
+     *
+     * @param event El evento de sensor a procesar.
+     */
+    private void processSensorEvent(SensorEventCopy event) {
+        int eventSensorType = event.sensorType;
+        long eventTimestamp = event.timestamp;
+        float[] eventValues = event.values;
+        try {
+            if (sensors.stream().noneMatch(s -> s.getSensor().getType() == eventSensorType)) {
+                return;
+            }
+            CBSensorBuffer sensor = sensors.stream()
+                    .filter(s -> s.getSensor().getType() == eventSensorType)
+                    .findFirst()
+                    .orElse(null);
+            if (sensor == null) return;
+            if (eventSensorType == Sensor.TYPE_STEP_COUNTER) {
+                int stepCount = (int) eventValues[0];
+                if (sensor.getInitialStepCount() == -1) {
+                    sensor.setInitialStepCount(stepCount);
+                }
+                stepCount -= sensor.getInitialStepCount();
+                sensor.append(new SensorEventData(eventTimestamp, stepCount));
+            } else {
+                sensor.append(new SensorEventData(eventTimestamp, eventValues[0], eventValues[1], eventValues[2]));
+            }
+        } catch (Exception e) {
+            FileManager.writeToFile("error.txt", e.getMessage() + "\n");
+        }
+    }
+
+    /*------------------------------- Cambios 3---------------------------------------------------*/
+
+    /**
+     * Clase interna para encapsular los datos de un evento de sensor.
+     */
+    private static class SensorEventCopy {
+        final long timestamp; // En nanosegundos
+        final float[] values;
+        final int sensorType;
+
+        SensorEventCopy(SensorEvent event) {
+            this.timestamp = event.timestamp;
+            this.values = event.values.clone();
+            this.sensorType = event.sensor.getType();
+        }
+    }
+
+    private final Runnable processBatchRunnable = new Runnable() {
+        @Override
+        public void run() {
+            // Obtener el tiempo actual en milisegundos (tiempo real)
+            long nowWallClockMs = System.currentTimeMillis();
+            long nowSecond = nowWallClockMs / 1000;
+
+            // Si es un nuevo segundo, procesar el anterior
+            if (nowSecond != currentSecond) {
+                if (currentSecond != -1) {
+                    processSecond(currentSecond);
+                }
+                currentSecond = nowSecond;
+            }
+
+            // Acumular nuevos eventos
+            SensorEventCopy event;
+            while ((event = sensorEventQueue.poll()) != null) {
+                // Calcular el segundo real del evento
+                //long eventElapsedRealtimeMs = event.timestamp / 1_000_000;
+                //long eventWallClockMs = eventElapsedRealtimeMs + bootOffset;
+                //long eventSecond = eventWallClockMs / 1000;
+
+                // Agrupar por tipo de sensor y segundo
+                pendingEvents
+                        .computeIfAbsent(event.sensorType, k -> new ArrayList<>())
+                        .add(event);
+            }
+
+            // Reprogramar próxima ejecución en 100ms (detectar cambios de segundo rápido)
+            if (state == SensorEventListenerState.RUNNING) {
+                mSensorHandler.postDelayed(this, 100);
+            }
+        }
+
+        private void processSecond(long targetSecond) {
+            for (Map.Entry<Integer, List<SensorEventCopy>> entry : pendingEvents.entrySet()) {
+                //int sensorType = entry.getKey();
+                List<SensorEventCopy> events = entry.getValue();
+
+                // Filtrar eventos del segundo objetivo
+                List<SensorEventCopy> filtered = new ArrayList<>();
+                for (SensorEventCopy event : events) {
+                    long eventElapsedRealtimeMs = event.timestamp / 1_000_000;
+                    long eventWallClockMs = eventElapsedRealtimeMs + bootOffset;
+                    long eventSecond = eventWallClockMs / 1000;
+
+                    if (eventSecond == targetSecond) {
+                        filtered.add(event);
+                    }
+                }
+
+                // Downsampling manual
+                if (!filtered.isEmpty()) {
+                    int desiredSamples = samplingRate;
+                    List<SensorEventCopy> sampled = new ArrayList<>();
+
+                    if (filtered.size() <= desiredSamples) {
+                        sampled.addAll(filtered);
+                    } else {
+                        double step = (double) filtered.size() / desiredSamples;
+                        for (int i = 0; i < desiredSamples; i++) {
+                            int index = (int) Math.round(i * step);
+                            index = Math.min(index, filtered.size() - 1);
+                            sampled.add(filtered.get(index));
+                        }
+                    }
+
+                    // Escribir muestras al buffer
+                    for (SensorEventCopy event : sampled) {
+                        processSensorEvent(event);
+                    }
+                }
+            }
+
+            // Limpiar eventos procesados
+            pendingEvents.clear();
+        }
+    };
+    /*------------------------------- Cambios 3---------------------------------------------------*/
 }
