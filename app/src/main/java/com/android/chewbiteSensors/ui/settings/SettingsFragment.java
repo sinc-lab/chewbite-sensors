@@ -66,26 +66,32 @@ public class SettingsFragment extends Fragment {
         // Inicializa del EditText
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
         EditText editTextExperimentName = view.findViewById(R.id.et_name_experiment);
-        // Se le configura el nombre del experimento
-        editTextExperimentName.setText(GetSettings.getExperimentName(requireActivity()));
 
-        editTextExperimentName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // No es necesario implementar este método en este caso
-            }
+        // 1. Usar post() para agregar el listener después de que la UI esté lista
+        editTextExperimentName.post(() -> {
+            // 2. Se le configura el nombre del experimento SIN activar el listener
+            editTextExperimentName.setText(GetSettings.getExperimentName(requireActivity()));
+            // 3. Saltar al estado actual para evitar la animación
+            editTextExperimentName.jumpDrawablesToCurrentState();
+            // 4. Activar el listener
+            editTextExperimentName.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    // No es necesario implementar este método en este caso
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // No es necesario implementar este método en este caso
-            }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    // No es necesario implementar este método en este caso
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                // Guardar el texto en SharedPreferences
-                String nameExperiment = s.toString();
-                GetSettings.setExperimentName(requireActivity(), nameExperiment);
-            }
+                @Override
+                public void afterTextChanged(Editable s) {
+                    // Guardar el texto en SharedPreferences
+                    String nameExperiment = s.toString();
+                    GetSettings.setExperimentName(requireActivity(), nameExperiment);
+                }
+            });
         });
         /*----------------------------------------------------------------------------------------*/
         btnPathStorage = view.findViewById(R.id.btn_path_storage);

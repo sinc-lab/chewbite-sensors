@@ -89,6 +89,7 @@ public class GetSettings {
 
     public static void setExperimentName(Context context, String nameExperiment) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
+        nameExperiment = (nameExperiment == null || nameExperiment.trim().isEmpty()) ? "Test" : nameExperiment;
         sharedPreferences.edit().putString(NAME_OF_THE_EXPERIMENT, nameExperiment).apply();
     }
 
@@ -100,7 +101,7 @@ public class GetSettings {
      * @param switchName Opciones disponibles: sound, accelerometer, gyroscope, magnetometer,
      *                   uncalibrated_accelerometer, uncalibrated_gyroscope,
      *                   uncalibrated_magnetometer, gravity, number_of_steps, gps, movement
-     * @param context Context de la actividad
+     * @param context    Context de la actividad
      * @return true si el switch está activado, false en caso contrario
      */
     public static boolean getStatusSwitch(String switchName, Context context) {
@@ -151,11 +152,12 @@ public class GetSettings {
 
     /**
      * Guarda el estado de los switch
+     *
      * @param switchName Opciones disponibles: sound, accelerometer, gyroscope, magnetometer,
      *                   uncalibrated_accelerometer, uncalibrated_gyroscope,
      *                   uncalibrated_magnetometer, gravity, number_of_steps, gps, movement
-     * @param status Estado del switch
-     * @param context Context de la app
+     * @param status     Estado del switch
+     * @param context    Context de la app
      */
     public static void setStatusSwitch(String switchName, boolean status, Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
@@ -203,9 +205,10 @@ public class GetSettings {
 
     /**
      * Obtiene el estado del Spinner
+     *
      * @param SpinnerName Opciones disponibles: bit_rate_sound, frecuency_sound, file_type,
      *                    frecuency_movement, frecuency_gps
-     * @param context Context de la app
+     * @param context     Context de la app
      * @return número de posición en el array de opciones disponibles
      */
     public static int getStatusSpinner(String SpinnerName, Context context) {
@@ -229,10 +232,11 @@ public class GetSettings {
 
     /**
      * Guarda el estado del Spinner
+     *
      * @param SpinnerName Opciones disponibles: bit_rate_sound, frecuency_sound, file_type,
      *                    frecuency_movement, frecuency_gps
-     * @param position Posición que se seleccionó
-     * @param context Context de la app
+     * @param position    Posición que se seleccionó
+     * @param context     Context de la app
      */
     public static void setStatusSpinner(String SpinnerName, int position, Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
