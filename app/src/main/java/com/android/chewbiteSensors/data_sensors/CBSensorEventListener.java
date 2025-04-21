@@ -60,6 +60,8 @@ public enum CBSensorEventListener implements SensorEventListener {
     private int samplingRate;
     private int samplingPeriodUs;
     // Cola para encolar eventos de sensor de forma thread-safe
+    // ConcurrentLinkedQueue es una cola concurrente que permite un acceso seguro y eficiente en entornos multihilo.
+    // FIFO (First In, First Out): Los elementos se procesan en el orden en que fueron añadidos, es decir, el primer elemento en entrar es el primero en salir.
     private final ConcurrentLinkedQueue<SensorEventCopy> sensorEventQueue = new ConcurrentLinkedQueue<>();
     private Handler mSensorHandler;
     private long bootOffset; // Offset para convertir el timestamp del sensor a tiempo real (ms)
@@ -188,6 +190,9 @@ public enum CBSensorEventListener implements SensorEventListener {
         this.clearVariables();
     }
 
+    /**
+     * Limpia las variables de instancia.
+     */
     private void clearVariables() {
         this.currentSecond = -1;
         this.sensorEventQueue.clear();
@@ -270,6 +275,7 @@ public enum CBSensorEventListener implements SensorEventListener {
     /*------------------------------- Cambios 3---------------------------------------------------*/
     @Override
     public void onSensorChanged(SensorEvent event) {
+        // Crear una copia de los datos del evento
         sensorEventQueue.offer(new SensorEventCopy(event));
     }
     /*------------------------------- Cambios 3---------------------------------------------------*/
@@ -294,6 +300,11 @@ public enum CBSensorEventListener implements SensorEventListener {
         }
     }
 
+    /**
+     * Agrega un sensor a la lista de sensores.
+     * @param sensorName El nombre del sensor.
+     * @param sensorType El tipo de sensor.
+     */
     private void addSensor(String sensorName, int sensorType) {
         Sensor sensor = this.sensorManager.getDefaultSensor(sensorType);
         if (sensor != null) {
@@ -380,7 +391,7 @@ public enum CBSensorEventListener implements SensorEventListener {
             if (eventSensorType == Sensor.TYPE_STEP_COUNTER) {
                 int stepCount = (int) eventValues[0];
                 if (sensor.getInitialStepCount() == -1) {
-                    sensor.setInitialStepCount(stepCount);
+                    sensor.setInitialStepCount(stepCount - 1);
                 }
                 stepCount -= sensor.getInitialStepCount();
                 sensor.append(new SensorEventData(eventTimestamp, stepCount));
@@ -427,17 +438,21 @@ public enum CBSensorEventListener implements SensorEventListener {
             // Acumular nuevos eventos
             SensorEventCopy event;
             while ((event = sensorEventQueue.poll()) != null) {
-                // Calcular el segundo real del evento
-                //long eventElapsedRealtimeMs = event.timestamp / 1_000_000;
-                //long eventWallClockMs = eventElapsedRealtimeMs + bootOffset;
-                //long eventSecond = eventWallClockMs / 1000;
+                // Procesar inmediatamente los eventos del contador de pasos
+                if (event.sensorType == Sensor.TYPE_STEP_COUNTER) {
+                    processSensorEvent(event);
+                } else {
+                    // Calcular el segundo real del evento
+                    //long eventElapsedRealtimeMs = event.timestamp / 1_000_000;
+                    //long eventWallClockMs = eventElapsedRealtimeMs + bootOffset;
+                    //long eventSecond = eventWallClockMs / 1000;
 
-                // Agrupar por tipo de sensor y segundo
-                pendingEvents
-                        .computeIfAbsent(event.sensorType, k -> new ArrayList<>())
-                        .add(event);
+                    // Agrupar por tipo de sensor y segundo
+                    pendingEvents
+                            .computeIfAbsent(event.sensorType, k -> new ArrayList<>())
+                            .add(event);
+                }
             }
-
             // Reprogramar próxima ejecución en 100ms (detectar cambios de segundo rápido)
             if (state == SensorEventListenerState.RUNNING) {
                 mSensorHandler.postDelayed(this, 100);
