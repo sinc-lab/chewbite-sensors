@@ -68,15 +68,37 @@ public class FileManager {
      */
     public static void writeToFile(String fileName, ArrayList<String> data) {
         File file = getFile(fileName);
-        if (file != null) {
-            synchronized (getLock(fileName)) {
-                try (FileOutputStream fileOutputStream = new FileOutputStream(file, true)) {
-                    for (String line : data) {
-                        fileOutputStream.write(line.getBytes(StandardCharsets.UTF_8));
+        if (file == null) return;
+
+        synchronized (getLock(fileName)) {
+            // Comprobamos si hay que agregar cabecera:
+            boolean needHeader = !file.exists() || file.length() == 0;
+
+            try (FileOutputStream fileOutputStream = new FileOutputStream(file, true)) {
+                // Determinamos si el archivo debe tener cabecera
+                if (needHeader) {
+                    // Determinamos el tipo de sensor por el prefijo del nombre de fichero
+                    String sensorType = fileName.substring(0, fileName.indexOf("_"));
+                    String header;
+                    switch (sensorType) {
+                        case CBBuffer.STRING_NUM_OF_STEPS:
+                            header = "Marca de tiempo, Cantidad de pasos";
+                            break;
+                        case CBBuffer.STRING_GPS:
+                            header = "Marca de tiempo, Latitud, Longitud, Altitud";
+                            break;
+                        default:
+                            // Para acelerómetro, giroscopio, magnetómetro, gravedad, etc.
+                            header = "Marca de tiempo, Eje X, Eje Y, Eje Z";
                     }
-                } catch (IOException e) {
-                    Log.e("File Error", e.toString());
+                    fileOutputStream.write((header + "\n").getBytes(StandardCharsets.UTF_8));
                 }
+
+                for (String line : data) {
+                    fileOutputStream.write(line.getBytes(StandardCharsets.UTF_8));
+                }
+            } catch (IOException e) {
+                Log.e("File Error", e.toString());
             }
         }
     }
