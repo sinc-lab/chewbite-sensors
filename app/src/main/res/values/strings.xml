@@ -1,0 +1,78 @@
+<resources>
+    <string name="app_name">ChewBite Sensors</string>
+    <string name="title_home">Inicio</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_settings">Configuración</string>
+    <string name="title_predictions">Predicciones</string>
+    <string name="title_sensors">Sensores</string>
+    <string name="title_app">ChewBite Sensors</string>
+    <string name="text_welcome">Bienvenido a ChewBite Sensors la app para realizar estudios de ganadería de precisión. \n\n    Utiliza tu teléfono, para grabar los sonidos, movimientos y ubicación de tus animales rumiantes.</string>
+    <string name="text_informative_message">Recuerda <b>desactivar</b> el audio \ny poner en modo avión.</string>
+    <string name="text_sensors_chart">Monitoreo de los sensores en tiempo real</string>
+    <string name="text_see_more">Ver más</string>
+    <string name="text_title_configuation">Elija que desea grabar</string>
+    <string name="text_sound_configuration">Sonido</string>
+    <string name="text_audio_configuration">Audio</string>
+    <string name="text_movement_configuration">Movimiento</string>
+    <string name="text_gps_configuration">GPS</string>
+    <string name="text_experiment_name">Nombre del experimento</string>
+    <string name="text_path_storage">Ruta de almacenamiento</string>
+    <string name="txt_start">Iniciar</string>
+    <string name="txt_stop">Detener</string>
+    <string name="text_frequency">Frecuencia de muestreo (Hz)</string>
+    <string name="text_frequency_gps">Tiempo entre muestras (seg)</string>
+    <string name="text_bit_rate">Bit Rate (Bits)</string>
+    <string name="text_type_of_file">Tipo de archivo</string>
+    <string name="text_accelerometer">Acelerómetro</string>
+    <string name="text_gyroscope">Giroscopio</string>
+    <string name="text_magnetometer">Magnetómetro</string>
+    <string name="text_accelerometer_uncalibrated">Acelerómetro sin calibrar</string>
+    <string name="text_gyroscope_uncalibrated">Giroscopio sin calibrar</string>
+    <string name="text_magnetometer_uncalibrated">Magnetómetro sin calibrar</string>
+    <string name="text_gravity">Gravedad</string>
+    <string name="text_number_of_steps">Cantidad de pasos</string>
+    <string name="permission_rationale">Se necesitan permisos para poder continuar.</string>
+    <string name="unit_of_measurement_accelerometer">[m/s²]</string>
+    <string name="unit_of_measurement_gyroscope">[rad/s]</string>
+    <string name="unit_of_measurement_magnetometer">[µT]</string>
+    <string name="ok">OK</string>
+    <string name="notification_title">ChewBite test is running</string>
+    <string name="notification_text">Saving device sensor data...</string>
+    <string name="channel_name">Notificaciones de ChewBite</string>
+    <string name="text_gps_information"> Esta aplicación usa la API de ubicación nativa de Android.</string>
+
+    <string-array name="text_frequency_sound_options">
+        <item>8.000</item>
+        <item>11.025</item>
+        <item>16.000</item>
+        <item>22.050</item>
+        <item>44.100</item>
+    </string-array>
+
+    <string-array name="text_frequency_movement_options">
+        <item>1</item>
+        <item>10</item>
+        <item>25</item>
+        <item>50</item>
+        <item>100</item>
+    </string-array>
+
+    <string-array name="text_frequency_gps_options">
+        <item>1</item>
+        <item>60</item>
+        <item>600</item>
+    </string-array>
+
+    <string-array name="text_type_file_options">
+        <item>3gp</item>
+        <item>mp3</item>
+        <item>wav</item>
+    </string-array>
+
+    <string-array name="text_bit_rate_options">
+        <item>64.000</item>
+        <item>96.000</item>
+        <item>128.000</item>
+    </string-array>
+</resources>

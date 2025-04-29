@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.predictions.PredictionsFragment">
+
+    <ScrollView
+        android:id="@+id/scrollVirew_Predictions"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Aquí va el contenido que quieres hacer desplazable -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout_ScrollVirew_Predictions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_Name_App"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/open_sans_bold"
+                android:gravity="center"
+                android:text="@string/title_app"
+                android:textAppearance="@style/Theme.TextNameAPP"
+                android:textColor="@color/black_950"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/tv_welcome"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_welcome"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/hind_madurai_medium"
+                android:gravity="center"
+                android:text="@string/text_welcome"
+                android:textColor="@color/black_900"
+                android:textSize="14sp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_Name_App" />
+
+            <RelativeLayout
+                android:id="@+id/informative_message_box"
+                android:layout_width="304dp"
+                android:layout_height="82dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/background_color_blue_50"
+                android:gravity="center"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/basic_configuration"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.495"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_welcome"
+                tools:ignore="MissingConstraints"> <!-- Aquí usamos el fondo creado -->
+
+                <RelativeLayout
+                    android:id="@+id/system_stat"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp">
+
+                    <RelativeLayout
+                        android:id="@+id/warning_rectangle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        tools:ignore="UselessParent">
+
+                        <View
+                            android:id="@+id/System_Status"
+                            android:layout_width="43dp"
+                            android:layout_height="42dp"
+                            android:background="@drawable/warning_blue" />
+                    </RelativeLayout>
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_informative_message"
+                    android:layout_width="200dp"
+                    android:layout_height="38dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_toEndOf="@+id/system_stat"
+                    android:fontFamily="@font/hind_madurai_medium"
+                    android:gravity="center"
+                    android:text="@string/text_informative_message"
+                    android:textColor="@color/black_900"
+                    android:textSize="14sp"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/basic_configuration"
+                android:layout_width="312dp"
+                android:layout_height="240dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/background_color_black_100"
+                app:layout_constraintBottom_toTopOf="@+id/btn_start"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/informative_message_box"
+                tools:ignore="MissingConstraints">
+
+                <RelativeLayout
+                    android:id="@+id/tittle_basic_configuration"
+                    android:layout_width="296dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp">
+
+                    <TextView
+                        android:id="@+id/txt_title_configuration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="@font/open_sans_semi_bold"
+                        android:gravity="top"
+                        android:lineSpacingExtra="-6sp"
+                        android:text="@string/text_title_configuation"
+                        android:textAppearance="@style/title_configuration" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/selectores"
+                    android:layout_width="296dp"
+                    android:layout_height="62dp"
+                    android:layout_below="@+id/tittle_basic_configuration"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    tools:ignore="ExtraText">
+
+                    <RelativeLayout
+                        android:id="@+id/sound"
+                        android:layout_width="93.33dp"
+                        android:layout_height="61dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginEnd="0dp">
+
+                        <TextView
+                            android:id="@+id/txt_sound"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="8dp"
+                            android:gravity="center|center_vertical"
+                            android:lineSpacingExtra="0sp"
+                            android:text="@string/text_sound_configuration"
+                            android:textAppearance="@style/sound_configuration" />
+
+                        <Switch
+                            android:id="@+id/switch_sound_home_prediction"
+                            android:layout_width="48dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/txt_sound"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginEnd="0dp"
+                            android:gravity="center"
+                            app:thumbTint="@color/yellow_500"
+                            app:trackTint="@color/blue_600"
+                            app:useMaterialThemeColors="false"
+                            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/movement"
+                        android:layout_width="93.33dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_toStartOf="@+id/gps"
+                        android:layout_toEndOf="@+id/sound">
+
+                        <TextView
+                            android:id="@+id/txt_movement"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="8dp"
+                            android:gravity="center|center_vertical"
+                            android:lineSpacingExtra="0sp"
+                            android:text="@string/text_movement_configuration"
+                            android:textAppearance="@style/sound_configuration" />
+
+                        <Switch
+                            android:id="@+id/switch_movement_home_prediction"
+                            android:layout_width="48dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/txt_movement"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginEnd="0dp"
+                            android:gravity="center"
+                            app:thumbTint="@color/blue_600"
+                            app:trackTint="@color/blue_600"
+                            app:useMaterialThemeColors="false"
+                            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/gps"
+                        android:layout_width="93.33dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="0dp">
+
+                        <TextView
+                            android:id="@+id/txt_gps"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="8dp"
+                            android:gravity="center|center_vertical"
+                            android:lineSpacingExtra="0sp"
+                            android:text="@string/text_gps_configuration"
+                            android:textAppearance="@style/sound_configuration" />
+
+                        <Switch
+                            android:id="@+id/switch_gps_home_prediction"
+                            android:layout_width="48dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/txt_gps"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginEnd="0dp"
+                            android:filterTouchesWhenObscured="false"
+                            android:focusableInTouchMode="false"
+                            android:gravity="center"
+                            app:thumbTint="@color/blue_600"
+                            app:trackTint="@color/blue_600"
+                            app:useMaterialThemeColors="false"
+                            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+
+                <Button
+                    android:id="@+id/btn_see_more"
+                    style="@style/Theme.Secondary_Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="64dp"
+                    android:width="256dp"
+                    android:height="40dp"
+                    android:backgroundTint="@color/black_50"
+                    android:text="@string/text_see_more"
+                    android:textAppearance="@style/TextAppearance.App.Button"
+                    android:textColor="@color/black_800"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="NotSibling" />
+
+            </RelativeLayout>
+
+            <ToggleButton
+                android:id="@+id/btn_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:width="312dp"
+                android:height="48dp"
+                android:background="@drawable/my_btn_toggle"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.App.Button"
+                android:textOff="@string/txt_start"
+                android:textOn="@string/txt_stop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.494"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/basic_configuration" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

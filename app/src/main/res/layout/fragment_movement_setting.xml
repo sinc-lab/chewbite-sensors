@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="60dp"
+    tools:context=".ui.movement.MovementFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/frequency_movement"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/txt_frequency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center"
+                android:lineSpacingExtra="3sp"
+                android:text="@string/text_frequency"
+                android:textAppearance="@style/stl_text_setting_label"
+                android:translationY="-1.47sp" />
+
+            <Spinner
+                android:id="@+id/spn_frequency_options_movement"
+                style="@style/FrequencyOptionsList"
+                android:layout_width="110dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/spinner"
+                android:entries="@array/text_frequency_movement_options"
+                android:overlapAnchor="false"
+                tools:visibility="visible" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/accelerometer"
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/txt_accelerometer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_toStartOf="@+id/switch_accelerometer_configuration"
+                android:gravity="center_vertical"
+                android:text="@string/text_accelerometer"
+                android:textAppearance="@style/stl_text_setting_label" />
+
+            <Switch
+                android:id="@+id/switch_accelerometer_configuration"
+                android:layout_width="49dp"
+                android:layout_height="49dp"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="12dp"
+                android:gravity="center"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            <TextView
+                android:id="@+id/txt_accelerometer_limitation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="bottom"
+                android:textAppearance="@style/stl_text_setting_label_limitation"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/gyroscope"
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/txt_gyroscope"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_toStartOf="@+id/switch_gyroscope_configuration"
+                android:gravity="center_vertical"
+                android:text="@string/text_gyroscope"
+                android:textAppearance="@style/stl_text_setting_label" />
+
+            <Switch
+                android:id="@+id/switch_gyroscope_configuration"
+                android:layout_width="49dp"
+                android:layout_height="49dp"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="12dp"
+                android:gravity="center"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            <TextView
+                android:id="@+id/txt_gyroscope_limitation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="bottom"
+                android:textAppearance="@style/stl_text_setting_label_limitation"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/magnetometer"
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/txt_magnetometer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_toStartOf="@+id/switch_magnetometer_configuration"
+                android:gravity="center_vertical"
+                android:text="@string/text_magnetometer"
+                android:textAppearance="@style/stl_text_setting_label" />
+
+            <Switch
+                android:id="@+id/switch_magnetometer_configuration"
+                android:layout_width="49dp"
+                android:layout_height="49dp"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="12dp"
+                android:gravity="center"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            <TextView
+                android:id="@+id/txt_magnetometer_limitation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="bottom"
+                android:textAppearance="@style/stl_text_setting_label_limitation"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/accelerometer_uncalibrated"
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/txt_accelerometer_uncalibrated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_toStartOf="@+id/switch_accelerometer_uncalibrated_configuration"
+                android:gravity="center_vertical"
+                android:text="@string/text_accelerometer_uncalibrated"
+                android:textAppearance="@style/stl_text_setting_label" />
+
+            <Switch
+                android:id="@+id/switch_accelerometer_uncalibrated_configuration"
+                android:layout_width="49dp"
+                android:layout_height="49dp"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="12dp"
+                android:gravity="center"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            <TextView
+                android:id="@+id/txt_accelerometer_uncalibrated_limitation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="bottom"
+                android:textAppearance="@style/stl_text_setting_label_limitation"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/gyroscope_uncalibrated"
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/txt_gyroscope_uncalibrated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_toStartOf="@+id/switch_gyroscope_uncalibrated_configuration"
+                android:gravity="center_vertical"
+                android:text="@string/text_gyroscope_uncalibrated"
+                android:textAppearance="@style/stl_text_setting_label" />
+
+            <Switch
+                android:id="@+id/switch_gyroscope_uncalibrated_configuration"
+                android:layout_width="49dp"
+                android:layout_height="49dp"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="12dp"
+                android:gravity="center"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            <TextView
+                android:id="@+id/txt_gyroscope_uncalibrated_limitation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="bottom"
+                android:textAppearance="@style/stl_text_setting_label_limitation"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/magnetometer_uncalibrated"
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/txt_magnetometer_uncalibrated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_toStartOf="@+id/switch_magnetometer_uncalibrated_configuration"
+                android:gravity="center_vertical"
+                android:text="@string/text_magnetometer_uncalibrated"
+                android:textAppearance="@style/stl_text_setting_label" />
+
+            <Switch
+                android:id="@+id/switch_magnetometer_uncalibrated_configuration"
+                android:layout_width="49dp"
+                android:layout_height="49dp"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="12dp"
+                android:gravity="center"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            <TextView
+                android:id="@+id/txt_magnetometer_uncalibrated_limitation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="bottom"
+                android:textAppearance="@style/stl_text_setting_label_limitation"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/gravity"
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/txt_gravity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_toStartOf="@+id/switch_gravity_configuration"
+                android:gravity="center_vertical"
+                android:text="@string/text_gravity"
+                android:textAppearance="@style/stl_text_setting_label" />
+
+            <Switch
+                android:id="@+id/switch_gravity_configuration"
+                android:layout_width="49dp"
+                android:layout_height="49dp"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="12dp"
+                android:gravity="center"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            <TextView
+                android:id="@+id/txt_gravity_limitation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="bottom"
+                android:textAppearance="@style/stl_text_setting_label_limitation"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/number_of_steps"
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/txt_number_of_steps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center_vertical"
+                android:text="@string/text_number_of_steps"
+                android:textAppearance="@style/stl_text_setting_label" />
+
+            <RelativeLayout
+                android:id="@+id/rl_warning_rectangle"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_toEndOf="@id/txt_number_of_steps"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:id="@+id/warning_rectangle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    tools:ignore="UselessParent">
+
+                    <View
+                        android:id="@+id/System_Status"
+                        android:layout_width="21dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/warning_blue" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <Switch
+                android:id="@+id/switch_number_of_steps_configuration"
+                android:layout_width="49dp"
+                android:layout_height="49dp"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="12dp"
+                android:gravity="center"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

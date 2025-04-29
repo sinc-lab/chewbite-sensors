@@ -1,2 +1,2 @@
-# chewBite-android-sensors
-Repositorio de código para tesis de Manzo José A.
+# chewBite-sensors
+Repositorio de código de la aplicación "ChewBite Sensors".
