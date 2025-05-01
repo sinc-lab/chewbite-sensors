@@ -22,7 +22,8 @@ public class DeviceStatus {
         DeviceStatus that = (DeviceStatus) o;
         return airplane == that.airplane &&
                 bluetooth == that.bluetooth &&
-                wifi == that.wifi;
+                wifi == that.wifi &&
+                silence == that.silence;
     }
 
     public Status getAirplane() {
