@@ -90,6 +90,10 @@ public enum CBGPSListener implements LocationListener {
      */
     public void startNativeGPS(Context context) {
         this.context = context;
+
+        // limpia la variable
+        lastReceivedLocation = null;
+
         // Obtiene un WakeLock para evitar que el dispositivo entre en suspensión durante la
         // recolección de datos, asegurando que el proceso continúe sin interrupciones.
         PowerManager powerManager = (PowerManager) context.getSystemService(POWER_SERVICE);

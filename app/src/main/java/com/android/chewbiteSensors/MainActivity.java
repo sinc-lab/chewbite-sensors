@@ -267,8 +267,15 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
             message += "- Silencio desactivado.\n";
             messageActivar += messageActivar.isEmpty() ? "activar el Silencio" : " y el Silencio";
         }
+
+        String messageConectorActivarDesactivar = "";
+        if (!messageActivar.isEmpty() && !messageDesactivar.isEmpty()) {
+            messageConectorActivarDesactivar = ", y ";
+        }
         message += "\nLo cual puede realizar un consumo excesivo de la batería o afectar la precisión de la grabación.\n\n";
-        message += "Si no es requerido recuerda " + messageActivar + ", y " + messageDesactivar + ". Luego vuelva a iniciar el experimento.";
+        message += "Si no es requerido recuerda " + messageActivar + messageConectorActivarDesactivar
+                + messageDesactivar +
+                ". Luego vuelva a iniciar el experimento.";
         alertDialogBuilder.setMessage(message);
 
         alertDialogBuilder.setPositiveButton("Aceptar", (dialog, arg1) -> Log.d("DIALOG", "yes"));
